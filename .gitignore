@@ -1,0 +1,13 @@
+# cargo
+debug/
+target/
+
+# rustfmt
+**/*.rs.bk
+
+# msvc rustc
+*.pdb
+
+# env files
+.env
+*.env
