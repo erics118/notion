@@ -83,14 +83,16 @@ impl Notion {
         // TODO: handle ratelimits
 
         Ok(response)
-    }}
+    }
+}
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let notion = Notion::new("secret_PGwr76Ldv4dwJ8HqAdGQtS2CZzcFofNqDflUOdVc12v")?;
 
-
-    let a = notion.retrieve_block(BlockId::from_str("d3d710f97c874e6c8e4d9b2576a6fb29").unwrap()).await?;
+    let a = notion
+        .retrieve_block(BlockId::from_str("d3d710f97c874e6c8e4d9b2576a6fb29").unwrap())
+        .await?;
 
     println!("{a}");
     Ok(())
