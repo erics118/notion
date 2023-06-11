@@ -23,6 +23,23 @@ macro_rules! uuid_id {
                 }
             }
 
+            impl std::str::FromStr for $name {
+                type Err = uuid::Error;
+
+                fn from_str(uuid_str: &str) -> Result<Self, Self::Err> {
+                    Ok(Self(Uuid::parse_str(uuid_str)?))
+                }
+            }
+
+
+            impl TryFrom<&'_ str> for $name {
+                type Error = uuid::Error;
+
+                fn try_from(uuid_str: &'_ str) -> Result<Self, Self::Error> {
+                    Ok(Self(Uuid::parse_str(uuid_str)?))
+                }
+            }
+
             impl<T: ?Sized> AsMut<T> for $name
             where
                 Uuid: AsMut<T>,
