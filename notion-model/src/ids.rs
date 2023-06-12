@@ -32,7 +32,6 @@ macro_rules! uuid_id {
                 }
             }
 
-
             impl TryFrom<&'_ str> for $name {
                 type Error = uuid::Error;
 

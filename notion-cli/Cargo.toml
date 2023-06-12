@@ -13,14 +13,15 @@ categories = ["api-bindings"]
 publish = false
 
 [dependencies]
-notion-model = { path = "../notion-model" }
+notion = { path = "../notion" }
 
 anyhow = "1.0.71"
 log = "0.4.19"
-paste = "1.0.12"
-reqwest = { version = "0.11.18", features = ["json"] }
 serde = "1.0.164"
 serde_json = "1.0.96"
 thiserror = "1.0.40"
 tokio = { version = "1.28.2", features = ["full"] }
 clap = {version="4.3.3", features=["cargo", "derive", "env"]}
+config = { version = "0.13.3", features = ["toml"] }
+dirs = "5.0.1"
+env_logger = "0.10.0"

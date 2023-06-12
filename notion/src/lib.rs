@@ -44,10 +44,12 @@ pub mod client;
 
 pub mod errors;
 
-pub mod authentication;
-pub mod blocks;
-pub mod comments;
-pub mod databases;
-pub mod pages;
-pub mod search;
-pub mod users;
+mod authentication;
+mod blocks;
+mod comments;
+mod databases;
+mod pages;
+mod search;
+mod users;
+
+pub use notion_model as model;

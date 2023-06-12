@@ -40,28 +40,34 @@
     clippy::unwrap_used
 )]
 
+pub mod cli;
+pub mod config;
+pub mod error;
+
 use std::str::FromStr;
 
 use anyhow::Result;
-use notion_model::ids::BlockId;
+use clap::Parser;
+use notion::{client::Notion, model::ids::BlockId};
 
-use crate::client::Notion;
+use crate::{
+    cli::{Cli, Commands},
+    config::{load_config, Config},
+};
 
 #[tokio::main]
-pub async fn main() -> Result<()> {
-    let notion = Notion::new("secret_PGwr76Ldv4dwJ8HqAdGQtS2CZzcFofNqDflUOdVc12v")?;
+async fn main() -> Result<()> {
+    let cli = Cli::parse();
+    let Config { api_token } = load_config()?;
+    let notion = Notion::new(&api_token)?;
 
-    let a = notion
-        .retrieve_block(BlockId::from_str("d3d710f97c874e6c8e4d9b2576a6fb29")?)
-        .await?;
-    println!("{a:#?}");
-
-    // notion
-    //     .append_block_children(
-    //         BlockId::from_str("413085318c3741808899ada14b5e8095")?,
-    //         vec![],
-    //     )
-    //     .await?;
+    match cli.command {
+        // d3d710f97c874e6c8e4d9b2576a6fb29
+        Commands::RetrieveBlock { block_id } => {
+            let block = notion.retrieve_block(BlockId::from_str(&block_id)?).await?;
+            println!("{block:#?}");
+        },
+    }
 
     Ok(())
 }

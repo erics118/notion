@@ -17,9 +17,8 @@ pub struct Block {
     /// Information about the block's parent. See [`BlockParent`] for details.
     pub parent: BlockParent,
 
-    /// Type of block. See [`BlockType`] for details.
+    // Type of block. See [`BlockType`] for details.
     // pub r#type: BlockType,
-
     /// Date and time when this block was created. Formatted as an ISO 8601 date
     /// time string.
     pub created_time: DateTime<Utc>,

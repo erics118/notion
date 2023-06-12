@@ -94,9 +94,8 @@ impl Notion {
         todo!()
     }
 
-    ///     Update a block
-    /// PATCH
-    /// https://api.notion.com/v1/blocks/{block_id}
+    /// Update a block
+    ///
     /// Updates the content for the specified block_id based on the block type.
     /// Supported fields based on the block object type (see Block object for
     /// available fields and the expected input for each field).
