@@ -10,7 +10,8 @@ macro_rules! uuid_id {
         $(
 
             #[derive(
-                Copy, Clone, Default, Debug, Eq, Hash, PartialEq, PartialOrd, Ord, Deserialize, Serialize,
+                Copy, Clone, Default, Debug, Hash, Eq, PartialEq,
+                Ord, PartialOrd, Deserialize, Serialize,
             )]
             pub struct $name(pub Uuid);
 
@@ -18,7 +19,7 @@ macro_rules! uuid_id {
                 /// Immutably borrow inner Id.
                 #[inline]
                 #[must_use]
-                pub fn as_uuid(&self) -> &Uuid {
+                pub const fn as_uuid(&self) -> &Uuid {
                     &self.0
                 }
             }
@@ -78,5 +79,7 @@ macro_rules! uuid_id {
 
 uuid_id! {
     BlockId;
+    DatabaseId;
     PageId;
+    UserId;
 }

@@ -1,5 +1,10 @@
+use monostate::MustBe;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Default, Debug, Eq, PartialEq, Deserialize, Serialize)]
+use crate::ids::UserId;
 
-pub struct UserMetadata;
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+pub struct PartialUser {
+    object: MustBe!("user"),
+    pub id: UserId,
+}

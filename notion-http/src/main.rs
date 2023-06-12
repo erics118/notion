@@ -1,99 +1,79 @@
-use std::str::FromStr;
+#![forbid(unsafe_code)]
+#![warn(
+    absolute_paths_not_starting_with_crate,
+    elided_lifetimes_in_paths,
+    explicit_outlives_requirements,
+    ffi_unwind_calls,
+    keyword_idents,
+    macro_use_extern_crate,
+    meta_variable_misuse,
+    missing_abi,
+    missing_copy_implementations,
+    missing_debug_implementations,
+    // missing_docs,
+    non_ascii_idents,
+    noop_method_call,
+    pointer_structural_match,
+    rust_2021_incompatible_closure_captures,
+    rust_2021_incompatible_or_patterns,
+    rust_2021_prefixes_incompatible_syntax,
+    rust_2021_prelude_collisions,
+    single_use_lifetimes,
+    trivial_casts,
+    trivial_numeric_casts,
+    unsafe_op_in_unsafe_fn,
+    unstable_features,
+    // unused_crate_dependencies,
+    unused_extern_crates,
+    unused_import_braces,
+    unused_lifetimes,
+    unused_macro_rules,
+    unused_qualifications,
+    unused_tuple_struct_fields,
+    variant_size_differences,
+    explicit_outlives_requirements,
+    elided_lifetimes_in_paths,
+    unused_qualifications,
+    clippy::all,
+    clippy::nursery,
+    clippy::expect_used,
+    clippy::unwrap_used
+)]
+
+pub mod client;
+
 pub mod errors;
-use anyhow::{Context, Result};
-pub use errors::Error;
-use notion_model::{
-    constants::{API_BASE_URL, API_VERSION},
-    ids::BlockId,
-    objects::block::{Block, BlockMetadata},
-};
-use reqwest::{
-    header::{self, HeaderMap, HeaderValue},
-    Client, ClientBuilder,
-};
 
-#[derive(Debug, Clone)]
-pub struct Notion {
-    client: Client,
-}
+pub mod authentication;
+pub mod blocks;
+pub mod comments;
+pub mod databases;
+pub mod pages;
+pub mod search;
+pub mod users;
 
-impl Notion {
-    pub fn new(api_token: &str) -> Result<Self> {
-        let mut headers = HeaderMap::new();
+use std::str::FromStr;
 
-        headers.insert("Notion-Version", HeaderValue::from_static(API_VERSION));
+use anyhow::Result;
+use notion_model::ids::BlockId;
 
-        let auth = HeaderValue::from_str(&format!("Bearer {}", api_token))
-            .context(Error::InvalidApiToken)?;
-
-        headers.insert(header::AUTHORIZATION, auth);
-
-        let client = ClientBuilder::new()
-            .default_headers(headers)
-            .build()
-            .context(Error::ClientBuild)?;
-
-        Ok(Self { client })
-    }
-
-    /// Returns the absolute URL for an endpoint in the API.
-    fn api_url(&self, url: &str) -> String {
-        let mut base = API_BASE_URL.to_owned();
-        if !base.ends_with('/') {
-            base.push('/');
-        }
-        base + url
-    }
-
-    #[inline]
-    async fn api_get(&self, path: &str) -> Result<String> {
-        let url = self.api_url(path);
-        let res = self.client.get(&url).send().await?;
-        // TODO: ratelimits
-        let json = res.text().await?;
-
-        Ok(json)
-    }
-
-    /// Retrieve a block
-    ///
-    /// Retrieves a [`Block`] object using the ID specified.
-    ///
-    /// 📘 If a block contains the key `has_children: true`, use the Retrieve
-    /// block children endpoint to get the list of children
-    ///
-    /// 📘 Integration capabilities
-    ///
-    /// This endpoint requires an integration to have read content capabilities.
-    /// Attempting to call this API without read content capabilities will
-    /// return an HTTP response with a 403 status code. For more information on
-    /// integration capabilities, see the capabilities guide.
-    ///
-    /// # Errors
-    ///
-    /// Returns a 404 HTTP response if the block doesn't exist, or if the
-    /// integration doesn't have access to the block.
-    ///
-    /// Returns a 400 or 429 HTTP response if the request exceeds the request
-    /// limits.
-
-    pub async fn retrieve_block(&self, block_id: BlockId) -> Result<String> {
-        let response = self.api_get(&format!("blocks/{block_id}")).await?;
-
-        // TODO: handle ratelimits
-
-        Ok(response)
-    }
-}
+use crate::client::Notion;
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let notion = Notion::new("secret_PGwr76Ldv4dwJ8HqAdGQtS2CZzcFofNqDflUOdVc12v")?;
 
     let a = notion
-        .retrieve_block(BlockId::from_str("d3d710f97c874e6c8e4d9b2576a6fb29").unwrap())
+        .retrieve_block(BlockId::from_str("d3d710f97c874e6c8e4d9b2576a6fb29")?)
         .await?;
+    println!("{a:#?}");
 
-    println!("{a}");
+    // notion
+    //     .append_block_children(
+    //         BlockId::from_str("413085318c3741808899ada14b5e8095")?,
+    //         vec![],
+    //     )
+    //     .await?;
+
     Ok(())
 }

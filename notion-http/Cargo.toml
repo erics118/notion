@@ -1,18 +1,25 @@
 [package]
 name = "notion-http"
 version = "0.1.0"
+authors = ["erics118"]
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+rust-version = "1.65.0"
+description = "A wrapper for the Notion official API."
+homepage = "https://github.com/erics118/notion"
+repository = "https://github.com/erics118/notion"
+license = "MIT"
+keywords = ["notion", "api"]
+categories = ["api-bindings"]
+publish = false
 
 [dependencies]
-anyhow = "1.0.71"
-env_logger = "0.10.0"
-log = "0.4.18"
 notion-model = { path = "../notion-model" }
-reqwest = { version = "0.11.18", features = ["serde_json"] }
+
+anyhow = "1.0.71"
+log = "0.4.19"
+paste = "1.0.12"
+reqwest = { version = "0.11.18", features = ["json"] }
 serde = "1.0.164"
 serde_json = "1.0.96"
 thiserror = "1.0.40"
 tokio = { version = "1.28.2", features = ["full"] }
-tracing = "0.1.37"
