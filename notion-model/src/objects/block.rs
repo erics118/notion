@@ -62,7 +62,6 @@ impl BlockBuilder {
         println!("{}", serde_json::to_string(&data).unwrap());
         Self { data }
     }
-
 }
 
 // TODO: use the `type` field when serializing. currently, when deserializing,

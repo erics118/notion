@@ -40,18 +40,6 @@
     clippy::unwrap_used
 )]
 
-pub mod client;
-
-pub mod errors;
-
-pub mod authentication;
-pub mod blocks;
-pub mod comments;
-pub mod databases;
-pub mod pages;
-pub mod search;
-pub mod users;
-
 use std::str::FromStr;
 
 use anyhow::Result;

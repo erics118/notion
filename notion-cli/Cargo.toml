@@ -1,0 +1,26 @@
+[package]
+name = "notion-cli"
+version = "0.1.0"
+authors = ["erics118"]
+edition = "2021"
+rust-version = "1.65.0"
+description = "A wrapper for the Notion official API."
+homepage = "https://github.com/erics118/notion"
+repository = "https://github.com/erics118/notion"
+license = "MIT"
+keywords = ["notion", "api"]
+categories = ["api-bindings"]
+publish = false
+
+[dependencies]
+notion-model = { path = "../notion-model" }
+
+anyhow = "1.0.71"
+log = "0.4.19"
+paste = "1.0.12"
+reqwest = { version = "0.11.18", features = ["json"] }
+serde = "1.0.164"
+serde_json = "1.0.96"
+thiserror = "1.0.40"
+tokio = { version = "1.28.2", features = ["full"] }
+clap = {version="4.3.3", features=["cargo", "derive", "env"]}

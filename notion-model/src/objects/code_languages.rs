@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[non_exhaustive]
-#[derive(Copy,Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum CodeLanguage {
     ABAP,
