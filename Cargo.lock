@@ -525,7 +525,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "notion-http"
+name = "notion"
 version = "0.1.0"
 dependencies = [
  "anyhow",
