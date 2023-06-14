@@ -41,14 +41,75 @@ pub struct RichText {
     pub data: RichTextData,
 }
 
+impl RichText {
+    pub fn new_text(plain_text: impl Into<String>) -> Self {
+        let a = plain_text.into();
+        Self {
+            type_: RichTextType::Text,
+            annotations: Annotations::default(),
+            plain_text: a.clone(),
+            href: None,
+            data: RichTextData::Text {
+                text: Text {
+                    content: a.clone(),
+                    link: None,
+                },
+            },
+        }
+    }
+
+    // pub fn new_mention(plain_text: String, href: String, mention_type:
+    // MentionType) -> Self {     Self {
+    //         type_: RichTextType::Mention,
+    //         annotations: Annotations::default(),
+    //         plain_text,
+    //         href: Some(href),
+    //         data: RichTextData::Mention(Mention {
+    //             mention: MentionType::User,
+    //         }),
+    //     }
+    // }
+
+    // pub fn new_equation(plain_text: String, expression: String) -> Self {
+    //     Self {
+    //         type_: RichTextType::Equation,
+    //         annotations: Annotations::default(),
+    //         plain_text,
+    //         href: None,
+    //         data: RichTextData::Equation(Equation { expression }),
+    //     }
+    // }
+
+    pub fn annotations(&mut self, annotations: Annotations) -> &mut Self {
+        self.annotations = annotations;
+        self
+    }
+
+    pub fn plain_text(&mut self, plain_text: String) -> &mut Self {
+        self.plain_text = plain_text;
+        self
+    }
+
+    pub fn href(&mut self, href: String) -> &mut Self {
+        self.href = Some(href);
+        self
+    }
+}
+
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "lowercase", untagged)]
 pub enum RichTextData {
-    Text(Text),
-    Mention(Mention),
-    Equation(Equation),
+    Text {
+        text: Text,
+    },
+    Mention {
+        mention: Mention,
+    },
+    Equation {
+        equation: Equation,
+    },
     #[default]
-    Idk
+    Idk,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]

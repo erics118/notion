@@ -53,9 +53,9 @@ use notion::{
     model::{
         ids::BlockId,
         objects::{
-            block::{BlockBuilder, BlockData, Heading2},
+            block::{BlockBuilder, Heading2},
             color::Color,
-            rich_text::{RichText, RichTextData, RichTextType, Text},
+            rich_text::RichText,
         },
     },
 };
@@ -91,23 +91,30 @@ pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
-    let children: Vec<BlockBuilder> = vec![BlockBuilder::new(BlockData::Heading2 {
-        heading_2: Heading2 {
-            rich_text: vec![RichText {
-                type_: RichTextType::Text,
-                plain_text: "Hello, world!".to_string(),
-                data: RichTextData::Text(Text {
-                    content: "Hello, world!".to_string(),
-                    ..Default::default()
-                }),
-                ..Default::default()
-            }],
-            ..Default::default()
-        },
-    })];
+    // let children: Vec<BlockBuilder> = vec![BlockBuilder::new(BlockData::Heading2
+    // {     heading_2: Heading2 {
+    //         rich_text: vec![RichText {
+    //             type_: RichTextType::Text,
+    //             plain_text: "Hello, world!".to_string(),
+    //             data: RichTextData::Text(Text {
+    //                 content: "Hello, world!".to_string(),
+    //                 ..Default::default()
+    //             }),
+    //             ..Default::default()
+    //         }],
+    //         ..Default::default()
+    //     },
+    // })];
+
+    let children = vec![
+        Heading2::new()
+            .rich_text(vec![RichText::new_text("Hello, World!")])
+            .color(Color::Brown)
+            .new_block(),
+    ];
 
     notion
-        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, children)
+        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, vec![child1])
         .await?;
 
     Ok(())

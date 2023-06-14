@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{Block, BlockBuilder};
+use super::{Block, BlockBuilder, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
@@ -21,6 +21,13 @@ pub struct Heading2 {
 }
 
 impl Heading2 {
+    pub fn new_block(&self) -> BlockBuilder {
+        println!("{}", serde_json::to_string(&self).unwrap());
+        BlockBuilder::new(BlockData::Heading2 {
+            heading_2: self.clone(),
+        })
+    }
+
     pub fn new() -> Self {
         Self::default()
     }
