@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 #[non_exhaustive]
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "lowercase")]
 pub enum CodeLanguage {
-    ABAP,
+    Abap,
     Arduino,
     Bash,
     Basic,
@@ -15,7 +15,7 @@ pub enum CodeLanguage {
     Cpp,
     #[serde(rename = "c#")]
     CSharp,
-    CSS,
+    Css,
     Dart,
     Diff,
     Docker,
@@ -24,12 +24,12 @@ pub enum CodeLanguage {
     #[serde(rename = "f#")]
     FSharp,
     Gherkin,
-    GLSL,
+    Glsl,
     Go,
     Graphql,
     Groovy,
     Haskell,
-    HTML,
+    Html,
     Java,
     JavaScript,
     Json,
@@ -43,7 +43,7 @@ pub enum CodeLanguage {
     Makefile,
     Markdown,
     Markup,
-    MATLAB,
+    Matlab,
     Mermaid,
     Nix,
     #[serde(rename = "objective-c")]
@@ -51,8 +51,9 @@ pub enum CodeLanguage {
     OCaml,
     Pascal,
     Perl,
-    PHP,
+    Php,
     #[serde(rename = "plain text")]
+    #[default]
     PlainText,
     PowerShell,
     Prolog,
@@ -71,14 +72,18 @@ pub enum CodeLanguage {
     Swift,
     TypeScript,
     #[serde(rename = "vb.net")]
-    VBNet,
+    VbNet,
     Verilog,
     VHDL,
     #[serde(rename = "visual basic")]
     VisualBasic,
     WebAssembly,
-    XML,
-    YAML,
+    Xml,
+    Yaml,
+    /// Java, C, C++, C#
+    ///
+    /// Probably is deprecated now, as it's not in the UI. It still works
+    /// though.
     #[serde(rename = "java/c/c++/c#")]
-    JavaCCppCSharp,
+    JavaCCppCsharp,
 }

@@ -42,6 +42,7 @@
     clippy::expect_used,
     clippy::unwrap_used
 )]
+#![allow(clippy::missing_const_for_fn)]
 
 pub mod constants;
 pub mod ids;

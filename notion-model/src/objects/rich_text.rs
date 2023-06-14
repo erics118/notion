@@ -27,8 +27,6 @@ pub struct RichText {
     // /// The type of this rich text object.
     #[serde(rename = "type")]
     pub type_: RichTextType,
-    // TODO: another text|mention|equation property
-    // https://developers.notion.com/reference/rich-text
     /// An object containing type-specific configuration.
     pub annotations: Annotations,
     /// The plain text without annotations.
@@ -36,7 +34,7 @@ pub struct RichText {
     /// The URL of any link or Notion mention in this text, if any.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
-    /// data
+    /// An object containing type-specific configuration.
     #[serde(flatten)]
     pub data: RichTextData,
 }
@@ -47,11 +45,11 @@ impl RichText {
         Self {
             type_: RichTextType::Text,
             annotations: Annotations::default(),
-            plain_text: a.clone(),
+            plain_text: String::default(),
             href: None,
             data: RichTextData::Text {
                 text: Text {
-                    content: a.clone(),
+                    content: a,
                     link: None,
                 },
             },
@@ -62,7 +60,7 @@ impl RichText {
     // MentionType) -> Self {     Self {
     //         type_: RichTextType::Mention,
     //         annotations: Annotations::default(),
-    //         plain_text,
+    //         plain_text: String::default(),
     //         href: Some(href),
     //         data: RichTextData::Mention(Mention {
     //             mention: MentionType::User,
@@ -74,23 +72,60 @@ impl RichText {
     //     Self {
     //         type_: RichTextType::Equation,
     //         annotations: Annotations::default(),
-    //         plain_text,
+    //         plain_text: String::default(),
     //         href: None,
     //         data: RichTextData::Equation(Equation { expression }),
     //     }
     // }
 
-    pub fn annotations(&mut self, annotations: Annotations) -> &mut Self {
-        self.annotations = annotations;
+    pub fn text(mut self, text: Text) -> Self {
+        self.data = RichTextData::Text { text };
         self
     }
 
-    pub fn plain_text(&mut self, plain_text: String) -> &mut Self {
-        self.plain_text = plain_text;
+    /// directly provide wrappers for annotations
+    // pub fn annotations(mut self, annotations: Annotations) -> Self {
+    //     self.annotations = annotations;
+    //     self
+    // }
+
+    pub fn bold(mut self, bold: bool) -> Self {
+        self.annotations.bold = bold;
         self
     }
 
-    pub fn href(&mut self, href: String) -> &mut Self {
+    pub fn italic(mut self, italic: bool) -> Self {
+        self.annotations.italic = italic;
+        self
+    }
+
+    pub fn strikethrough(mut self, strikethrough: bool) -> Self {
+        self.annotations.strikethrough = strikethrough;
+        self
+    }
+
+    pub fn underline(mut self, underline: bool) -> Self {
+        self.annotations.underline = underline;
+        self
+    }
+
+    pub fn code(mut self, code: bool) -> Self {
+        self.annotations.code = code;
+        self
+    }
+
+    pub fn color(mut self, color: Color) -> Self {
+        self.annotations.color = color;
+        self
+    }
+
+    /// plain_text does not need to be set when making api calls
+    // pub fn plain_text(&mut self, plain_text: String) -> &mut Self {
+    //     self.plain_text = plain_text;
+    //     self
+    // }
+
+    pub fn href(mut self, href: String) -> Self {
         self.href = Some(href);
         self
     }

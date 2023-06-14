@@ -11,6 +11,7 @@ mod bulleted_list_item;
 mod callout;
 mod child_database;
 mod child_page;
+mod code;
 mod column;
 mod column_list;
 mod divider;
@@ -36,35 +37,36 @@ mod to_do;
 mod toggle;
 mod video;
 
-pub use bookmark::Bookmark;
-pub use breadcrumb::Breadcrumb;
-pub use bulleted_list_item::BulletedListItem;
-pub use callout::Callout;
-pub use child_database::ChildDatabase;
-pub use child_page::ChildPage;
-pub use column::Column;
-pub use column_list::ColumnList;
-pub use divider::Divider;
-pub use embed::Embed;
-pub use equation::Equation;
-pub use file::File;
-pub use heading_1::Heading1;
-pub use heading_2::Heading2;
-pub use heading_3::Heading3;
-pub use image::Image;
-pub use link_preview::LinkPreview;
-pub use mention::Mention;
-pub use numbered_list_item::NumberedListItem;
-pub use paragraph::Paragraph;
-pub use pdf::Pdf;
-pub use quote::Quote;
-pub use synced_block::SyncedBlock;
-pub use table::Table;
-pub use table_of_contents::TableOfContents;
-pub use table_row::TableRow;
-pub use template::Template;
-pub use to_do::ToDo;
-pub use toggle::Toggle;
+pub use bookmark::*;
+pub use breadcrumb::*;
+pub use bulleted_list_item::*;
+pub use callout::*;
+pub use child_database::*;
+pub use child_page::*;
+pub use code::*;
+pub use column::*;
+pub use column_list::*;
+pub use divider::*;
+pub use embed::*;
+pub use equation::*;
+pub use file::*;
+pub use heading_1::*;
+pub use heading_2::*;
+pub use heading_3::*;
+pub use image::*;
+pub use link_preview::*;
+pub use mention::*;
+pub use numbered_list_item::*;
+pub use paragraph::*;
+pub use pdf::*;
+pub use quote::*;
+pub use synced_block::*;
+pub use table::*;
+pub use table_of_contents::*;
+pub use table_row::*;
+pub use template::*;
+pub use to_do::*;
+pub use toggle::*;
 
 /// Fields common to all block types.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -150,6 +152,9 @@ pub enum BlockData {
     ColumnList {
         column_list: ColumnList,
     },
+    Code {
+        code: Code,
+    },
     Divider {
         divider: Divider,
     },
@@ -221,32 +226,29 @@ pub enum BlockData {
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 
-pub struct Unsupported;
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-
 pub struct Emoji;
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 
 pub struct FFile;
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub enum FileOrEmoji {
     Emoji(Emoji),
     File(FFile),
+    /// TODO: fix this
+    #[default]
+    Unknown,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub enum FileType {
+    #[default]
     File,
     External,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-
 pub enum MentionType {
     Database,
     Data,
@@ -254,9 +256,9 @@ pub enum MentionType {
     Page,
     User,
 }
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 
-enum SupportedImageTypes {
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+pub enum SupportedImageTypes {
     Bmp,
     Gif,
     Heic,
@@ -267,9 +269,9 @@ enum SupportedImageTypes {
     Tif,
     Tiff,
 }
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 
-enum SupportedVideoTypes {
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+pub enum SupportedVideoTypes {
     Amv,
     Asf,
     Avi,

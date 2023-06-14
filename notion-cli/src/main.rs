@@ -52,7 +52,7 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{block::Heading2, color::Color, rich_text::RichText},
+        objects::{block::*, code_languages::CodeLanguage, color::Color, rich_text::RichText},
     },
 };
 
@@ -61,9 +61,11 @@ use crate::{
     config::{load_config, Config},
 };
 
-pub const PARAGRAPH_BLOCK_ID: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
-pub const TOGGLE_BLOCK_ID: &str = "413085318c3741808899ada14b5e8095";
-pub const PAGE_ID: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
+mod ids {
+    pub const PARAGRAPH_BLOCK: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
+    pub const TOGGLE_BLOCK: &str = "413085318c3741808899ada14b5e8095";
+    pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
+}
 
 pub async fn stuff() -> Result<()> {
     let cli = Cli::parse();
@@ -87,30 +89,44 @@ pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
-    // let children: Vec<BlockBuilder> = vec![BlockBuilder::new(BlockData::Heading2
-    // {     heading_2: Heading2 {
-    //         rich_text: vec![RichText {
-    //             type_: RichTextType::Text,
-    //             plain_text: "Hello, world!".to_string(),
-    //             data: RichTextData::Text(Text {
-    //                 content: "Hello, world!".to_string(),
-    //                 ..Default::default()
-    //             }),
-    //             ..Default::default()
-    //         }],
-    //         ..Default::default()
-    //     },
-    // })];
+    // TODO: color does not work in a Block
+    // but, color does work in a RichText
 
-    let children = vec![
-        Heading2::new()
-            .rich_text(vec![RichText::new_text("Hello, World!")])
-            .color(Color::Brown)
-            .new_block(),
-    ];
+    // api suggests there is an `audio` block, probably unsupported
+    let _bookmark = Bookmark::builder()
+        .url("https://google.com/".to_string())
+        .build()?;
+
+    let _breadcrumb = Breadcrumb::builder().build()?;
+
+    let _bulleted_item_list = BulletedListItem::builder()
+        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
+        .build()?;
+
+    let _callout = Callout::builder().build()?; // TODO
+
+    // cannot create a child database block, as it is a child of the parent page not
+
+    // of a block cannot create a child page block, as it is a child of the
+
+    // parent page not of a block column_list is todo
+
+    // column is todo
+
+    let _code = Code::builder()
+        .language(CodeLanguage::Markdown)
+        .rich_text(vec![RichText::new_text(
+            "# heading
+this is **bold** text",
+        )])
+        .build()?;
+
+    let _divider = Divider::builder().build()?;
+
+    let children = vec![_code];
 
     notion
-        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, children)
+        .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
         .await?;
 
     Ok(())
