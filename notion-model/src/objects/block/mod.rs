@@ -114,7 +114,7 @@ pub struct BlockBuilder {
 }
 
 impl BlockBuilder {
-    pub fn new(data: BlockData) -> Self {
+    pub const fn new(data: BlockData) -> Self {
         Self { data }
     }
 }

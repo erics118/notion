@@ -52,11 +52,7 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{
-            block::{BlockBuilder, Heading2},
-            color::Color,
-            rich_text::RichText,
-        },
+        objects::{block::Heading2, color::Color, rich_text::RichText},
     },
 };
 
@@ -114,7 +110,7 @@ pub async fn main() -> Result<()> {
     ];
 
     notion
-        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, vec![child1])
+        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, children)
         .await?;
 
     Ok(())
