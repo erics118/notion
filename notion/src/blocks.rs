@@ -3,6 +3,8 @@ use notion_model::{
     ids::BlockId,
     objects::block::{Block, BlockBuilder},
 };
+use reqwest::header::CONTENT_TYPE;
+use serde::{Deserialize, Serialize};
 
 use crate::client::Notion;
 
@@ -42,15 +44,27 @@ impl Notion {
         block_id: BlockId,
         children: Vec<BlockBuilder>,
     ) -> Result<()> {
+        #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+        struct AppendBlockChildren {
+            children: Vec<BlockBuilder>,
+        }
+
+        println!(
+            "{}",
+            serde_json::to_string(&AppendBlockChildren {
+                children: children.clone()
+            })?
+        );
         let text = self
             .api_patch(&format!("blocks/{block_id}/children"))
-            .json(&children)
+            .header(CONTENT_TYPE, "application/json")
+            .json(&AppendBlockChildren { children })
             .send()
             .await?
             .text()
             .await?;
         println!("{text}");
-        todo!()
+        Ok(())
     }
 
     /// Retrieve block children

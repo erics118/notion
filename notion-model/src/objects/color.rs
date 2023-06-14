@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "snake_case")]
 
 pub enum Color {
+    #[default]
     Default,
     Gray,
     Brown,

@@ -8,10 +8,11 @@ use crate::{
 };
 
 /// The types of rich text objects.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "lowercase")]
 
 pub enum RichTextType {
+    #[default]
     Text,
     Mention,
     Equation,
@@ -21,7 +22,7 @@ pub enum RichTextType {
 ///
 /// Refer to the request limits documentation page for information about limits
 /// on the size of rich text objects.
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 pub struct RichText {
     // /// The type of this rich text object.
     #[serde(rename = "type")]
@@ -33,10 +34,25 @@ pub struct RichText {
     /// The plain text without annotations.
     pub plain_text: String,
     /// The URL of any link or Notion mention in this text, if any.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
+    /// data
+    #[serde(flatten)]
+    pub data: RichTextData,
 }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[serde(rename_all = "lowercase")]
+pub enum RichTextData {
+    Text(Text),
+    Mention(Mention),
+    Equation(Equation),
+    #[default]
+    Idk
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[serde(rename_all = "lowercase")]
 pub struct Annotations {
     /// Whether the text is bolded.
     pub bold: bool,
@@ -56,12 +72,14 @@ pub struct Annotations {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct Equation {
     /// The LaTeX string representing the inline equation.
     pub expression: String,
 }
 
 #[derive(Copy, Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(rename_all = "lowercase")]
 pub enum MentionType {
     Database,
     Data,
@@ -71,6 +89,7 @@ pub enum MentionType {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum Mention {
     Database(DatabaseMention),
     Date(DateMention),
@@ -81,11 +100,13 @@ pub enum Mention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct DatabaseMention {
     pub id: DatabaseId,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct DateMention {
     /// An ISO 8601 format date, with optional time.
     start: DateTime<Utc>,
@@ -104,11 +125,12 @@ pub struct DateMention {
     ///
     /// If null, time zone information will be contained in UTC offsets in start
     /// and end.
-    #[serde(rename = "time_zone")]
+    #[serde(default, skip_serializing_if = "Option::is_none", rename = "time_zone")]
     timezone: Option<Tz>,
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct LinkPreviewMention {
     /// If a user opts to share a Link Preview as a mention, then the API
     /// handles the Link Preview mention as a rich text object with a type value
@@ -119,6 +141,7 @@ pub struct LinkPreviewMention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct PageMention {
     /// Page mentions contain a page reference within the corresponding page
     /// field. A page reference is an object with an id property and a string
@@ -132,6 +155,7 @@ pub struct PageMention {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum TemplateMention {
     /// The type of the date mention. Possible values include: "today" and
     /// "now".
@@ -141,6 +165,7 @@ pub enum TemplateMention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "lowercase")]
 pub struct UserMention {
     /// If a rich text object’s type value is "user", then the corresponding
     /// user field contains a user object.
@@ -152,10 +177,12 @@ pub struct UserMention {
     pub user: UserId,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[serde(rename_all = "lowercase")]
 pub struct Text {
     /// The plain text without annotations.
     pub content: String,
     /// An array of rich text objects.
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub link: Option<String>,
 }

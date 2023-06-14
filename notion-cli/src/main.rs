@@ -48,26 +48,67 @@ use std::str::FromStr;
 
 use anyhow::Result;
 use clap::Parser;
-use notion::{client::Notion, model::ids::BlockId};
+use notion::{
+    client::Notion,
+    model::{
+        ids::BlockId,
+        objects::{
+            block::{BlockBuilder, BlockData, Heading2},
+            color::Color,
+            rich_text::{RichText, RichTextData, RichTextType, Text},
+        },
+    },
+};
 
 use crate::{
     cli::{Cli, Commands},
     config::{load_config, Config},
 };
 
-#[tokio::main]
-async fn main() -> Result<()> {
+pub const PARAGRAPH_BLOCK_ID: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
+pub const TOGGLE_BLOCK_ID: &str = "413085318c3741808899ada14b5e8095";
+pub const PAGE_ID: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
+
+pub async fn stuff() -> Result<()> {
     let cli = Cli::parse();
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
     match cli.command {
-        // d3d710f97c874e6c8e4d9b2576a6fb29
         Commands::RetrieveBlock { block_id } => {
             let block = notion.retrieve_block(BlockId::from_str(&block_id)?).await?;
             println!("{block:#?}");
+
+            println!("{}", serde_json::to_string(&block)?);
         },
     }
+
+    Ok(())
+}
+
+#[tokio::main]
+pub async fn main() -> Result<()> {
+    let Config { api_token } = load_config()?;
+    let notion = Notion::new(&api_token)?;
+
+    let children: Vec<BlockBuilder> = vec![BlockBuilder::new(BlockData::Heading2 {
+        heading_2: Heading2 {
+            rich_text: vec![RichText {
+                type_: RichTextType::Text,
+                plain_text: "Hello, world!".to_string(),
+                data: RichTextData::Text(Text {
+                    content: "Hello, world!".to_string(),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }],
+            ..Default::default()
+        },
+    })];
+
+    notion
+        .append_block_children(BlockId::from_str(TOGGLE_BLOCK_ID)?, children)
+        .await?;
 
     Ok(())
 }
