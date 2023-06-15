@@ -49,13 +49,7 @@ impl Notion {
             children: Vec<BlockBuilder>,
         }
 
-        println!(
-            "{}",
-            serde_json::to_string(&AppendBlockChildren {
-                children: children.clone()
-            })?
-        );
-        let text = self
+        let res = self
             .api_patch(&format!("blocks/{block_id}/children"))
             .header(CONTENT_TYPE, "application/json")
             .json(&AppendBlockChildren { children })
@@ -63,8 +57,45 @@ impl Notion {
             .await?
             .text()
             .await?;
-        println!("{text}");
+
+        println!("{res}");
+
         Ok(())
+    }
+
+    /// Retrieve a block
+    ///
+    /// Retrieves a [`Block`] object using the ID specified.
+    ///
+    /// 📘 If a block contains the key `has_children: true`, use the Retrieve
+    /// block children endpoint to get the list of children
+    ///
+    /// # 📘 Integration capabilities
+    ///
+    /// This endpoint requires an integration to have read content capabilities.
+    /// Attempting to call this API without read content capabilities will
+    /// return an HTTP response with a 403 status code. For more information on
+    /// integration capabilities, see the capabilities guide.
+    ///
+    /// # Errors
+    ///
+    /// Returns a 404 HTTP response if the block doesn't exist, or if the
+    /// integration doesn't have access to the block.
+    ///
+    /// Returns a 400 or 429 HTTP response if the request exceeds the request
+    /// limits.
+    pub async fn retrieve_block(&self, block_id: BlockId) -> Result<Block> {
+        let text = self
+            .api_get(&format!("blocks/{block_id}"))
+            .send()
+            .await?
+            .text()
+            .await?;
+        println!("{text}");
+
+        let block = serde_json::from_str::<Block>(&text)?;
+
+        Ok(block)
     }
 
     /// Retrieve block children
@@ -210,39 +241,5 @@ impl Notion {
             .await?;
 
         todo!()
-    }
-
-    /// Retrieve a block
-    ///
-    /// Retrieves a [`Block`] object using the ID specified.
-    ///
-    /// 📘 If a block contains the key `has_children: true`, use the Retrieve
-    /// block children endpoint to get the list of children
-    ///
-    /// # 📘 Integration capabilities
-    ///
-    /// This endpoint requires an integration to have read content capabilities.
-    /// Attempting to call this API without read content capabilities will
-    /// return an HTTP response with a 403 status code. For more information on
-    /// integration capabilities, see the capabilities guide.
-    ///
-    /// # Errors
-    ///
-    /// Returns a 404 HTTP response if the block doesn't exist, or if the
-    /// integration doesn't have access to the block.
-    ///
-    /// Returns a 400 or 429 HTTP response if the request exceeds the request
-    /// limits.
-    pub async fn retrieve_block(&self, block_id: BlockId) -> Result<Block> {
-        let text = self
-            .api_get(&format!("blocks/{block_id}"))
-            .send()
-            .await?
-            .text()
-            .await?;
-
-        let deserialized = serde_json::from_str::<Block>(&text)?;
-
-        Ok(deserialized)
     }
 }

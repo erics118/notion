@@ -63,6 +63,8 @@ use crate::{
 
 #[allow(unused)]
 mod ids {
+    use notion::model::ids::BlockId;
+
     pub const PARAGRAPH_BLOCK: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
     pub const TOGGLE_BLOCK: &str = "413085318c3741808899ada14b5e8095";
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
@@ -87,6 +89,9 @@ pub async fn stuff() -> Result<()> {
 
 // TODO: can't add children using the builder because the builder uses
 // `BlockBuilder`, but the structs require `Block`
+
+
+// TODO: parse the response from the API into a struct
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
@@ -142,6 +147,10 @@ pub async fn main() -> Result<()> {
     notion
         .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
         .await?;
+
+    // notion
+    //     .retrieve_block(BlockId::from_str(ids::PARAGRAPH_BLOCK)?)
+    //     .await?;
 
     Ok(())
 }
