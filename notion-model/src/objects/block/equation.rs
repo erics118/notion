@@ -26,8 +26,8 @@ impl EquationBuilder {
         })
     }
 
-    pub fn expression(mut self, expression: String) -> Self {
-        self.0.expression = expression;
+    pub fn expression(mut self, expression: impl Into<String>) -> Self {
+        self.0.expression = expression.into();
         self
     }
 }

@@ -61,6 +61,7 @@ use crate::{
     config::{load_config, Config},
 };
 
+#[allow(unused)]
 mod ids {
     pub const PARAGRAPH_BLOCK: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
     pub const TOGGLE_BLOCK: &str = "413085318c3741808899ada14b5e8095";
@@ -84,6 +85,9 @@ pub async fn stuff() -> Result<()> {
     Ok(())
 }
 
+// TODO: can't add children using the builder because the builder uses
+// `BlockBuilder`, but the structs require `Block`
+
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
@@ -93,37 +97,47 @@ pub async fn main() -> Result<()> {
     // but, color does work in a RichText
 
     // api suggests there is an `audio` block, probably unsupported
+
     let _bookmark = Bookmark::builder()
         .url("https://google.com/".to_string())
-        .build()?;
+        .build();
 
-    let _breadcrumb = Breadcrumb::builder().build()?;
+    let _breadcrumb = Breadcrumb::builder().build();
 
     let _bulleted_item_list = BulletedListItem::builder()
         .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
-        .build()?;
+        .build();
 
-    let _callout = Callout::builder().build()?; // TODO
-
-    // cannot create a child database block, as it is a child of the parent page not
-
-    // of a block cannot create a child page block, as it is a child of the
-
-    // parent page not of a block column_list is todo
-
-    // column is todo
+    let _callout = Callout::builder().build(); // TODO
 
     let _code = Code::builder()
         .language(CodeLanguage::Markdown)
-        .rich_text(vec![RichText::new_text(
-            "# heading
-this is **bold** text",
-        )])
-        .build()?;
+        .rich_text(vec![RichText::new_text("# heading\nthis is **bold** text")])
+        .build();
 
-    let _divider = Divider::builder().build()?;
+    let _divider = Divider::builder().build();
 
-    let children = vec![_code];
+    let _embed = Embed::builder()
+        .url("https://www.youtube.com/embed/dQw4w9WgXcQ".to_string())
+        .build();
+
+    let _equation = Equation::builder().build();
+
+    let _heading1 = Heading1::builder().build();
+
+    let _heading2 = Heading2::builder().build();
+
+    let _heading3 = Heading3::builder().build();
+
+    let _quote = Quote::builder()
+        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
+        .build();
+
+    let _table_of_contents = TableOfContents::builder().build();
+
+    let _toggle = Toggle::builder().build();
+
+    let children = vec![_toggle];
 
     notion
         .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)

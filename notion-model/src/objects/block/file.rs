@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::{FFile, FileType};
 use crate::objects::rich_text::RichText;
 
+// TODO: file builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct File {
     /// The caption of the file block.

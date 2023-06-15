@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::Block;
 use crate::ids::BlockId;
 
+/// TODO: synced block builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct SyncedBlock {
     /// Similar to the Notion UI, there are two versions of a synced_block

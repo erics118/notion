@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockBuilder, BlockData};
@@ -30,13 +29,10 @@ impl Paragraph {
 pub struct ParagraphBuilder(Paragraph);
 
 impl ParagraphBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        if self.0.rich_text.is_empty() {
-            return Err(anyhow::anyhow!("Paragraph rich_text must not be empty"));
-        }
-        Ok(BlockBuilder::new(BlockData::Paragraph {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Paragraph {
             paragraph: self.0.clone(),
-        }))
+        })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

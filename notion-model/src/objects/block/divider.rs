@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{BlockBuilder, BlockData};
@@ -21,7 +20,7 @@ impl Divider {
 pub struct DividerBuilder(Divider);
 
 impl DividerBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::Divider { divider: self.0 }))
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Divider { divider: self.0 })
     }
 }

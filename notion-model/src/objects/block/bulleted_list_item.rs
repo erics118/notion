@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockBuilder, BlockData};
@@ -25,10 +24,10 @@ impl BulletedListItem {
 pub struct BulletedListItemBuilder(BulletedListItem);
 
 impl BulletedListItemBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::BulletedListItem {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::BulletedListItem {
             bulleted_list_item: self.0.clone(),
-        }))
+        })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

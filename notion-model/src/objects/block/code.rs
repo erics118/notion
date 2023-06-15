@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{BlockBuilder, BlockData};
@@ -33,10 +32,8 @@ impl Code {
 pub struct CodeBuilder(Code);
 
 impl CodeBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::Code {
-            code: self.0.clone(),
-        }))
+    pub fn build(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Code { code: self.0 })
     }
 
     pub fn caption(mut self, caption: Vec<RichText>) -> Self {

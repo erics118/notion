@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+/// cannot create a child page block, as child pages are children of pages,
+/// not children of blocks.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct ChildPage {
     pub title: String,
@@ -17,7 +19,7 @@ pub struct ChildPage {
 // pub struct ChildPageBuilder(ChildPage);
 
 // impl ChildPageBuilder {
-//     pub fn build(&self) -> Result<BlockBuilder> {
+//     pub fn build(&self) -> BlockBuilder {
 //         Ok(BlockBuilder::new(BlockData::ChildPage {
 //             child_page: self.0.clone(),
 //         }))

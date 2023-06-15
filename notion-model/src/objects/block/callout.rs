@@ -21,8 +21,8 @@ impl Callout {
 pub struct CalloutBuilder(Callout);
 
 impl CalloutBuilder {
-    pub fn build(&self) -> anyhow::Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::Callout { callout: self.0 }))
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Callout { callout: self.0 })
     }
 
     pub fn icon(mut self, icon: FileOrEmoji) -> Self {

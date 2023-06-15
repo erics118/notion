@@ -24,10 +24,10 @@ impl Quote {
 pub struct QuoteBuilder(Quote);
 
 impl QuoteBuilder {
-    pub fn build(&self) -> anyhow::Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::Quote {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Quote {
             quote: self.0.clone(),
-        }))
+        })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

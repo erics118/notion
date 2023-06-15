@@ -1,9 +1,8 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{BlockBuilder, BlockData};
 
-// TODO
+// TODO: column list builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct ColumnList {
     /// This is present so that serde serializes this into `{}` rather than as
@@ -22,9 +21,9 @@ impl ColumnList {
 pub struct ColumnListBuilder(ColumnList);
 
 impl ColumnListBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::ColumnList {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::ColumnList {
             column_list: self.0,
-        }))
+        })
     }
 }

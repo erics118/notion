@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{BlockBuilder, BlockData};
@@ -21,9 +20,7 @@ impl Breadcrumb {
 pub struct BreadcrumbBuilder(Breadcrumb);
 
 impl BreadcrumbBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        Ok(BlockBuilder::new(BlockData::Breadcrumb {
-            breadcrumb: self.0,
-        }))
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Breadcrumb { breadcrumb: self.0 })
     }
 }

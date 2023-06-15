@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{BlockBuilder, BlockData};
@@ -11,8 +10,8 @@ pub struct Bookmark {
     pub caption: Option<Vec<RichText>>,
     /// The link for the bookmark.
     ///
-    /// It is technically possible to make a bookmark without a caption, but
-    /// results in awful UX, so it is not allowed
+    /// It is technically possible to make a bookmark without a caption, the
+    /// caption isn't shown until you have added a URL.
     pub url: String,
 }
 
@@ -26,14 +25,10 @@ impl Bookmark {
 pub struct BookmarkBuilder(Bookmark);
 
 impl BookmarkBuilder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        if self.0.url.is_empty() {
-            anyhow::bail!("Bookmark must have a `url`")
-        }
-
-        Ok(BlockBuilder::new(BlockData::Bookmark {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Bookmark {
             bookmark: self.0.clone(),
-        }))
+        })
     }
 
     pub fn caption(mut self, caption: Option<Vec<RichText>>) -> Self {

@@ -1,4 +1,3 @@
-use anyhow::Result;
 use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockBuilder, BlockData};
@@ -32,13 +31,10 @@ impl Heading1 {
 pub struct Heading1Builder(Heading1);
 
 impl Heading1Builder {
-    pub fn build(&self) -> Result<BlockBuilder> {
-        if self.0.rich_text.is_empty() {
-            return Err(anyhow::anyhow!("Heading1 rich_text must not be empty"));
-        }
-        Ok(BlockBuilder::new(BlockData::Heading1 {
+    pub fn build(&self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Heading1 {
             heading_1: self.0.clone(),
-        }))
+        })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

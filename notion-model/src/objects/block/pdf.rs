@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::FileType;
 use crate::objects::rich_text::RichText;
 
+/// TODO: pdf builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct Pdf {
     /// A caption, if provided, for the PDF block.

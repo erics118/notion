@@ -123,6 +123,7 @@ impl BlockBuilder {
 
 // TODO: use the `type` field when serializing. currently, when deserializing,
 // the `type` field is just ignored.
+//
 // could possibly just add a type field to each variant of BlockData
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(rename_all = "snake_case", untagged)]

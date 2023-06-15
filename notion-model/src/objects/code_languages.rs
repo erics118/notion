@@ -26,7 +26,7 @@ pub enum CodeLanguage {
     Gherkin,
     Glsl,
     Go,
-    Graphql,
+    GraphQl,
     Groovy,
     Haskell,
     Html,
@@ -81,9 +81,7 @@ pub enum CodeLanguage {
     Xml,
     Yaml,
     /// Java, C, C++, C#
-    ///
-    /// Probably is deprecated now, as it's not in the UI. It still works
-    /// though.
     #[serde(rename = "java/c/c++/c#")]
+    #[deprecated = "This option only exists in the API but not in the UI."]
     JavaCCppCsharp,
 }
