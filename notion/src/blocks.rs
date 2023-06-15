@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use notion_model::{
     ids::BlockId,
     objects::block::{Block, BlockBuilder},
@@ -6,7 +6,34 @@ use notion_model::{
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::client::Notion;
+use crate::{client::Notion, errors::NotionApiError};
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "object", rename_all = "snake_case")]
+pub struct List<T> {
+    pub results: Vec<T>,
+    // pub next_cursor: Value,
+    pub has_more: bool,
+    // TODO: type field
+}
+
+mod result_types {
+    use serde::{Deserialize, Serialize};
+
+    #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+    #[serde(tag = "object", rename_all = "snake_case")]
+    pub enum Block {
+        Block(notion_model::objects::block::Block),
+        Error(crate::errors::AError),
+    }
+
+    #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+    #[serde(tag = "object", rename_all = "snake_case")]
+    pub enum List<T> {
+        List(super::List<T>),
+        Error(crate::errors::AError),
+    }
+}
 
 impl Notion {
     /// Append block children
@@ -43,13 +70,13 @@ impl Notion {
         &self,
         block_id: BlockId,
         children: Vec<BlockBuilder>,
-    ) -> Result<()> {
+    ) -> Result<List<Block>> {
         #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
         struct AppendBlockChildren {
             children: Vec<BlockBuilder>,
         }
 
-        let res = self
+        let text = self
             .api_patch(&format!("blocks/{block_id}/children"))
             .header(CONTENT_TYPE, "application/json")
             .json(&AppendBlockChildren { children })
@@ -58,9 +85,13 @@ impl Notion {
             .text()
             .await?;
 
-        println!("{res}");
+        let block_list = serde_json::from_str::<result_types::List<Block>>(&text)
+            .context("failed to turn into result_types::List<Block>")?;
 
-        Ok(())
+        match block_list {
+            result_types::List::List(block_list) => Ok(block_list),
+            result_types::List::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
     }
 
     /// Retrieve a block
@@ -91,11 +122,15 @@ impl Notion {
             .await?
             .text()
             .await?;
+
         println!("{text}");
 
-        let block = serde_json::from_str::<Block>(&text)?;
+        let block = serde_json::from_str::<result_types::Block>(&text)?;
 
-        Ok(block)
+        match block {
+            result_types::Block::Block(block) => Ok(block),
+            result_types::Block::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
     }
 
     /// Retrieve block children

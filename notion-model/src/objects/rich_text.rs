@@ -9,7 +9,7 @@ use crate::{
 
 /// The types of rich text objects.
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 
 pub enum RichTextType {
     #[default]
@@ -132,7 +132,7 @@ impl RichText {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "lowercase", untagged)]
+#[serde(rename_all = "snake_case", untagged)]
 pub enum RichTextData {
     Text {
         text: Text,
@@ -148,7 +148,7 @@ pub enum RichTextData {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct Annotations {
     /// Whether the text is bolded.
     pub bold: bool,
@@ -168,14 +168,14 @@ pub struct Annotations {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct Equation {
     /// The LaTeX string representing the inline equation.
     pub expression: String,
 }
 
 #[derive(Copy, Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum MentionType {
     Database,
     Data,
@@ -185,7 +185,7 @@ pub enum MentionType {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum Mention {
     Database(DatabaseMention),
     Date(DateMention),
@@ -196,13 +196,13 @@ pub enum Mention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct DatabaseMention {
     pub id: DatabaseId,
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct DateMention {
     /// An ISO 8601 format date, with optional time.
     start: DateTime<Utc>,
@@ -226,7 +226,7 @@ pub struct DateMention {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct LinkPreviewMention {
     /// If a user opts to share a Link Preview as a mention, then the API
     /// handles the Link Preview mention as a rich text object with a type value
@@ -237,7 +237,7 @@ pub struct LinkPreviewMention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct PageMention {
     /// Page mentions contain a page reference within the corresponding page
     /// field. A page reference is an object with an id property and a string
@@ -251,7 +251,7 @@ pub struct PageMention {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub enum TemplateMention {
     /// The type of the date mention. Possible values include: "today" and
     /// "now".
@@ -261,7 +261,7 @@ pub enum TemplateMention {
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct UserMention {
     /// If a rich text object’s type value is "user", then the corresponding
     /// user field contains a user object.
@@ -274,7 +274,7 @@ pub struct UserMention {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "snake_case")]
 pub struct Text {
     /// The plain text without annotations.
     pub content: String,

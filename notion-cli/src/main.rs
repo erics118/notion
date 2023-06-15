@@ -90,7 +90,6 @@ pub async fn stuff() -> Result<()> {
 // TODO: can't add children using the builder because the builder uses
 // `BlockBuilder`, but the structs require `Block`
 
-
 // TODO: parse the response from the API into a struct
 
 #[tokio::main]
@@ -142,15 +141,16 @@ pub async fn main() -> Result<()> {
 
     let _toggle = Toggle::builder().build();
 
-    let children = vec![_toggle];
+    let children = vec![_heading2; 2];
 
-    notion
+    let res = notion
         .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
         .await?;
 
-    // notion
-    //     .retrieve_block(BlockId::from_str(ids::PARAGRAPH_BLOCK)?)
+    // let res = notion
+    //     .retrieve_block(BlockId::from_str("d3d710f97c874e6f8e4d9b2576a6fb29")?)
     //     .await?;
 
+    println!("{:#?}", res);
     Ok(())
 }

@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 #[derive(Error, Debug, Copy, Clone)]
@@ -8,47 +9,123 @@ pub enum Error {
     ClientBuild,
 }
 
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct AError {
+    pub status: u16,
+    pub code: String,
+    pub message: String,
+}
+
 #[derive(Error, Debug, Clone)]
 pub enum NotionApiError {
-    #[error("Invalid JSON: {0}")]
+    #[error("Invalid json (400): {0}")]
     InvalidJson(String),
 
-    #[error("Invalid request URL: {0}")]
+    #[error("Invalid request url (400): {0}")]
     InvalidRequestUrl(String),
 
-    #[error("Invalid request: {0}")]
+    #[error("Invalid request (400): {0}")]
     InvalidRequest(String),
 
-    #[error("Validation error: {0}")]
+    #[error("Validation error (400): {0}")]
     ValidationError(String),
 
-    #[error("Missing Notion-Version header")]
-    MissingVersion,
+    #[error("Missing version (400): {0}")]
+    MissingVersion(String),
 
-    #[error("Unauthorized")]
-    Unauthorized,
+    #[error("Unauthorized (401): {0}")]
+    Unauthorized(String),
 
-    #[error("Restricted resource")]
-    RestrictedResource,
+    #[error("Restricted resource (403): {0}")]
+    RestrictedResource(String),
 
-    #[error("Object not found")]
-    ObjectNotFound,
+    #[error("Object not found (404): {0}")]
+    ObjectNotFound(String),
 
-    #[error("Conflict error")]
-    ConflictError,
+    #[error("Conflict error (409): {0}")]
+    ConflictError(String),
 
-    #[error("Rate limited")]
-    RateLimited,
+    #[error("Rate limited (429): {0}")]
+    RateLimited(String),
 
-    #[error("Internal server error")]
-    InternalServerError,
+    #[error("Internal server error (500): {0}")]
+    InternalServerError(String),
 
-    #[error("Service unavailable")]
-    ServiceUnavailable,
+    #[error("Service unavailable (503): {0}")]
+    ServiceUnavailable(String),
 
-    #[error("Database connection unavailable")]
-    DatabaseConnectionUnavailable,
+    #[error("Database connection unavailable (503): {0}")]
+    DatabaseConnectionUnavailable(String),
 
-    #[error("Gateway timeout")]
-    GatewayTimeout,
+    #[error("Gateway timeout (504): {0}")]
+    GatewayTimeout(String),
+
+    #[error("Unknown error")]
+    Unknown,
+}
+
+impl From<AError> for NotionApiError {
+    fn from(value: AError) -> Self {
+        match value {
+            AError {
+                status: 400,
+                message,
+                code,
+            } => match code.as_str() {
+                "invalid_json" => Self::InvalidJson(message),
+                "invalid_request_url" => Self::InvalidRequestUrl(message),
+                "invalid_request" => Self::InvalidRequest(message),
+                "validation_error" => Self::ValidationError(message),
+                "missing_version" => Self::MissingVersion(message),
+                _ => Self::Unknown,
+            },
+            AError {
+                status: 401,
+                message,
+                ..
+            } => Self::Unauthorized(message),
+            AError {
+                status: 403,
+                message,
+                ..
+            } => Self::RestrictedResource(message),
+            AError {
+                status: 404,
+                message,
+                ..
+            } => Self::ObjectNotFound(message),
+            AError {
+                status: 409,
+                message,
+                ..
+            } => Self::ConflictError(message),
+            AError {
+                status: 429,
+                message,
+                ..
+            } => Self::RateLimited(message),
+            AError {
+                status: 500,
+                message,
+                ..
+            } => Self::InternalServerError(message),
+            AError {
+                status: 503,
+                message,
+                code,
+            } => match code.as_str() {
+                "service_unavailable" => Self::ServiceUnavailable(message),
+                "database_connection_unavailable" => {
+                    Self::DatabaseConnectionUnavailable(message)
+                },
+                _ => Self::Unknown,
+            },
+            AError {
+                status: 504,
+                message,
+                ..
+            } => Self::GatewayTimeout(message),
+            _ => Self::Unknown,
+        }
+    }
 }
