@@ -123,8 +123,6 @@ impl Notion {
             .text()
             .await?;
 
-        println!("{text}");
-
         let block = serde_json::from_str::<result_types::Block>(&text)?;
 
         match block {

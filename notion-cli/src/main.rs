@@ -22,7 +22,7 @@
     trivial_casts,
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
-    unstable_features,
+    // unstable_features,
     // unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
@@ -39,10 +39,14 @@
     clippy::expect_used,
     clippy::unwrap_used
 )]
+#![feature(lazy_cell)]
 
 pub mod cli;
 pub mod config;
 pub mod error;
+
+#[cfg(test)]
+mod tests;
 
 use std::str::FromStr;
 
@@ -143,14 +147,13 @@ pub async fn main() -> Result<()> {
 
     let children = vec![_heading2; 2];
 
-    let res = notion
-        .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
-        .await?;
+    // let res = notion
+    //     .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
+    //     .await?;
 
     // let res = notion
     //     .retrieve_block(BlockId::from_str("d3d710f97c874e6f8e4d9b2576a6fb29")?)
     //     .await?;
 
-    println!("{:#?}", res);
     Ok(())
 }

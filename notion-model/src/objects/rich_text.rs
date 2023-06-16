@@ -28,9 +28,11 @@ pub struct RichText {
     #[serde(rename = "type")]
     pub type_: RichTextType,
     /// An object containing type-specific configuration.
-    pub annotations: Annotations,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub annotations: Option<Annotations>,
     /// The plain text without annotations.
-    pub plain_text: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub plain_text: Option<String>,
     /// The URL of any link or Notion mention in this text, if any.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub href: Option<String>,
@@ -44,8 +46,8 @@ impl RichText {
         let a = plain_text.into();
         Self {
             type_: RichTextType::Text,
-            annotations: Annotations::default(),
-            plain_text: String::default(),
+            annotations: None,
+            plain_text: None,
             href: None,
             data: RichTextData::Text {
                 text: Text {
@@ -56,6 +58,7 @@ impl RichText {
         }
     }
 
+    /// TODO: create a mention
     // pub fn new_mention(plain_text: String, href: String, mention_type:
     // MentionType) -> Self {     Self {
     //         type_: RichTextType::Mention,
@@ -68,6 +71,7 @@ impl RichText {
     //     }
     // }
 
+    /// TODO: create an equation
     // pub fn new_equation(plain_text: String, expression: String) -> Self {
     //     Self {
     //         type_: RichTextType::Equation,
@@ -84,49 +88,53 @@ impl RichText {
     }
 
     /// directly provide wrappers for annotations
-    // pub fn annotations(mut self, annotations: Annotations) -> Self {
-    //     self.annotations = annotations;
-    //     self
-    // }
+    pub fn annotations(mut self, annotations: Option<Annotations>) -> Self {
+        self.annotations = annotations;
+        self
+    }
 
     pub fn bold(mut self, bold: bool) -> Self {
-        self.annotations.bold = bold;
+        self.annotations.get_or_insert_with(Default::default).bold = bold;
         self
     }
 
     pub fn italic(mut self, italic: bool) -> Self {
-        self.annotations.italic = italic;
+        self.annotations.get_or_insert_with(Default::default).italic = italic;
         self
     }
 
     pub fn strikethrough(mut self, strikethrough: bool) -> Self {
-        self.annotations.strikethrough = strikethrough;
+        self.annotations
+            .get_or_insert_with(Default::default)
+            .strikethrough = strikethrough;
         self
     }
 
     pub fn underline(mut self, underline: bool) -> Self {
-        self.annotations.underline = underline;
+        self.annotations
+            .get_or_insert_with(Default::default)
+            .underline = underline;
         self
     }
 
     pub fn code(mut self, code: bool) -> Self {
-        self.annotations.code = code;
+        self.annotations.get_or_insert_with(Default::default).code = code;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.annotations.color = color;
+        self.annotations.get_or_insert_with(Default::default).color = color;
         self
     }
 
     /// plain_text does not need to be set when making api calls
-    // pub fn plain_text(&mut self, plain_text: String) -> &mut Self {
-    //     self.plain_text = plain_text;
-    //     self
-    // }
+    pub fn plain_text(&mut self, plain_text: Option<String>) -> &mut Self {
+        self.plain_text = plain_text;
+        self
+    }
 
-    pub fn href(mut self, href: String) -> Self {
-        self.href = Some(href);
+    pub fn href(mut self, href: Option<String>) -> Self {
+        self.href = href;
         self
     }
 }

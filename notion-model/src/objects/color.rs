@@ -25,3 +25,9 @@ pub enum Color {
     PinkBackground,
     RedBackground,
 }
+impl Color {
+    pub fn is_default(&self) -> bool {
+        let default: Color = Default::default();
+        self == &default
+    }
+}

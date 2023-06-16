@@ -9,13 +9,14 @@ pub struct Heading2 {
     /// The rich text displayed in the block.
     pub rich_text: Vec<RichText>,
     /// The color of the block.
+    #[serde(skip_serializing_if = "Color::is_default")]
     pub color: Color,
     /// Whether or not the heading block is a toggle heading or not. If
     /// `true`, then the heading block toggles and can support
     /// children. If `false`, then the heading block is a static
     /// heading block.
-    #[serde(rename = "is_toggleable")]
-    pub toggleable: bool,
+    #[serde(rename = "is_toggleable", skip_serializing_if = "Option::is_none")]
+    pub toggleable: Option<bool>,
     /// The nested children (if any).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<Block>>,
@@ -47,13 +48,13 @@ impl Heading2Builder {
         self
     }
 
-    pub fn toggleable(mut self, toggleable: bool) -> Self {
+    pub fn toggleable(mut self, toggleable: Option<bool>) -> Self {
         self.0.toggleable = toggleable;
         self
     }
 
-    pub fn children(mut self, children: Vec<Block>) -> Self {
-        self.0.children = Some(children);
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.0.children = children;
         self
     }
 }

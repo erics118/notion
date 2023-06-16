@@ -45,8 +45,8 @@ impl ParagraphBuilder {
         self
     }
 
-    pub fn children(mut self, children: Vec<Block>) -> Self {
-        self.0.children = Some(children);
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.0.children = children;
         self
     }
 }
