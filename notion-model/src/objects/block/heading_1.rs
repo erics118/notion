@@ -22,38 +22,33 @@ pub struct Heading1 {
 }
 
 impl Heading1 {
-    pub fn builder() -> Heading1Builder {
-        Heading1Builder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct Heading1Builder(Heading1);
-
-impl Heading1Builder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Heading1 {
-            heading_1: self.0.clone(),
-        })
+impl Heading1 {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Heading1 { heading_1: self })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
 
     pub fn toggleable(mut self, toggleable: bool) -> Self {
-        self.0.toggleable = toggleable;
+        self.toggleable = toggleable;
         self
     }
 
     pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
-        self.0.children = children;
+        self.children = children;
         self
     }
 }

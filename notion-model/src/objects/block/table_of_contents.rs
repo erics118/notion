@@ -11,18 +11,15 @@ pub struct TableOfContents {
 }
 
 impl TableOfContents {
-    pub fn builder() -> TableOfContentsBuilder {
-        TableOfContentsBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-pub struct TableOfContentsBuilder(TableOfContents);
-
-impl TableOfContentsBuilder {
-    pub fn build(&self) -> BlockBuilder {
+impl TableOfContents {
+    pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::TableOfContents {
-            table_of_contents: self.0,
+            table_of_contents: self,
         })
     }
 }

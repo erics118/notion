@@ -111,7 +111,6 @@ pub struct Block {
 #[serde(tag = "object", rename = "block")]
 pub struct BlockBuilder {
     #[serde(flatten)]
-    // #[serde(rename = "heading_2")]
     pub data: BlockData,
 }
 
@@ -121,13 +120,8 @@ impl BlockBuilder {
     }
 }
 
-// TODO: use the `type` field when serializing. currently, when deserializing,
-// the `type` field is just ignored.
-//
-// could possibly just add a type field to each variant of BlockData
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(rename_all = "snake_case", tag = "type")]
-
 pub enum BlockData {
     Bookmark {
         bookmark: Bookmark,
@@ -168,16 +162,16 @@ pub enum BlockData {
     File {
         file: File,
     },
-#[serde(rename = "heading_1")]
-Heading1 {
+    #[serde(rename = "heading_1")]
+    Heading1 {
         heading_1: Heading1,
     },
-#[serde(rename = "heading_2")]
-Heading2 {
+    #[serde(rename = "heading_2")]
+    Heading2 {
         heading_2: Heading2,
     },
-#[serde(rename = "heading_3")]
-Heading3 {
+    #[serde(rename = "heading_3")]
+    Heading3 {
         heading_3: Heading3,
     },
     Image {
@@ -232,14 +226,10 @@ Heading3 {
 
 pub struct Emoji;
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-
-pub struct FFile;
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub enum FileOrEmoji {
     Emoji(Emoji),
-    File(FFile),
+    File(File),
     /// TODO: fix this
     #[default]
     Unknown,

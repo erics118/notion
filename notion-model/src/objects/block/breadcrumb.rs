@@ -11,16 +11,13 @@ pub struct Breadcrumb {
 }
 
 impl Breadcrumb {
-    pub fn builder() -> BreadcrumbBuilder {
-        BreadcrumbBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-pub struct BreadcrumbBuilder(Breadcrumb);
-
-impl BreadcrumbBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Breadcrumb { breadcrumb: self.0 })
+impl Breadcrumb {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Breadcrumb { breadcrumb: self })
     }
 }

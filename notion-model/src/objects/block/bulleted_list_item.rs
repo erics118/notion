@@ -15,28 +15,51 @@ pub struct BulletedListItem {
 }
 
 impl BulletedListItem {
-    pub fn builder() -> BulletedListItemBuilder {
-        BulletedListItemBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct BulletedListItemBuilder(BulletedListItem);
-
-impl BulletedListItemBuilder {
-    pub fn build(&self) -> BlockBuilder {
+impl BulletedListItem {
+    pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::BulletedListItem {
-            bulleted_list_item: self.0.clone(),
+            bulleted_list_item: self,
         })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    // #[test]
+    // fn empty() {
+    //     assert_eq!(
+    //         serde_json::to_string(&BulletedListItem::new().build_block()).
+    // unwrap(),         r#"{"object":"block","type":"bulleted_list_item","
+    // bulleted_list_item":{}}"#,     );
+    // }
+
+    // #[test]
+    // fn rich_text() {
+    //     assert_eq!(
+    //         serde_json::to_string(
+    //             &BulletedListItem::new()
+    //                 .rich_text(vec![RichText::new_text("hello")])
+    //                 .build_block()
+    //         )
+    //         .unwrap(),
+    //         r#"{"object":"block","type":"bulleted_list_item","
+    // bulleted_list_item":{}}"#,     );
+    // }
 }

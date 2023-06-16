@@ -115,9 +115,7 @@ impl From<AError> for NotionApiError {
                 code,
             } => match code.as_str() {
                 "service_unavailable" => Self::ServiceUnavailable(message),
-                "database_connection_unavailable" => {
-                    Self::DatabaseConnectionUnavailable(message)
-                },
+                "database_connection_unavailable" => Self::DatabaseConnectionUnavailable(message),
                 _ => Self::Unknown,
             },
             AError {

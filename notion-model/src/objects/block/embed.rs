@@ -25,23 +25,18 @@ pub struct Embed {
 }
 
 impl Embed {
-    pub fn builder() -> EmbedBuilder {
-        EmbedBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct EmbedBuilder(Embed);
-
-impl EmbedBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Embed {
-            embed: self.0.clone(),
-        })
+impl Embed {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Embed { embed: self })
     }
 
     pub fn url(mut self, url: String) -> Self {
-        self.0.url = url;
+        self.url = url;
         self
     }
 }

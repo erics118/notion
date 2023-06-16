@@ -15,28 +15,25 @@ pub struct NumberedListItem {
 }
 
 impl NumberedListItem {
-    pub fn builder() -> NumberedListItemBuilder {
-        NumberedListItemBuilder(Self::default())
+    pub fn builder() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct NumberedListItemBuilder(NumberedListItem);
-
-impl NumberedListItemBuilder {
-    pub fn build(&self) -> BlockBuilder {
+impl NumberedListItem {
+    pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::NumberedListItem {
-            numbered_list_item: self.0.clone(),
+            numbered_list_item: self,
         })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
 }

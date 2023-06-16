@@ -15,33 +15,28 @@ pub struct Toggle {
 }
 
 impl Toggle {
-    pub fn builder() -> ToggleBuilder {
-        ToggleBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct ToggleBuilder(Toggle);
-
-impl ToggleBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Toggle {
-            toggle: self.0.clone(),
-        })
+impl Toggle {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Toggle { toggle: self })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
 
     pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
-        self.0.children = children;
+        self.children = children;
         self
     }
 }

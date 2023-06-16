@@ -1,11 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-use super::FFile;
+use super::File;
 
 // TODO: video builder
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct Video {
     /// A file object that details information about the file contained in
     /// the block.
-    pub file: FFile,
+    pub file: File,
 }

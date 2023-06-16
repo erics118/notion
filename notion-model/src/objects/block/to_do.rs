@@ -17,38 +17,33 @@ pub struct ToDo {
 }
 
 impl ToDo {
-    pub fn builder() -> ToDoBuilder {
-        ToDoBuilder(Self::default())
+    pub fn builder() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct ToDoBuilder(ToDo);
-
-impl ToDoBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::ToDo {
-            to_do: self.0.clone(),
-        })
+impl ToDo {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::ToDo { to_do: self })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn checked(mut self, checked: bool) -> Self {
-        self.0.checked = checked;
+        self.checked = checked;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
 
     pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
-        self.0.children = children;
+        self.children = children;
         self
     }
 }

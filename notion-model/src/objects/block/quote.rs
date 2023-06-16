@@ -15,28 +15,23 @@ pub struct Quote {
 }
 
 impl Quote {
-    pub fn builder() -> QuoteBuilder {
-        QuoteBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct QuoteBuilder(Quote);
-
-impl QuoteBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Quote {
-            quote: self.0.clone(),
-        })
+impl Quote {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Quote { quote: self })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn color(mut self, color: Color) -> Self {
-        self.0.color = color;
+        self.color = color;
         self
     }
 }

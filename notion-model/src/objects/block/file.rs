@@ -1,10 +1,12 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{FFile, FileType};
+use super::{BlockBuilder, BlockData, FileType};
 use crate::objects::rich_text::RichText;
 
 // TODO: file builder
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
+/// The Notion API does not yet support uploading files to Notion.
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct File {
     /// The caption of the file block.
     pub caption: Vec<RichText>,
@@ -13,37 +15,42 @@ pub struct File {
     pub type_: FileType,
     /// A file object that details information about the file contained in
     /// the block.
-    pub file: FFile,
+    #[serde(flatten)]
+    pub data: FileData,
 }
 
-impl File {
-    pub fn builder() -> FileBuilder {
-        FileBuilder(Self::default())
-    }
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+
+pub enum FileData {
+    File(InternalFile),
+    External(ExternalFile),
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct FileBuilder(File);
+pub struct InternalFile {
+    pub url: String,
+    pub expiry_time: Option<DateTime<Utc>>,
+}
 
-impl FileBuilder {
-    pub fn build(&self) -> anyhow::Result<super::BlockBuilder> {
-        Ok(super::BlockBuilder::new(super::BlockData::File {
-            file: self.0.clone(),
-        }))
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
+pub struct ExternalFile {
+    pub url: String,
+}
+
+impl File {
+    pub fn builder() -> Self {
+        todo!()
+        // File {}
+    }
+}
+
+impl File {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::File { file: self })
     }
 
     pub fn caption(mut self, caption: Vec<RichText>) -> Self {
-        self.0.caption = caption;
-        self
-    }
-
-    pub fn type_(mut self, type_: FileType) -> Self {
-        self.0.type_ = type_;
-        self
-    }
-
-    pub fn file(mut self, file: FFile) -> Self {
-        self.0.file = file;
+        self.caption = caption;
         self
     }
 }

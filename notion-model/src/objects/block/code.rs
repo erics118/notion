@@ -23,31 +23,28 @@ pub struct Code {
 }
 
 impl Code {
-    pub fn builder() -> CodeBuilder {
-        CodeBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct CodeBuilder(Code);
-
-impl CodeBuilder {
-    pub fn build(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Code { code: self.0 })
+impl Code {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Code { code: self })
     }
 
     pub fn caption(mut self, caption: Vec<RichText>) -> Self {
-        self.0.caption = caption;
+        self.caption = caption;
         self
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
-        self.0.rich_text = rich_text;
+        self.rich_text = rich_text;
         self
     }
 
     pub fn language(mut self, language: CodeLanguage) -> Self {
-        self.0.language = language;
+        self.language = language;
         self
     }
 }

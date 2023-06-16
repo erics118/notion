@@ -45,9 +45,6 @@ pub mod cli;
 pub mod config;
 pub mod error;
 
-#[cfg(test)]
-mod tests;
-
 use std::str::FromStr;
 
 use anyhow::Result;
@@ -94,8 +91,6 @@ pub async fn stuff() -> Result<()> {
 // TODO: can't add children using the builder because the builder uses
 // `BlockBuilder`, but the structs require `Block`
 
-// TODO: parse the response from the API into a struct
-
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
@@ -104,56 +99,58 @@ pub async fn main() -> Result<()> {
     // TODO: color does not work in a Block
     // but, color does work in a RichText
 
-    // api suggests there is an `audio` block, probably unsupported
-
-    let _bookmark = Bookmark::builder()
-        .url("https://google.com/".to_string())
-        .build();
-
-    let _breadcrumb = Breadcrumb::builder().build();
-
-    let _bulleted_item_list = BulletedListItem::builder()
-        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
-        .build();
-
-    let _callout = Callout::builder().build(); // TODO
-
-    let _code = Code::builder()
-        .language(CodeLanguage::Markdown)
-        .rich_text(vec![RichText::new_text("# heading\nthis is **bold** text")])
-        .build();
-
-    let _divider = Divider::builder().build();
-
-    let _embed = Embed::builder()
-        .url("https://www.youtube.com/embed/dQw4w9WgXcQ".to_string())
-        .build();
-
-    let _equation = Equation::builder().build();
-
-    let _heading1 = Heading1::builder().build();
-
-    let _heading2 = Heading2::builder().build();
-
-    let _heading3 = Heading3::builder().build();
-
-    let _quote = Quote::builder()
-        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
-        .build();
-
-    let _table_of_contents = TableOfContents::builder().build();
-
-    let _toggle = Toggle::builder().build();
-
-    let children = vec![_heading2; 2];
-
     // let res = notion
     //     .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
     //     .await?;
 
-    // let res = notion
-    //     .retrieve_block(BlockId::from_str("d3d710f97c874e6f8e4d9b2576a6fb29")?)
-    //     .await?;
+    let res = notion
+        .delete_block(BlockId::from_str("9b5d5adca0b043c6904f570d3e423c66")?)
+        .await?;
+
+    println!("{:#?}", res);
 
     Ok(())
+}
+
+pub fn build() {
+    // api suggests there is an `audio` block, probably unsupported
+
+    let _bookmark = Bookmark::new()
+        .url(Some("https://google.com/".to_string()))
+        .build_block();
+
+    let _breadcrumb = Breadcrumb::new().build_block();
+
+    let _bulleted_item_list = BulletedListItem::new()
+        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
+        .build_block();
+
+    let _callout = Callout::new().build_block(); // TODO
+
+    let _code = Code::new()
+        .language(CodeLanguage::Markdown)
+        .rich_text(vec![RichText::new_text("# heading\nthis is **bold** text")])
+        .build_block();
+
+    let _divider = Divider::new().build_block();
+
+    let _embed = Embed::new()
+        .url("https://www.youtube.com/embed/dQw4w9WgXcQ".to_string())
+        .build_block();
+
+    let _equation = Equation::new().build_block();
+
+    let _heading1 = Heading1::new().build_block();
+
+    let _heading2 = Heading2::new().build_block();
+
+    let _heading3 = Heading3::new().build_block();
+
+    let _quote = Quote::new()
+        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
+        .build_block();
+
+    let _table_of_contents = TableOfContents::new().build_block();
+
+    let _toggle = Toggle::new().build_block();
 }

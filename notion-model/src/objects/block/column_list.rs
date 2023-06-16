@@ -12,18 +12,13 @@ pub struct ColumnList {
 }
 
 impl ColumnList {
-    pub fn builder() -> ColumnListBuilder {
-        ColumnListBuilder(Self::default())
+    pub fn builder() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-pub struct ColumnListBuilder(ColumnList);
-
-impl ColumnListBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::ColumnList {
-            column_list: self.0,
-        })
+impl ColumnList {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::ColumnList { column_list: self })
     }
 }

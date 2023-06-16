@@ -27,7 +27,7 @@ pub enum Color {
 }
 impl Color {
     pub fn is_default(&self) -> bool {
-        let default: Color = Default::default();
+        let default: Self = Default::default();
         self == &default
     }
 }

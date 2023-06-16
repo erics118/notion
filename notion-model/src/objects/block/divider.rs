@@ -11,16 +11,13 @@ pub struct Divider {
 }
 
 impl Divider {
-    pub fn builder() -> DividerBuilder {
-        DividerBuilder(Self::default())
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
-pub struct DividerBuilder(Divider);
-
-impl DividerBuilder {
-    pub fn build(&self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Divider { divider: self.0 })
+impl Divider {
+    pub fn build_block(self) -> BlockBuilder {
+        BlockBuilder::new(BlockData::Divider { divider: self })
     }
 }

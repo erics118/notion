@@ -22,6 +22,11 @@ pub enum RichTextType {
 ///
 /// Refer to the request limits documentation page for information about limits
 /// on the size of rich text objects.
+///
+/// Many block types support rich text. In cases where it is supported, a
+/// rich_text object will be included in the block type object. All rich_text
+/// objects will include a plain_text property, which provides a convenient way
+/// for developers to access unformatted text from the Notion block.
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 pub struct RichText {
     // /// The type of this rich text object.
@@ -58,29 +63,27 @@ impl RichText {
         }
     }
 
-    /// TODO: create a mention
-    // pub fn new_mention(plain_text: String, href: String, mention_type:
-    // MentionType) -> Self {     Self {
-    //         type_: RichTextType::Mention,
-    //         annotations: Annotations::default(),
-    //         plain_text: String::default(),
-    //         href: Some(href),
-    //         data: RichTextData::Mention(Mention {
-    //             mention: MentionType::User,
-    //         }),
-    //     }
-    // }
+    pub fn new_mention(mention: Mention) -> Self {
+        Self {
+            type_: RichTextType::Mention,
+            annotations: None,
+            plain_text: None,
+            href: None,
+            data: RichTextData::Mention { mention },
+        }
+    }
 
-    /// TODO: create an equation
-    // pub fn new_equation(plain_text: String, expression: String) -> Self {
-    //     Self {
-    //         type_: RichTextType::Equation,
-    //         annotations: Annotations::default(),
-    //         plain_text: String::default(),
-    //         href: None,
-    //         data: RichTextData::Equation(Equation { expression }),
-    //     }
-    // }
+    pub fn new_equation(expression: String) -> Self {
+        Self {
+            type_: RichTextType::Equation,
+            annotations: None,
+            plain_text: None,
+            href: None,
+            data: RichTextData::Equation {
+                equation: Equation { expression },
+            },
+        }
+    }
 
     pub fn text(mut self, text: Text) -> Self {
         self.data = RichTextData::Text { text };
@@ -217,7 +220,7 @@ pub struct DateMention {
     /// An ISO 8601 formatted date, with optional time. Represents the end of a
     /// date range.
     ///
-    /// If null, this property's date value is not a range.
+    /// If `None`, this property's date value is not a range.
     end: Option<DateTime<Utc>>,
     /// Time zone information for start and end. Possible values are extracted
     /// from the IANA database and they are based on the time zones from
@@ -227,8 +230,8 @@ pub struct DateMention {
     /// offset. In addition, when time zone is provided, start and end cannot be
     /// dates without time information.
     ///
-    /// If null, time zone information will be contained in UTC offsets in start
-    /// and end.
+    /// If `None`, time zone information will be contained in UTC offsets in
+    /// start and end.
     #[serde(default, skip_serializing_if = "Option::is_none", rename = "time_zone")]
     timezone: Option<Tz>,
 }

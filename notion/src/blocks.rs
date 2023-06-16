@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 use crate::{client::Notion, errors::NotionApiError};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "object", rename_all = "snake_case")]
+#[serde(tag = "object", rename = "list", rename_all = "snake_case")]
 pub struct List<T> {
     pub results: Vec<T>,
     // pub next_cursor: Value,
@@ -85,10 +85,9 @@ impl Notion {
             .text()
             .await?;
 
-        let block_list = serde_json::from_str::<result_types::List<Block>>(&text)
-            .context("failed to turn into result_types::List<Block>")?;
+        let res = serde_json::from_str::<result_types::List<Block>>(&text)?;
 
-        match block_list {
+        match res {
             result_types::List::List(block_list) => Ok(block_list),
             result_types::List::Error(e) => anyhow::bail!(NotionApiError::from(e)),
         }
@@ -123,9 +122,9 @@ impl Notion {
             .text()
             .await?;
 
-        let block = serde_json::from_str::<result_types::Block>(&text)?;
+        let res = serde_json::from_str::<result_types::Block>(&text)?;
 
-        match block {
+        match res {
             result_types::Block::Block(block) => Ok(block),
             result_types::Block::Error(e) => anyhow::bail!(NotionApiError::from(e)),
         }
@@ -161,15 +160,21 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn retrieve_block_children(&self, block_id: BlockId) -> Result<()> {
-        let _text = self
+    pub async fn retrieve_block_children(&self, block_id: BlockId) -> Result<List<Block>> {
+        let text = self
             .api_get(&format!("blocks/{block_id}/children"))
             .send()
             .await?
             .text()
             .await?;
 
-        todo!()
+        let res = serde_json::from_str::<result_types::List<Block>>(&text)
+            .context("failed to turn into result_types::List<Block>")?;
+
+        match res {
+            result_types::List::List(block_list) => Ok(block_list),
+            result_types::List::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
     }
 
     /// Update a block
@@ -230,15 +235,20 @@ impl Notion {
     ///
     /// Returns a 400 or a 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn update_block(&self, block_id: BlockId) -> Result<()> {
-        let _text = self
+    pub async fn update_block(&self, block_id: BlockId) -> Result<Block> {
+        let text = self
             .api_get(&format!("blocks/{block_id}"))
             .send()
             .await?
             .text()
             .await?;
 
-        todo!()
+        let res = serde_json::from_str::<result_types::Block>(&text)?;
+
+        match res {
+            result_types::Block::Block(block) => Ok(block),
+            result_types::Block::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
     }
 
     /// Delete a block
@@ -265,14 +275,19 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn delete_block(&self, block_id: BlockId) -> Result<()> {
-        let _text = self
+    pub async fn delete_block(&self, block_id: BlockId) -> Result<Block> {
+        let text = self
             .api_delete(&format!("blocks/{block_id}"))
             .send()
             .await?
             .text()
             .await?;
 
-        todo!()
+        let res = serde_json::from_str::<result_types::Block>(&text)?;
+
+        match res {
+            result_types::Block::Block(block) => Ok(block),
+            result_types::Block::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
     }
 }

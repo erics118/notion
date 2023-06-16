@@ -25,3 +25,4 @@ clap = {version="4.3.4", features=["cargo", "derive", "env"]}
 config = { version = "0.13.3", features = ["toml"] }
 dirs = "5.0.1"
 env_logger = "0.10.0"
+serde_test = "1.0.164"
