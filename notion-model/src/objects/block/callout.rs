@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData, FileOrEmoji};
+use super::{Block, BlockData, FileOrEmoji};
 use crate::objects::{color::Color, rich_text::RichText};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -21,8 +21,8 @@ impl Callout {
         }
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Callout { callout: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Callout { callout: self })
     }
 
     pub fn icon(mut self, icon: FileOrEmoji) -> Self {

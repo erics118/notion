@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 
 // TODO: column builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
@@ -16,7 +16,7 @@ impl Column {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Column { column: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Column { column: self })
     }
 }

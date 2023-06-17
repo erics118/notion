@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 
 /// # 🚧 Differences in embed blocks between the Notion app and the API
 ///
@@ -29,8 +29,8 @@ impl Embed {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Embed { embed: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Embed { embed: self })
     }
 
     pub fn url(mut self, url: String) -> Self {

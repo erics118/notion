@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Equation {
@@ -13,8 +13,8 @@ impl Equation {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Equation { equation: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Equation { equation: self })
     }
 
     pub fn expression(mut self, expression: impl Into<String>) -> Self {

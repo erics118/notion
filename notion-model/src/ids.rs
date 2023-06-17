@@ -5,6 +5,8 @@ use std::fmt;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+pub trait NotionId: fmt::Display {}
+
 macro_rules! uuid_id {
     ($($name:ident;)*) => {
         $(
@@ -14,11 +16,13 @@ macro_rules! uuid_id {
             )]
             pub struct $name(Uuid);
 
+            impl NotionId for $name {}
+
             impl $name {
                 /// Immutably borrow inner Id.
                 #[inline]
                 #[must_use]
-                pub const fn into_inner(&self) -> &Uuid {
+                pub fn into_inner(&self) -> &Uuid {
                     &self.0
                 }
 
@@ -75,7 +79,6 @@ macro_rules! uuid_id {
                     fmt::Display::fmt(&self.0, f)
                 }
             }
-
         )*
     }
 }
@@ -85,6 +88,8 @@ macro_rules! string_id {
         $(
             #[derive(Clone, Default, Debug, Hash, Eq, PartialEq, Ord, PartialOrd, Deserialize, Serialize)]
             pub struct $name(String);
+
+            impl NotionId for $name {}
 
             impl $name {
                 /// Immutably borrow inner Id.
@@ -147,7 +152,6 @@ macro_rules! string_id {
                     fmt::Display::fmt(&self.0, f)
                 }
             }
-
         )*
     }
 }

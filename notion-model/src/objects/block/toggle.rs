@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{Block, BlockBuilder, BlockData};
+use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
@@ -19,8 +19,8 @@ impl Toggle {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Toggle { toggle: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Toggle { toggle: self })
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

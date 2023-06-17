@@ -52,7 +52,7 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{block::Code, code_languages::CodeLanguage},
+        objects::{block::*, rich_text::RichText, color::Color},
     },
 };
 
@@ -91,21 +91,26 @@ mod ids {
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
 }
 
-// TODO: can't add children using the builder because the builder uses
-// `BlockBuilder`, but the structs require `Block`
-
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
-    // TODO: color does not work in a Block
-    // but, color does work in a RichText
-
     let res = notion
         .append_block_children(
-            BlockId::from_str(ids::TOGGLE_BLOCK)?,
-            vec![Code::new().language(CodeLanguage::Racket).build_block()],
+            BlockId::from_str(ids::PAGE)?,
+            vec![
+                Toggle::new()
+                    .rich_text(vec![RichText::new_text("Hello")])
+                    .color(Color::Orange)
+                    .children(Some(vec![
+                        Heading2::new()
+                            .rich_text(vec![RichText::new_text("World")])
+                            .color(Color::Green)
+                            .build_block(),
+                    ]))
+                    .build_block(),
+            ],
         )
         .await?;
 

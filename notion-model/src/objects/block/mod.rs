@@ -5,7 +5,7 @@ use self::{
     file::{ExternalFile, InternalFile},
     video::Video,
 };
-use super::{parent::BlockParent, user::PartialUser, rich_text::Mention};
+use super::{parent::BlockParent, rich_text::Mention, user::PartialUser};
 use crate::ids::BlockId;
 
 mod bookmark;
@@ -75,49 +75,59 @@ pub use toggle::Toggle;
 // the `type` field is disregarded
 pub struct Block {
     /// Identifier for the block.
-    pub id: BlockId,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<BlockId>,
 
     /// Information about the block's parent. See [`BlockParent`] for details.
-    pub parent: BlockParent,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parent: Option<BlockParent>,
 
     /// Type of block. See [`BlockType`] for details.
     // pub r#type: BlockType,
 
     /// Date and time when this block was created. Formatted as an ISO 8601 date
     /// time string.
-    pub created_time: DateTime<Utc>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created_time: Option<DateTime<Utc>>,
 
     /// Date and time when this block was last updated. Formatted as an ISO 8601
     /// date time string.
-    pub last_edited_time: DateTime<Utc>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_edited_time: Option<DateTime<Utc>>,
 
     /// User who created the block.
-    pub created_by: PartialUser,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created_by: Option<PartialUser>,
 
     /// User who last edited the block.
-    pub last_edited_by: PartialUser,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_edited_by: Option<PartialUser>,
 
     /// Whether or not the block has children blocks nested within it.
-    pub has_children: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_children: Option<bool>,
 
     /// The archived status of the block.
-    pub archived: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub archived: Option<bool>,
 
     #[serde(flatten)]
     pub data: BlockData,
 }
 
-/// Fields common to all block types.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "object", rename = "block")]
-pub struct BlockBuilder {
-    #[serde(flatten)]
-    pub data: BlockData,
-}
-
-impl BlockBuilder {
+impl Block {
     pub const fn new(data: BlockData) -> Self {
-        Self { data }
+        Self {
+            id: None,
+            parent: None,
+            created_time: None,
+            last_edited_time: None,
+            created_by: None,
+            last_edited_by: None,
+            has_children: None,
+            archived: None,
+            data,
+        }
     }
 }
 

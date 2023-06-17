@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use notion_model::{
-    ids::BlockId,
-    objects::block::{Block, BlockBuilder},
+    ids::{BlockId, NotionId},
+    objects::block::Block,
 };
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
@@ -68,12 +68,12 @@ impl Notion {
     /// limits.
     pub async fn append_block_children(
         &self,
-        block_id: BlockId,
-        children: Vec<BlockBuilder>,
+        block_id: impl NotionId,
+        children: Vec<Block>,
     ) -> Result<List<Block>> {
         #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
         struct AppendBlockChildren {
-            children: Vec<BlockBuilder>,
+            children: Vec<Block>,
         }
 
         let text = self

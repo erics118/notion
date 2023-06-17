@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct TableOfContents {
@@ -15,8 +15,8 @@ impl TableOfContents {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::TableOfContents {
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::TableOfContents {
             table_of_contents: self,
         })
     }

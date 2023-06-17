@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{Block, BlockBuilder, BlockData};
+use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
@@ -19,8 +19,8 @@ impl BulletedListItem {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::BulletedListItem {
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::BulletedListItem {
             bulleted_list_item: self,
         })
     }

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 use crate::objects::rich_text::RichText;
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
@@ -21,8 +21,8 @@ impl Bookmark {
         Self::default()
     }
 
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Bookmark { bookmark: self })
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Bookmark { bookmark: self })
     }
 
     pub fn caption(mut self, caption: Option<Vec<RichText>>) -> Self {

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData};
+use super::{Block, BlockData};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct Breadcrumb {
@@ -14,8 +14,8 @@ impl Breadcrumb {
     pub fn new() -> Self {
         Self::default()
     }
-    
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::Breadcrumb { breadcrumb: self })
+
+    pub fn build_block(self) -> Block {
+        Block::new(BlockData::Breadcrumb { breadcrumb: self })
     }
 }
