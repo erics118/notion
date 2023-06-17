@@ -5,7 +5,7 @@ use self::{
     file::{ExternalFile, InternalFile},
     video::Video,
 };
-use super::{parent::BlockParent, user::PartialUser};
+use super::{parent::BlockParent, user::PartialUser, rich_text::Mention};
 use crate::ids::BlockId;
 
 mod bookmark;
@@ -26,7 +26,6 @@ mod heading_2;
 mod heading_3;
 mod image;
 mod link_preview;
-mod mention;
 mod numbered_list_item;
 mod paragraph;
 mod pdf;
@@ -58,7 +57,6 @@ pub use heading_2::Heading2;
 pub use heading_3::Heading3;
 pub use image::Image;
 pub use link_preview::LinkPreview;
-pub use mention::Mention;
 pub use numbered_list_item::NumberedListItem;
 pub use paragraph::Paragraph;
 pub use pdf::Pdf;

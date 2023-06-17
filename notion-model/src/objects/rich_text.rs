@@ -168,25 +168,15 @@ pub struct Equation {
     pub expression: String,
 }
 
-#[derive(Copy, Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(rename_all = "snake_case")]
-pub enum MentionType {
-    Database,
-    Data,
-    LinkPreview,
-    Page,
-    User,
-}
-
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "snake_case")]
+#[serde(rename_all = "snake_case", tag = "type")]
 pub enum Mention {
-    Database(DatabaseMention),
-    Date(DateMention),
-    LinkPreview(LinkPreviewMention),
-    Page(PageMention),
-    Template(TemplateMention),
-    User(UserMention),
+    Database { database: DatabaseMention },
+    Date { date: DateMention },
+    LinkPreview { link_preview: LinkPreviewMention },
+    Page { page: PageMention },
+    Template { template: TemplateMention },
+    User { user: UserMention },
 }
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
@@ -254,7 +244,7 @@ pub enum TemplateMention {
     User(String),
 }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct UserMention {
     /// If a rich text object’s type value is "user", then the corresponding
@@ -264,7 +254,43 @@ pub struct UserMention {
     /// then the plain_text that would include a user’s name reads as
     /// "@Anonymous". To update the integration to get access to the user,
     /// update the integration capabilities on the integration settings page.
-    pub user: UserId,
+    pub id: UserId,
+    pub name: String,
+    pub avatar_url: String,
+    #[serde(flatten)]
+    pub data: UserMentionData,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub struct UserMentionPerson {
+    pub email: String,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub struct UserMentionBot {
+    pub email: String,
+    pub owner: BotOwner,
+    pub workspace_name: Option<String>,
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub struct BotOwner {
+    #[serde(rename = "type")]
+    pub type_: BotOwnerType,
+}
+
+#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+pub enum BotOwnerType {
+    Workspace,
+    User,
+}
+
+#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
+#[serde(rename_all = "snake_case", tag = "type")]
+pub enum UserMentionData {
+    Person { person: UserMentionPerson },
+    // TODO: get a bot to test this
+    Bot { bot_id: UserMentionBot },
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
