@@ -210,6 +210,7 @@ dependencies = [
  "chrono-tz-build",
  "phf",
  "serde",
+ "uncased",
 ]
 
 [[package]]
@@ -221,6 +222,7 @@ dependencies = [
  "parse-zoneinfo",
  "phf",
  "phf_codegen",
+ "uncased",
 ]
 
 [[package]]
@@ -859,6 +861,7 @@ dependencies = [
  "serde_test",
  "thiserror",
  "tokio",
+ "url",
 ]
 
 [[package]]
@@ -1098,6 +1101,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1fb5f6f826b772a8d4c0394209441e7d37cbbb967ae9c7e0e8134365c9ee676"
 dependencies = [
  "siphasher",
+ "uncased",
 ]
 
 [[package]]
@@ -1604,6 +1608,15 @@ name = "ucd-trie"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9e79c4d996edb816c91e4308506774452e55e95c3c9de07b6729e17e15a5ef81"
+
+[[package]]
+name = "uncased"
+version = "0.9.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b9bc53168a4be7402ab86c3aad243a84dd7381d09be0eddc81280c1da95ca68"
+dependencies = [
+ "version_check",
+]
 
 [[package]]
 name = "unicode-bidi"
