@@ -6,7 +6,7 @@ use notion_model::{
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError, test_json};
+use crate::{client::Notion, errors::NotionApiError};
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename = "list", rename_all = "snake_case")]
 pub struct List<T> {
@@ -123,7 +123,7 @@ impl Notion {
             .await?;
 
         // let text = test_json();
-        // println!("{}", text);
+        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 

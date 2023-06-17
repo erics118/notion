@@ -73,6 +73,12 @@ mod ids {
     pub const MENTION_DATE_TIME_START_END_BLOCK: &str = "ccabb0b6afec440787ae12906ab832c6";
     pub const MENTION_USER_BLOCK: &str = "22eea0fa1e40486b9cea173bb944939f";
 
+    pub const IMAGE_BLOCK: &str = "61af5174fdf24726921517e6f0d05132";
+    pub const IMAGE_BLOCK2: &str = "c3c3214bd57d4068bebe0c4ff2de1476";
+    pub const PDF_BLOCK: &str = "3e12bcd5ae6a4c97a8eb22baf4462f2a";
+
+    pub const VIDEO_BLOCK: &str = "cf3482826bbc401abbca94147543211f";
+
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
 }
 
@@ -88,7 +94,7 @@ pub async fn main() -> Result<()> {
     // but, color does work in a RichText
 
     let res = notion
-        .retrieve_block(BlockId::from_str(ids::MENTION_USER_BLOCK)?)
+        .retrieve_block(BlockId::from_str(ids::IMAGE_BLOCK2)?)
         .await?;
 
     println!("{:#?}", res);

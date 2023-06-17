@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData, Emoji, FileOrEmoji};
+use super::{BlockBuilder, BlockData, FileOrEmoji};
 use crate::objects::{color::Color, rich_text::RichText};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]

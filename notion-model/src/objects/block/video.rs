@@ -1,11 +1,12 @@
 use serde::{Deserialize, Serialize};
 
-use super::File;
+use super::file::FileData;
+use crate::objects::rich_text::RichText;
 
-// TODO: video builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct Video {
-    /// A file object that details information about the file contained in
-    /// the block.
-    pub file: File,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub caption: Option<Vec<RichText>>,
+    #[serde(flatten)]
+    pub data: FileData,
 }

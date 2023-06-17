@@ -1,12 +1,12 @@
 {
     "object": "block",
-    "id": "22eea0fa-1e40-486b-9cea-173bb944939f",
+    "id": "61af5174-fdf2-4726-9215-17e6f0d05132",
     "parent": {
         "type": "page_id",
         "page_id": "67ace61a-7fd2-4ab7-8e89-2b1dc9b252e4"
     },
-    "created_time": "2023-06-17T02:31:00.000Z",
-    "last_edited_time": "2023-06-17T02:31:00.000Z",
+    "created_time": "2023-06-17T02:44:00.000Z",
+    "last_edited_time": "2023-06-17T02:44:00.000Z",
     "created_by": {
         "object": "user",
         "id": "3e1fc0f5-d02e-48ae-84c0-7ae06deece9f"
@@ -17,53 +17,13 @@
     },
     "has_children": false,
     "archived": false,
-    "type": "paragraph",
-    "paragraph": {
-        "rich_text": [
-            {
-                "type": "mention",
-                "mention": {
-                    "type": "user",
-                    "user": {
-                        "object": "user",
-                        "id": "3e1fc0f5-d02e-48ae-84c0-7ae06deece9f",
-                        "name": "Eric",
-                        "avatar_url": "https://lh3.googleusercontent.com/a-/AOh14Gi8ksmSRUj9agdx5aTXtdQhBdnXZYZBQwZZ4WxWDg=s100",
-                        "type": "person",
-                        "person": {
-                            "email": "ericshen118@gmail.com"
-                        }
-                    }
-                },
-                "annotations": {
-                    "bold": false,
-                    "italic": false,
-                    "strikethrough": false,
-                    "underline": false,
-                    "code": false,
-                    "color": "default"
-                },
-                "plain_text": "@Eric",
-                "href": null
-            },
-            {
-                "type": "text",
-                "text": {
-                    "content": " ",
-                    "link": null
-                },
-                "annotations": {
-                    "bold": false,
-                    "italic": false,
-                    "strikethrough": false,
-                    "underline": false,
-                    "code": false,
-                    "color": "default"
-                },
-                "plain_text": " ",
-                "href": null
-            }
-        ],
-        "color": "default"
+    "type": "image",
+    "image": {
+        "caption": [],
+        "type": "file",
+        "file": {
+            "url": "https://s3.us-west-2.amazonaws.com/secure.notion-static.com/32622921-eb24-4848-bac3-040e6819900f/Untitled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAT73L2G45EIPT3X45%2F20230617%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20230617T024545Z&X-Amz-Expires=3600&X-Amz-Signature=cbec76bee072266cfbc1cf2c558c146517ca87782f538e75b397134b8133af59&X-Amz-SignedHeaders=host&x-id=GetObject",
+            "expiry_time": "2023-06-17T03:45:45.912Z"
+        }
     }
 }

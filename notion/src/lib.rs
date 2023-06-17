@@ -52,6 +52,8 @@ mod pages;
 mod search;
 mod users;
 
+pub mod utils;
+
 pub use notion_model as model;
 
 pub fn test_json() -> String {
