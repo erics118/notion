@@ -49,13 +49,7 @@ use std::str::FromStr;
 
 use anyhow::Result;
 use clap::Parser;
-use notion::{
-    client::Notion,
-    model::{
-        ids::BlockId,
-        objects::{block::*, code_languages::CodeLanguage, color::Color, rich_text::RichText},
-    },
-};
+use notion::{client::Notion, model::ids::BlockId};
 
 use crate::{
     cli::{Cli, Commands},
@@ -68,24 +62,11 @@ mod ids {
 
     pub const PARAGRAPH_BLOCK: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
     pub const TOGGLE_BLOCK: &str = "413085318c3741808899ada14b5e8095";
+    pub const INTERNAL_FILE_BLOCK: &str = "20017e7c5a3e42858f92abf2ca237c55";
+    pub const EXTERNAL_FILE_BLOCK: &str = "ea3b7f53f121486c9e129e2d54fdbc1f";
+    pub const CALLOUT_BLOCK: &str = "7d7771b0b76442548e2c5d1ac8bbb617";
+
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
-}
-
-pub async fn stuff() -> Result<()> {
-    let cli = Cli::parse();
-    let Config { api_token } = load_config()?;
-    let notion = Notion::new(&api_token)?;
-
-    match cli.command {
-        Commands::RetrieveBlock { block_id } => {
-            let block = notion.retrieve_block(BlockId::from_str(&block_id)?).await?;
-            println!("{block:#?}");
-
-            println!("{}", serde_json::to_string(&block)?);
-        },
-    }
-
-    Ok(())
 }
 
 // TODO: can't add children using the builder because the builder uses
@@ -99,58 +80,11 @@ pub async fn main() -> Result<()> {
     // TODO: color does not work in a Block
     // but, color does work in a RichText
 
-    // let res = notion
-    //     .append_block_children(BlockId::from_str(ids::TOGGLE_BLOCK)?, children)
-    //     .await?;
-
     let res = notion
-        .delete_block(BlockId::from_str("9b5d5adca0b043c6904f570d3e423c66")?)
+        .retrieve_block(BlockId::from_str(ids::EXTERNAL_FILE_BLOCK)?)
         .await?;
 
     println!("{:#?}", res);
 
     Ok(())
-}
-
-pub fn build() {
-    // api suggests there is an `audio` block, probably unsupported
-
-    let _bookmark = Bookmark::new()
-        .url(Some("https://google.com/".to_string()))
-        .build_block();
-
-    let _breadcrumb = Breadcrumb::new().build_block();
-
-    let _bulleted_item_list = BulletedListItem::new()
-        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
-        .build_block();
-
-    let _callout = Callout::new().build_block(); // TODO
-
-    let _code = Code::new()
-        .language(CodeLanguage::Markdown)
-        .rich_text(vec![RichText::new_text("# heading\nthis is **bold** text")])
-        .build_block();
-
-    let _divider = Divider::new().build_block();
-
-    let _embed = Embed::new()
-        .url("https://www.youtube.com/embed/dQw4w9WgXcQ".to_string())
-        .build_block();
-
-    let _equation = Equation::new().build_block();
-
-    let _heading1 = Heading1::new().build_block();
-
-    let _heading2 = Heading2::new().build_block();
-
-    let _heading3 = Heading3::new().build_block();
-
-    let _quote = Quote::new()
-        .rich_text(vec![RichText::new_text("hi").color(Color::Blue)])
-        .build_block();
-
-    let _table_of_contents = TableOfContents::new().build_block();
-
-    let _toggle = Toggle::new().build_block();
 }

@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use super::File;
 
-// TODO: fix working with file
+// TODO: image builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct Image {
     /// A file object that details information about the file contained in

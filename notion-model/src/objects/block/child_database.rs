@@ -6,4 +6,3 @@ use serde::{Deserialize, Serialize};
 pub struct ChildDatabase {
     pub title: String,
 }
-

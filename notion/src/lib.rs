@@ -53,3 +53,7 @@ mod search;
 mod users;
 
 pub use notion_model as model;
+
+pub fn test_json() -> String {
+    String::from_utf8_lossy(include_bytes!("../../test_data/block.json")).to_string()
+}

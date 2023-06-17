@@ -9,5 +9,5 @@ pub struct Mention {
     #[serde(rename = "type")]
     pub type_: MentionType,
     // An object with type-specific information about the mention.
-    // TODO: object,
+    // TODO: data object
 }

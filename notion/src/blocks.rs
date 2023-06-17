@@ -6,13 +6,13 @@ use notion_model::{
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError};
-
+use crate::{client::Notion, errors::NotionApiError, test_json};
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename = "list", rename_all = "snake_case")]
 pub struct List<T> {
     pub results: Vec<T>,
-    // pub next_cursor: Value,
+    // TODO: next_cursor
+    // pub next_cursor: Value
     pub has_more: bool,
     // TODO: type field
 }
@@ -121,6 +121,9 @@ impl Notion {
             .await?
             .text()
             .await?;
+
+        // let text = test_json();
+        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 

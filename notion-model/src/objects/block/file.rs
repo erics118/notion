@@ -1,18 +1,15 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{BlockBuilder, BlockData, FileType};
 use crate::objects::rich_text::RichText;
 
-// TODO: file builder
+/// no file builder.
 /// The Notion API does not yet support uploading files to Notion.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct File {
     /// The caption of the file block.
-    pub caption: Vec<RichText>,
-    /// The type of the file.
-    #[serde(rename = "type")]
-    pub type_: FileType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub caption: Option<Vec<RichText>>,
     /// A file object that details information about the file contained in
     /// the block.
     #[serde(flatten)]
@@ -20,37 +17,19 @@ pub struct File {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum FileData {
-    File(InternalFile),
-    External(ExternalFile),
+    File { file: InternalFile },
+    External { external: ExternalFile },
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct InternalFile {
     pub url: String,
-    pub expiry_time: Option<DateTime<Utc>>,
+    pub expiry_time: DateTime<Utc>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct ExternalFile {
     pub url: String,
-}
-
-impl File {
-    pub fn builder() -> Self {
-        todo!()
-        // File {}
-    }
-}
-
-impl File {
-    pub fn build_block(self) -> BlockBuilder {
-        BlockBuilder::new(BlockData::File { file: self })
-    }
-
-    pub fn caption(mut self, caption: Vec<RichText>) -> Self {
-        self.caption = caption;
-        self
-    }
 }
