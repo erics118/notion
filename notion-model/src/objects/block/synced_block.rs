@@ -4,7 +4,7 @@ use super::Block;
 use crate::ids::BlockId;
 
 /// TODO: synced block builder
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct SyncedBlock {
     /// Similar to the Notion UI, there are two versions of a synced_block
     /// object: the original block that was created first and doesn't yet
@@ -23,4 +23,20 @@ pub struct SyncedBlock {
     /// The nested children (if any).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<Block>>,
+}
+
+impl SyncedBlock {
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    pub fn synced_from(mut self, synced_from: Option<BlockId>) -> Self {
+        self.synced_from = synced_from;
+        self
+    }
+
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.children = children;
+        self
+    }
 }

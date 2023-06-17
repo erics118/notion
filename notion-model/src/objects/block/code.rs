@@ -28,7 +28,7 @@ impl Code {
     }
 
     #[must_use]
-    pub fn build_block(self) -> Block {
+    pub fn build(self) -> Block {
         Block::new(BlockData::Code { code: self })
     }
 

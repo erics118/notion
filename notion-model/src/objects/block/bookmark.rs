@@ -21,7 +21,7 @@ impl Bookmark {
         Self::default()
     }
 
-    pub fn build_block(self) -> Block {
+    pub fn build(self) -> Block {
         Block::new(BlockData::Bookmark { bookmark: self })
     }
 
@@ -44,7 +44,7 @@ mod test {
 
     #[test]
     fn empty() {
-        let value = Bookmark::new().build_block();
+        let value = Bookmark::new().build();
 
         assert_tokens(
             &value,
@@ -69,7 +69,7 @@ mod test {
     fn complete() {
         let value = Bookmark::new()
             .url(Some("https://google.com/".to_string()))
-            .build_block();
+            .build();
 
         assert_tokens(
             &value,

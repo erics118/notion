@@ -106,27 +106,21 @@ pub async fn main() -> Result<()> {
                 ColumnList::new()
                     .children(Some(vec![
                         Column::new()
-                            .children(Some(vec![
-                                Paragraph::new()
-                                    .rich_text(vec![RichText::new_text("Hello")])
-                                    .build_block(),
-                                Paragraph::new()
-                                    .rich_text(vec![RichText::new_text("World")])
-                                    .build_block(),
-                            ]))
-                            .build_block(),
-                        Column::new()
-                            .children(Some(vec![
+                            .children(vec![
                                 Paragraph::new()
                                     .rich_text(vec![RichText::new_text("wubba")])
-                                    .build_block(),
+                                    .build(),
+                            ])
+                            .build(),
+                        Column::new()
+                            .children(vec![
                                 Paragraph::new()
-                                    .rich_text(vec![RichText::new_text("bubba")])
-                                    .build_block(),
-                            ]))
-                            .build_block(),
+                                    .rich_text(vec![RichText::new_text("wubba")])
+                                    .build(),
+                            ])
+                            .build(),
                     ]))
-                    .build_block(),
+                    .build(),
             ],
         )
         .await?;

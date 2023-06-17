@@ -30,7 +30,7 @@ impl Embed {
     }
 
     #[must_use]
-    pub fn build_block(self) -> Block {
+    pub fn build(self) -> Block {
         Block::new(BlockData::Embed { embed: self })
     }
 

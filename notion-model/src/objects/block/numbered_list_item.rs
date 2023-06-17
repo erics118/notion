@@ -20,7 +20,7 @@ impl NumberedListItem {
     }
 
     #[must_use]
-    pub fn build_block(self) -> Block {
+    pub fn build(self) -> Block {
         Block::new(BlockData::NumberedListItem {
             numbered_list_item: self,
         })

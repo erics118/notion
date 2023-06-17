@@ -27,7 +27,7 @@ impl Heading1 {
     }
 
     #[must_use]
-    pub fn build_block(self) -> Block {
+    pub fn build(self) -> Block {
         Block::new(BlockData::Heading1 { heading_1: self })
     }
 
