@@ -15,10 +15,11 @@ pub struct NumberedListItem {
 }
 
 impl NumberedListItem {
-    pub fn builder() -> Self {
+    pub fn new() -> Self {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::NumberedListItem {
             numbered_list_item: self,
@@ -32,6 +33,11 @@ impl NumberedListItem {
 
     pub fn color(mut self, color: Color) -> Self {
         self.color = color;
+        self
+    }
+
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.children = children;
         self
     }
 }

@@ -17,10 +17,11 @@ pub struct ToDo {
 }
 
 impl ToDo {
-    pub fn builder() -> Self {
+    pub fn new() -> Self {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::ToDo { to_do: self })
     }

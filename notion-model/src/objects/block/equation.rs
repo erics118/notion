@@ -13,6 +13,7 @@ impl Equation {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::Equation { equation: self })
     }

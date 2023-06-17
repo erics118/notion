@@ -171,6 +171,9 @@ impl Notion {
             .text()
             .await?;
 
+            println!("{}", text);
+
+
         let res = serde_json::from_str::<result_types::List<Block>>(&text)
             .context("failed to turn into result_types::List<Block>")?;
 

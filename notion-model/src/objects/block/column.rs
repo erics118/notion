@@ -2,21 +2,25 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
-// TODO: column builder
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Column {
-    /// This is present so that serde serializes this into `{}` rather than as
-    /// `null`.
-    #[serde(skip)]
-    _nothing: (),
+    /// The nested blocks.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<Block>>,
 }
 
 impl Column {
-    pub fn builder() -> Self {
+    pub fn new() -> Self {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::Column { column: self })
+    }
+
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.children = children;
+        self
     }
 }

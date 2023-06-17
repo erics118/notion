@@ -52,7 +52,7 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{block::*, rich_text::RichText, color::Color},
+        objects::{block::*, rich_text::RichText},
     },
 };
 
@@ -89,6 +89,9 @@ mod ids {
     pub const VIDEO_BLOCK: &str = "cf3482826bbc401abbca94147543211f";
 
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
+
+    pub const COLUMN1: &str = "8a85ea985af84fae87c9a1fbe22f0b92";
+    pub const COLUMN_PARENT: &str = "e3c4733e-0349-48f8-afee-31838e08abed";
 }
 
 #[tokio::main]
@@ -100,19 +103,37 @@ pub async fn main() -> Result<()> {
         .append_block_children(
             BlockId::from_str(ids::PAGE)?,
             vec![
-                Toggle::new()
-                    .rich_text(vec![RichText::new_text("Hello")])
-                    .color(Color::Orange)
+                ColumnList::new()
                     .children(Some(vec![
-                        Heading2::new()
-                            .rich_text(vec![RichText::new_text("World")])
-                            .color(Color::Green)
+                        Column::new()
+                            .children(Some(vec![
+                                Paragraph::new()
+                                    .rich_text(vec![RichText::new_text("Hello")])
+                                    .build_block(),
+                                Paragraph::new()
+                                    .rich_text(vec![RichText::new_text("World")])
+                                    .build_block(),
+                            ]))
+                            .build_block(),
+                        Column::new()
+                            .children(Some(vec![
+                                Paragraph::new()
+                                    .rich_text(vec![RichText::new_text("wubba")])
+                                    .build_block(),
+                                Paragraph::new()
+                                    .rich_text(vec![RichText::new_text("bubba")])
+                                    .build_block(),
+                            ]))
                             .build_block(),
                     ]))
                     .build_block(),
             ],
         )
         .await?;
+
+    // let res = notion
+    //     .retrieve_block(BlockId::from_str_unchecked(ids::COLUMN_PARENT))
+    //     .await?;
 
     println!("{:#?}", res);
 

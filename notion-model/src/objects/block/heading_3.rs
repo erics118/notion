@@ -26,6 +26,7 @@ impl Heading3 {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::Heading3 { heading_3: self })
     }

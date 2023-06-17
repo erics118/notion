@@ -21,6 +21,7 @@ impl Callout {
         }
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::Callout { callout: self })
     }

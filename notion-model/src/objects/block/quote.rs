@@ -19,6 +19,7 @@ impl Quote {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::Quote { quote: self })
     }
@@ -30,6 +31,11 @@ impl Quote {
 
     pub fn color(mut self, color: Color) -> Self {
         self.color = color;
+        self
+    }
+
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.children = children;
         self
     }
 }

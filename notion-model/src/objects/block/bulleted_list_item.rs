@@ -19,6 +19,7 @@ impl BulletedListItem {
         Self::default()
     }
 
+    #[must_use]
     pub fn build_block(self) -> Block {
         Block::new(BlockData::BulletedListItem {
             bulleted_list_item: self,
@@ -32,6 +33,11 @@ impl BulletedListItem {
 
     pub fn color(mut self, color: Color) -> Self {
         self.color = color;
+        self
+    }
+
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
+        self.children = children;
         self
     }
 }
