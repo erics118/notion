@@ -51,7 +51,6 @@ impl Notion {
     }
 
     // TODO: ratelimits
-    // TODO: error handling
     api_method! {
         delete;
         get;

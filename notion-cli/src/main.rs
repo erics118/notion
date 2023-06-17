@@ -51,8 +51,12 @@ use anyhow::Result;
 use notion::{
     client::Notion,
     model::{
-        ids::BlockId,
-        objects::{block::*, rich_text::RichText, color::Color},
+        ids::{BlockId, PageId},
+        objects::{
+            block::*,
+            color::Color,
+            rich_text::{Mention, PageMention, RichText},
+        },
     },
 };
 
@@ -65,6 +69,7 @@ mod ids {
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
+    // TODO: mentions
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
@@ -72,18 +77,16 @@ pub async fn main() -> Result<()> {
         .append_block_children(
             BlockId::from_str(ids::PAGE)?,
             vec![
-                Table::new()
-                    .table_width(10)
-                    .row_header(true)
-                    .column_header(false)
-                    .children(Some(vec![
-                        TableRow::new()
-                            .cells(vec![vec![RichText::new_text("1"), RichText::new_text("fsdfsa").color(Color::BlueBackground)]; 10])
-                            .build(),
-                        TableRow::new()
-                            .cells(vec![vec![RichText::new_text("1")]; 10])
-                            .build(),
-                    ]))
+                Paragraph::new()
+                    .rich_text(vec![
+                        RichText::new_text("---"),
+                        RichText::new_mention(Mention::Page {
+                            page: PageMention {
+                                id: PageId::from_str(ids::PAGE)?,
+                            },
+                        }),
+                        RichText::new_text("---"),
+                    ])
                     .build(),
             ],
         )
