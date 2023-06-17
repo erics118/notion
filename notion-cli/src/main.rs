@@ -48,7 +48,13 @@ pub mod error;
 use std::str::FromStr;
 
 use anyhow::Result;
-use notion::{client::Notion, model::ids::BlockId};
+use notion::{
+    client::Notion,
+    model::{
+        ids::BlockId,
+        objects::{block::Code, code_languages::CodeLanguage},
+    },
+};
 
 use crate::config::{load_config, Config};
 
@@ -75,6 +81,9 @@ mod ids {
 
     pub const IMAGE_BLOCK: &str = "61af5174fdf24726921517e6f0d05132";
     pub const IMAGE_BLOCK2: &str = "c3c3214bd57d4068bebe0c4ff2de1476";
+
+    pub const CODE_BLOCK: &str = "6e9612c81c7d4356ba9153eab009e6f4";
+
     pub const PDF_BLOCK: &str = "3e12bcd5ae6a4c97a8eb22baf4462f2a";
 
     pub const VIDEO_BLOCK: &str = "cf3482826bbc401abbca94147543211f";
@@ -94,7 +103,10 @@ pub async fn main() -> Result<()> {
     // but, color does work in a RichText
 
     let res = notion
-        .retrieve_block(BlockId::from_str(ids::IMAGE_BLOCK2)?)
+        .append_block_children(
+            BlockId::from_str(ids::TOGGLE_BLOCK)?,
+            vec![Code::new().language(CodeLanguage::Racket).build_block()],
+        )
         .await?;
 
     println!("{:#?}", res);

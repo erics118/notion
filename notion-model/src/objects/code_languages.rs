@@ -5,32 +5,44 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "lowercase")]
 pub enum CodeLanguage {
     Abap,
+    Agda,
     Arduino,
+    Assembly,
     Bash,
     Basic,
+    Bnf,
     C,
-    Clojure,
-    CoffeeScript,
-    #[serde(rename = "c++")]
-    Cpp,
     #[serde(rename = "c#")]
     CSharp,
+    #[serde(rename = "c++")]
+    Cpp,
+    Clojure,
+    CoffeeScript,
+    Coq,
     Css,
     Dart,
+    Dhall,
     Diff,
     Docker,
+    Ebnf,
+    Elixir,
+    Elm,
     Erlang,
-    Flow,
     #[serde(rename = "f#")]
     FSharp,
+    Flow,
+    Fortran,
     Gherkin,
     Glsl,
     Go,
+    #[serde(rename = "graphql")]
     GraphQl,
     Groovy,
     Haskell,
     Html,
+    Idris,
     Java,
+    #[serde(rename = "javascript")]
     JavaScript,
     Json,
     Julia,
@@ -39,15 +51,19 @@ pub enum CodeLanguage {
     Less,
     Lisp,
     LiveScript,
+    #[serde(rename = "llvm ir")]
+    LlvmIr,
     Lua,
     Makefile,
     Markdown,
     Markup,
     Matlab,
+    Mathematica,
     Mermaid,
     Nix,
     #[serde(rename = "objective-c")]
     ObjectiveC,
+    #[serde(rename = "ocaml")]
     OCaml,
     Pascal,
     Perl,
@@ -55,11 +71,15 @@ pub enum CodeLanguage {
     #[serde(rename = "plain text")]
     #[default]
     PlainText,
+    #[serde(rename = "powershell")]
     PowerShell,
     Prolog,
     Protobuf,
+    #[serde(rename = "purescript")]
+    PureScript,
     Python,
     R,
+    Racket,
     Reason,
     Ruby,
     Rust,
@@ -68,20 +88,23 @@ pub enum CodeLanguage {
     Scheme,
     Scss,
     Shell,
+    Solidity,
     Sql,
     Swift,
+    Toml,
     TypeScript,
     #[serde(rename = "vb.net")]
     VbNet,
     Verilog,
-    VHDL,
+    Vhdl,
     #[serde(rename = "visual basic")]
     VisualBasic,
+    #[serde(rename = "webassembly")]
     WebAssembly,
     Xml,
     Yaml,
     /// Java, C, C++, C#
     #[serde(rename = "java/c/c++/c#")]
-    // #[deprecated = "This option exists in the API but not in the UI."]
+    #[deprecated = "This option exists in the API but not in the UI."]
     JavaCCppCsharp,
 }
