@@ -4,8 +4,9 @@ use super::{Block, BlockData};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Column {
-    /// The nested blocks.
-    pub children: Vec<Block>,
+    /// The nested blocks. cannot be `None` when making the API call, but the
+    /// API will return it as None.
+    pub children: Option<Vec<Block>>,
 }
 
 impl Column {
@@ -18,7 +19,7 @@ impl Column {
         Block::new(BlockData::Column { column: self })
     }
 
-    pub fn children(mut self, children: Vec<Block>) -> Self {
+    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
         self.children = children;
         self
     }

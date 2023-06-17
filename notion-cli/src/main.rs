@@ -106,18 +106,18 @@ pub async fn main() -> Result<()> {
                 ColumnList::new()
                     .children(Some(vec![
                         Column::new()
-                            .children(vec![
+                            .children(Some(vec![
                                 Paragraph::new()
                                     .rich_text(vec![RichText::new_text("wubba")])
                                     .build(),
-                            ])
+                            ]))
                             .build(),
                         Column::new()
-                            .children(vec![
+                            .children(Some(vec![
                                 Paragraph::new()
                                     .rich_text(vec![RichText::new_text("wubba")])
                                     .build(),
-                            ])
+                            ]))
                             .build(),
                     ]))
                     .build(),
@@ -125,9 +125,9 @@ pub async fn main() -> Result<()> {
         )
         .await?;
 
-    // let res = notion
-    //     .retrieve_block(BlockId::from_str_unchecked(ids::COLUMN_PARENT))
-    //     .await?;
+    let res = notion
+        .retrieve_block(BlockId::from_str_unchecked(ids::COLUMN_PARENT))
+        .await?;
 
     println!("{:#?}", res);
 

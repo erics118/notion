@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use super::Block;
+use super::{Block, BlockData};
 use crate::ids::BlockId;
 
 /// TODO: synced block builder
@@ -18,16 +18,20 @@ pub struct SyncedBlock {
     ///
     /// # Duplicate synced block
     /// The value of the synced_from is an object containing a [`BlockId`]
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub synced_from: Option<BlockId>,
-    /// The nested children (if any).
-    #[serde(default, skip_serializing_if = "Option::is_none")]
+    /// The nested children. cannot be `None` when making the API call, but the
+    /// API will return it as None.
     pub children: Option<Vec<Block>>,
 }
 
 impl SyncedBlock {
     pub fn new() -> Self {
         Self::default()
+    }
+
+    #[must_use]
+    pub fn build(self) -> Block {
+        Block::new(BlockData::SyncedBlock { synced_block: self })
     }
 
     pub fn synced_from(mut self, synced_from: Option<BlockId>) -> Self {
