@@ -103,8 +103,8 @@ pub enum CodeLanguage {
     WebAssembly,
     Xml,
     Yaml,
-    /// Java, C, C++, C#
-    #[serde(rename = "java/c/c++/c#")]
-    #[deprecated = "This option exists in the API but not in the UI."]
-    JavaCCppCsharp,
+    // /// Java, C, C++, C#
+    // #[serde(rename = "java/c/c++/c#")]
+    // #[deprecated = "This option exists in the API but not in the UI."]
+    // JavaCCppCsharp,
 }
