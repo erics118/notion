@@ -18,9 +18,7 @@ impl Quote {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Quote {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Quote { quote: self })
     }

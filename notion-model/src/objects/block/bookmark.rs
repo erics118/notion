@@ -20,9 +20,7 @@ impl Bookmark {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Bookmark {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Bookmark { bookmark: self })
     }

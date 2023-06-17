@@ -19,9 +19,7 @@ impl Paragraph {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Paragraph {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Paragraph { paragraph: self })
     }

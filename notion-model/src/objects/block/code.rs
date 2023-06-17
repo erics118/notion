@@ -26,9 +26,7 @@ impl Code {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Code {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Code { code: self })
     }

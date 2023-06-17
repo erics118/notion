@@ -20,9 +20,7 @@ impl Callout {
             rich_text: Default::default(),
         }
     }
-}
 
-impl Callout {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Callout { callout: self })
     }

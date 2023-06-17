@@ -15,9 +15,7 @@ impl ColumnList {
     pub fn builder() -> Self {
         Self::default()
     }
-}
 
-impl ColumnList {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::ColumnList { column_list: self })
     }

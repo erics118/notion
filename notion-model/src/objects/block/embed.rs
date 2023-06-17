@@ -28,9 +28,7 @@ impl Embed {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Embed {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Embed { embed: self })
     }

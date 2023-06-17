@@ -18,9 +18,7 @@ impl Toggle {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Toggle {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Toggle { toggle: self })
     }

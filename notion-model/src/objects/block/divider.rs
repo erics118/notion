@@ -14,9 +14,7 @@ impl Divider {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Divider {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Divider { divider: self })
     }

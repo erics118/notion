@@ -82,6 +82,6 @@ pub enum CodeLanguage {
     Yaml,
     /// Java, C, C++, C#
     #[serde(rename = "java/c/c++/c#")]
-    #[deprecated = "This option exists in the API but not in the UI."]
+    // #[deprecated = "This option exists in the API but not in the UI."]
     JavaCCppCsharp,
 }

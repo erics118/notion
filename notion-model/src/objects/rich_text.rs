@@ -7,17 +7,6 @@ use crate::{
     objects::color::Color,
 };
 
-/// The types of rich text objects.
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "snake_case")]
-
-pub enum RichTextType {
-    #[default]
-    Text,
-    Mention,
-    Equation,
-}
-
 /// 📘 Rich text object limits
 ///
 /// Refer to the request limits documentation page for information about limits
@@ -29,9 +18,6 @@ pub enum RichTextType {
 /// for developers to access unformatted text from the Notion block.
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 pub struct RichText {
-    // /// The type of this rich text object.
-    #[serde(rename = "type")]
-    pub type_: RichTextType,
     /// An object containing type-specific configuration.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub annotations: Option<Annotations>,
@@ -50,7 +36,6 @@ impl RichText {
     pub fn new_text(plain_text: impl Into<String>) -> Self {
         let a = plain_text.into();
         Self {
-            type_: RichTextType::Text,
             annotations: None,
             plain_text: None,
             href: None,
@@ -65,7 +50,6 @@ impl RichText {
 
     pub fn new_mention(mention: Mention) -> Self {
         Self {
-            type_: RichTextType::Mention,
             annotations: None,
             plain_text: None,
             href: None,
@@ -75,7 +59,6 @@ impl RichText {
 
     pub fn new_equation(expression: String) -> Self {
         Self {
-            type_: RichTextType::Equation,
             annotations: None,
             plain_text: None,
             href: None,
@@ -143,7 +126,7 @@ impl RichText {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
-#[serde(rename_all = "snake_case", untagged)]
+#[serde(rename_all = "snake_case", tag = "type")]
 pub enum RichTextData {
     Text {
         text: Text,

@@ -14,9 +14,7 @@ impl TableOfContents {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl TableOfContents {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::TableOfContents {
             table_of_contents: self,

@@ -12,9 +12,7 @@ impl Equation {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Equation {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Equation { equation: self })
     }

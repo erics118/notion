@@ -18,9 +18,7 @@ impl NumberedListItem {
     pub fn builder() -> Self {
         Self::default()
     }
-}
 
-impl NumberedListItem {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::NumberedListItem {
             numbered_list_item: self,

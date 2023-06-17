@@ -25,9 +25,7 @@ impl Heading2 {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl Heading2 {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Heading2 { heading_2: self })
     }

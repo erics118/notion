@@ -48,13 +48,9 @@ pub mod error;
 use std::str::FromStr;
 
 use anyhow::Result;
-use clap::Parser;
 use notion::{client::Notion, model::ids::BlockId};
 
-use crate::{
-    cli::{Cli, Commands},
-    config::{load_config, Config},
-};
+use crate::config::{load_config, Config};
 
 #[allow(unused)]
 mod ids {
@@ -80,8 +76,9 @@ pub async fn main() -> Result<()> {
     // TODO: color does not work in a Block
     // but, color does work in a RichText
 
+    // TODO: callout block still broken
     let res = notion
-        .retrieve_block(BlockId::from_str(ids::EXTERNAL_FILE_BLOCK)?)
+        .retrieve_block(BlockId::from_str(ids::CALLOUT_BLOCK)?)
         .await?;
 
     println!("{:#?}", res);

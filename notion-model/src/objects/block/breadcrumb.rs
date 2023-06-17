@@ -14,9 +14,7 @@ impl Breadcrumb {
     pub fn new() -> Self {
         Self::default()
     }
-}
-
-impl Breadcrumb {
+    
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::Breadcrumb { breadcrumb: self })
     }

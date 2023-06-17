@@ -18,9 +18,7 @@ impl BulletedListItem {
     pub fn new() -> Self {
         Self::default()
     }
-}
 
-impl BulletedListItem {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::BulletedListItem {
             bulleted_list_item: self,
@@ -36,30 +34,4 @@ impl BulletedListItem {
         self.color = color;
         self
     }
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    // #[test]
-    // fn empty() {
-    //     assert_eq!(
-    //         serde_json::to_string(&BulletedListItem::new().build_block()).
-    // unwrap(),         r#"{"object":"block","type":"bulleted_list_item","
-    // bulleted_list_item":{}}"#,     );
-    // }
-
-    // #[test]
-    // fn rich_text() {
-    //     assert_eq!(
-    //         serde_json::to_string(
-    //             &BulletedListItem::new()
-    //                 .rich_text(vec![RichText::new_text("hello")])
-    //                 .build_block()
-    //         )
-    //         .unwrap(),
-    //         r#"{"object":"block","type":"bulleted_list_item","
-    // bulleted_list_item":{}}"#,     );
-    // }
 }

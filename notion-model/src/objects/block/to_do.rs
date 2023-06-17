@@ -20,9 +20,7 @@ impl ToDo {
     pub fn builder() -> Self {
         Self::default()
     }
-}
 
-impl ToDo {
     pub fn build_block(self) -> BlockBuilder {
         BlockBuilder::new(BlockData::ToDo { to_do: self })
     }
