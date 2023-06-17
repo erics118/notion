@@ -15,7 +15,7 @@ pub struct Callout {
 impl Callout {
     pub fn with_emoji(emoji: String) -> Self {
         Self {
-            icon: FileOrEmoji::Emoji(Emoji { emoji }),
+            icon: FileOrEmoji::Emoji { emoji },
             color: Default::default(),
             rich_text: Default::default(),
         }

@@ -60,7 +60,9 @@ mod ids {
     pub const TOGGLE_BLOCK: &str = "413085318c3741808899ada14b5e8095";
     pub const INTERNAL_FILE_BLOCK: &str = "20017e7c5a3e42858f92abf2ca237c55";
     pub const EXTERNAL_FILE_BLOCK: &str = "ea3b7f53f121486c9e129e2d54fdbc1f";
-    pub const CALLOUT_BLOCK: &str = "7d7771b0b76442548e2c5d1ac8bbb617";
+    pub const CALLOUT_INTERNAL_AKA_IMAGE_BLOCK: &str = "7d7771b0b76442548e2c5d1ac8bbb617";
+    pub const CALLOUT_EMOJI_BLOCK: &str = "1a3c9a923fdc4e79a57e0c9fcf65d092";
+    pub const CALLOUT_ICON_BLOCK: &str = "eccbd66c5b584823b14b7229c5a39e17";
 
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
 }
@@ -76,9 +78,9 @@ pub async fn main() -> Result<()> {
     // TODO: color does not work in a Block
     // but, color does work in a RichText
 
-    // TODO: callout block still broken
+    // TODO: callout block still broken, for custom images
     let res = notion
-        .retrieve_block(BlockId::from_str(ids::CALLOUT_BLOCK)?)
+        .retrieve_block(BlockId::from_str(ids::CALLOUT_INTERNAL_AKA_IMAGE_BLOCK)?)
         .await?;
 
     println!("{:#?}", res);

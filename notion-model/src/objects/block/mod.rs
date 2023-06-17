@@ -1,7 +1,10 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use self::video::Video;
+use self::{
+    file::{ExternalFile, InternalFile},
+    video::Video,
+};
 use super::{parent::BlockParent, user::PartialUser};
 use crate::ids::BlockId;
 
@@ -231,8 +234,9 @@ pub struct Emoji {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum FileOrEmoji {
-    Emoji(Emoji),
-    File(File),
+    Emoji { emoji: String },
+    File { file: InternalFile },
+    External { external: ExternalFile },
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]

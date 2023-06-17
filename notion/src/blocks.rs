@@ -123,7 +123,7 @@ impl Notion {
             .await?;
 
         // let text = test_json();
-        // println!("{}", text);
+        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 
