@@ -52,7 +52,7 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{block::*, rich_text::RichText},
+        objects::{block::{*, synced_block::SyncedFrom}, rich_text::RichText},
     },
 };
 
@@ -103,30 +103,18 @@ pub async fn main() -> Result<()> {
         .append_block_children(
             BlockId::from_str(ids::PAGE)?,
             vec![
-                ColumnList::new()
+                SyncedBlock::new()
+                    .synced_from(Some(SyncedFrom {
+                        block_id: BlockId::from_str("140029e0-2894-4f99-be08-61b64e0bf3a8")?,
+                    }))
                     .children(Some(vec![
-                        Column::new()
-                            .children(Some(vec![
-                                Paragraph::new()
-                                    .rich_text(vec![RichText::new_text("wubba")])
-                                    .build(),
-                            ]))
-                            .build(),
-                        Column::new()
-                            .children(Some(vec![
-                                Paragraph::new()
-                                    .rich_text(vec![RichText::new_text("wubba")])
-                                    .build(),
-                            ]))
+                        Paragraph::new()
+                            .rich_text(vec![RichText::new_text("Hello World")])
                             .build(),
                     ]))
                     .build(),
             ],
         )
-        .await?;
-
-    let res = notion
-        .retrieve_block(BlockId::from_str_unchecked(ids::COLUMN_PARENT))
         .await?;
 
     println!("{:#?}", res);

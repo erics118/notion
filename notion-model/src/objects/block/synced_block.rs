@@ -18,10 +18,17 @@ pub struct SyncedBlock {
     ///
     /// # Duplicate synced block
     /// The value of the synced_from is an object containing a [`BlockId`]
-    pub synced_from: Option<BlockId>,
-    /// The nested children. cannot be `None` when making the API call, but the
-    /// API will return it as None.
+    pub synced_from: Option<SyncedFrom>,
+    /// The nested children. when calling the API, if is None, creates a
+    /// Paragraph block
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub children: Option<Vec<Block>>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, Copy)]
+#[serde(tag = "type", rename = "block_id")]
+pub struct SyncedFrom {
+    pub block_id: BlockId,
 }
 
 impl SyncedBlock {
@@ -34,7 +41,7 @@ impl SyncedBlock {
         Block::new(BlockData::SyncedBlock { synced_block: self })
     }
 
-    pub fn synced_from(mut self, synced_from: Option<BlockId>) -> Self {
+    pub fn synced_from(mut self, synced_from: Option<SyncedFrom>) -> Self {
         self.synced_from = synced_from;
         self
     }
