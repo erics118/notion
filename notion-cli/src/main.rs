@@ -57,7 +57,7 @@ use notion::{
             block::*,
             color::Color,
             rich_text::{
-                DatabaseMention, DateMention, Mention, PageMention, RichText, UserMention,
+                DatabaseMention, DateMention, Equation, Mention, PageMention, RichText, UserMention,
             },
         },
     },
@@ -73,6 +73,10 @@ mod ids {
     pub const DATABASE: &str = "41ef19e3335a434281c95cbec7345198";
 }
 
+// TODO: test all block structs for children, from the API, and from the app
+// TODO: make sure all block structs have builder function for everything
+// TODO: maybe somehow force ColumnList to have Column as children
+// TODO: maybe somehow force Table to have TableRow as children
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
@@ -86,19 +90,10 @@ pub async fn main() -> Result<()> {
             BlockId::from_str(ids::PAGE)?,
             vec![
                 Paragraph::new()
-                    .rich_text(vec![RichText::new_mention(
-                        DateMention::new(
-                            "2017-04-07T11:11:23.348Z"
-                                .parse::<chrono::DateTime<Utc>>()
-                                .context("a")?,
-                            // chrono::NaiveDate::from_ymd_opt(2015, 9, 5)
-                            //     .unwrap()
-                            //     .and_hms_opt(23, 56, 4)
-                            //     .unwrap(),
-                        )
-                        .build(),
-                        // UserMention::new(UserId::from_str(ids::USER)?).build(),
-                    )])
+                    .rich_text(vec![
+                        RichText::new_text("Hello, world!"),
+                        RichText::new_equation("x^2 + y^2 = z^2"),
+                    ])
                     .build(),
             ],
         )

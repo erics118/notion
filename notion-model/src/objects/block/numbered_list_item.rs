@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
+/// # Numbered list item block
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct NumberedListItem {
     /// The rich text displayed in the block.

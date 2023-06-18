@@ -2,6 +2,9 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
+/// # Divider block
+///
+/// Divider block objects do not contain any information.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct Divider {
     /// This is present so that serde serializes this into `{}` rather than as

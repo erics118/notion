@@ -1,10 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use self::{
-    file::{ExternalFile, InternalFile},
-    video::Video,
-};
 use super::{parent::BlockParent, rich_text::Mention, user::PartialUser};
 use crate::ids::BlockId;
 
@@ -19,7 +15,7 @@ pub mod column;
 pub mod column_list;
 pub mod divider;
 pub mod embed;
-pub mod equation;
+// pub mod equation;
 pub mod file;
 pub mod heading_1;
 pub mod heading_2;
@@ -50,7 +46,7 @@ pub use column::Column;
 pub use column_list::ColumnList;
 pub use divider::Divider;
 pub use embed::Embed;
-pub use equation::Equation;
+// pub use equation::Equation;
 pub use file::File;
 pub use heading_1::Heading1;
 pub use heading_2::Heading2;
@@ -68,6 +64,7 @@ pub use table_row::TableRow;
 pub use template::Template;
 pub use to_do::ToDo;
 pub use toggle::Toggle;
+pub use video::Video;
 
 /// Fields common to all block types.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -167,9 +164,9 @@ pub enum BlockData {
     Embed {
         embed: Embed,
     },
-    Equation {
-        equation: Equation,
-    },
+    // Equation {
+    //     equation: Equation,
+    // },
     File {
         file: File,
     },
@@ -231,29 +228,6 @@ pub enum BlockData {
         video: Video,
     },
     Unsupported,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-#[serde(rename = "emoji")]
-pub struct Emoji {
-    pub emoji: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(rename_all = "snake_case", tag = "type")]
-pub enum FileOrEmoji {
-    Emoji { emoji: String },
-    File { file: InternalFile },
-    External { external: ExternalFile },
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-pub enum MentionType {
-    Database,
-    Data,
-    LinkPreview,
-    Page,
-    User,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]

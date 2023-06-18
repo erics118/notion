@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
+/// # Toggle block
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Toggle {
     /// The rich text displayed in the block.

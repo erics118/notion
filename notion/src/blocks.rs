@@ -6,17 +6,16 @@ use notion_model::{
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError};
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "object", rename = "list", rename_all = "snake_case")]
-pub struct List<T> {
-    pub results: Vec<T>,
-    // TODO: next_cursor
-    // pub next_cursor: Value
-    pub has_more: bool,
-    // TODO: type field
-}
+use crate::{client::Notion, errors::NotionApiError, model::paginated::List, test_json};
 
+/// Internal module to store the results of the API calls.
+///
+/// The API returns a JSON object with a `object` field that indicates the type
+/// of the result. This module defines the types of the result and the
+/// deserialization logic.
+///
+/// For the user-facing API, we return the deserialized result or an error,
+/// rather than a struct in this module.
 mod result_types {
     use serde::{Deserialize, Serialize};
 
@@ -24,19 +23,19 @@ mod result_types {
     #[serde(tag = "object", rename_all = "snake_case")]
     pub enum Block {
         Block(notion_model::objects::block::Block),
-        Error(crate::errors::AError),
+        Error(crate::errors::ErrorInfo),
     }
 
     #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
     #[serde(tag = "object", rename_all = "snake_case")]
     pub enum List<T> {
         List(super::List<T>),
-        Error(crate::errors::AError),
+        Error(crate::errors::ErrorInfo),
     }
 }
 
 impl Notion {
-    /// Append block children
+    /// # Append block children
     ///
     /// Creates and appends new children blocks to the parent block_id
     /// specified. Blocks can be parented by other blocks, pages, or databases.
@@ -48,8 +47,8 @@ impl Notion {
     /// to the bottom of the parent block. Once a block is appended as a child,
     /// it can't be moved elsewhere via the API.
     ///
-    /// For blocks that allow children, we allow up to **two** levels of nesting
-    /// in a single request.
+    /// For blocks that allow children, we allow up to two levels of nesting in
+    /// a single request.
     ///
     /// # 📘 Integration capabilities
     ///
@@ -93,12 +92,11 @@ impl Notion {
         }
     }
 
-    /// Retrieve a block
+    /// # Retrieve a block
     ///
-    /// Retrieves a [`Block`] object using the ID specified.
-    ///
-    /// 📘 If a block contains the key `has_children: true`, use the Retrieve
-    /// block children endpoint to get the list of children
+    /// # 📘
+    /// If a block contains the key has_children: true, use the Retrieve block
+    /// children endpoint to get the list of children
     ///
     /// # 📘 Integration capabilities
     ///
@@ -133,18 +131,17 @@ impl Notion {
         }
     }
 
-    /// Retrieve block children
+    /// # Retrieve block children
     ///
     /// Returns a paginated array of child block objects contained in the block
     /// using the ID specified. In order to receive a complete representation of
     /// a block, you may need to recursively retrieve the block children of
     /// child blocks.
     ///
-    /// 🚧 Returns only the first level of children for the specified block. See
+    /// # 🚧
+    /// Returns only the first level of children for the specified block. See
     /// block objects for more detail on determining if that block has nested
-    /// children.
-    ///
-    /// The response may contain fewer than page_size of results.
+    /// children. The response may contain fewer than page_size of results.
     ///
     /// See Pagination for details about how to use a cursor to iterate through
     /// the list.
@@ -171,8 +168,7 @@ impl Notion {
             .text()
             .await?;
 
-            println!("{}", text);
-
+        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::List<Block>>(&text)
             .context("failed to turn into result_types::List<Block>")?;
@@ -183,7 +179,7 @@ impl Notion {
         }
     }
 
-    /// Update a block
+    /// # Update a block
     ///
     /// Updates the content for the specified block_id based on the block type.
     /// Supported fields based on the block object type (see Block object for
@@ -216,9 +212,7 @@ impl Notion {
     /// is_toggleable property in the request. Toggle can be added and removed
     /// from a heading block. However, you cannot remove toggle from a heading
     /// block if it has children. All children MUST be removed before revoking
-    /// toggle from a heading block.
-    ///
-    /// # Success
+    /// toggle from a heading block. Success
     ///
     /// Returns a 200 HTTP response containing the updated block object on
     /// success.
@@ -229,9 +223,7 @@ impl Notion {
     /// capabilities. Attempting to call this API without update content
     /// capabilities will return an HTTP response with a 403 status code. For
     /// more information on integration capabilities, see the capabilities
-    /// guide.
-    ///
-    /// # Errors
+    /// guide. Errors
     ///
     /// Returns a 404 HTTP response if the block doesn't exist, has been
     /// archived, or if the integration doesn't have access to the page.
@@ -241,6 +233,7 @@ impl Notion {
     ///
     /// Returns a 400 or a 429 HTTP response if the request exceeds the request
     /// limits.
+
     pub async fn update_block(&self, block_id: BlockId) -> Result<Block> {
         let text = self
             .api_get(&format!("blocks/{block_id}"))
@@ -257,7 +250,7 @@ impl Notion {
         }
     }
 
-    /// Delete a block
+    /// # Delete a block
     ///
     /// Sets a Block object, including page blocks, to archived: true using the
     /// ID specified. Note: in the Notion UI application, this moves the block

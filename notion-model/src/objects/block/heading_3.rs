@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
+/// # Heading 3 block
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 #[serde(rename = "heading_3")]
 pub struct Heading3 {

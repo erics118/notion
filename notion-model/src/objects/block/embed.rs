@@ -2,7 +2,12 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
-/// # 🚧 Differences in embed blocks between the Notion app and the API
+/// # Embed block
+///
+/// Embed block objects include information about another website displayed
+/// within the Notion UI.
+///
+/// 🚧 Differences in embed blocks between the Notion app and the API
 ///
 /// The Notion app uses a 3rd-party service, iFramely, to validate and request
 /// metadata for embeds given a URL. This works well in a web app because Notion

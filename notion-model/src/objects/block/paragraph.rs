@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use super::{Block, BlockData};
 use crate::objects::{color::Color, rich_text::RichText};
 
+/// # Paragraph block
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 #[serde(rename = "paragraph")]
 pub struct Paragraph {

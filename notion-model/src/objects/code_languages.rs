@@ -71,11 +71,9 @@ pub enum CodeLanguage {
     #[serde(rename = "plain text")]
     #[default]
     PlainText,
-    #[serde(rename = "powershell")]
     PowerShell,
     Prolog,
     Protobuf,
-    #[serde(rename = "purescript")]
     PureScript,
     Python,
     R,
@@ -99,7 +97,6 @@ pub enum CodeLanguage {
     Vhdl,
     #[serde(rename = "visual basic")]
     VisualBasic,
-    #[serde(rename = "webassembly")]
     WebAssembly,
     Xml,
     Yaml,

@@ -2,14 +2,34 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
+/// # Table block
+///
+/// Table block objects are parent blocks for table row children.
+///
+/// # 🚧
+/// table_width can only be set when the table is first created.
+///
+/// Note that the number of columns in a table can only be set when the table is
+/// first created. Calls to the Update block endpoint to update table_width
+/// fail.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Table {
-    /// max table width is 100
+    /// The number of columns in the table.
+    ///
+    /// Note that this cannot be changed via the API once a table is
+    /// created.
+    ///
+    /// The maximum table width is 100.
     pub table_width: u32,
+    /// Whether the table has a column header. If true, then the first row in
+    /// the table appears visually distinct from the other rows.
     pub has_column_header: bool,
+    /// Whether the table has a header row. If true, then the first column in
+    /// the table appears visually distinct from the other columns.
     pub has_row_header: bool,
-    /// must be TableRow, and not None when calling api, even though api returns
-    /// it as None
+    /// The nested children. Must be of the [`BlockData::TableRow`] type. This
+    /// field cannot be `None` when making the API call. But, the API will
+    /// return it as `None`.
     pub children: Option<Vec<Block>>,
 }
 

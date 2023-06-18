@@ -10,7 +10,7 @@ pub enum Error {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-pub struct AError {
+pub struct ErrorInfo {
     pub status: u16,
     pub code: String,
     pub message: String,
@@ -64,10 +64,10 @@ pub enum NotionApiError {
     Unknown,
 }
 
-impl From<AError> for NotionApiError {
-    fn from(value: AError) -> Self {
+impl From<ErrorInfo> for NotionApiError {
+    fn from(value: ErrorInfo) -> Self {
         match value {
-            AError {
+            ErrorInfo {
                 status: 400,
                 message,
                 code,
@@ -79,37 +79,37 @@ impl From<AError> for NotionApiError {
                 "missing_version" => Self::MissingVersion(message),
                 _ => Self::Unknown,
             },
-            AError {
+            ErrorInfo {
                 status: 401,
                 message,
                 ..
             } => Self::Unauthorized(message),
-            AError {
+            ErrorInfo {
                 status: 403,
                 message,
                 ..
             } => Self::RestrictedResource(message),
-            AError {
+            ErrorInfo {
                 status: 404,
                 message,
                 ..
             } => Self::ObjectNotFound(message),
-            AError {
+            ErrorInfo {
                 status: 409,
                 message,
                 ..
             } => Self::ConflictError(message),
-            AError {
+            ErrorInfo {
                 status: 429,
                 message,
                 ..
             } => Self::RateLimited(message),
-            AError {
+            ErrorInfo {
                 status: 500,
                 message,
                 ..
             } => Self::InternalServerError(message),
-            AError {
+            ErrorInfo {
                 status: 503,
                 message,
                 code,
@@ -118,7 +118,7 @@ impl From<AError> for NotionApiError {
                 "database_connection_unavailable" => Self::DatabaseConnectionUnavailable(message),
                 _ => Self::Unknown,
             },
-            AError {
+            ErrorInfo {
                 status: 504,
                 message,
                 ..

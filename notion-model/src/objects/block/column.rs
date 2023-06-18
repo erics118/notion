@@ -2,6 +2,12 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
+/// # Column block
+///
+/// Columns are parent blocks for any block types listed in this reference
+/// except for other columns. They do not contain any information within the
+/// column property. They can only be appended to column_lists.
+///
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Column {
     /// The nested blocks. cannot be `None` when making the API call, but the

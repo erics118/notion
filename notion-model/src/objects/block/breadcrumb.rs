@@ -2,9 +2,12 @@ use serde::{Deserialize, Serialize};
 
 use super::{Block, BlockData};
 
+/// # Breadcrumb block
+///
+/// Breadcrumb block objects do not contain any information.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy, Default)]
 pub struct Breadcrumb {
-    /// This is present so that serde serializes this into `{}` rather than as
+    /// *This is present so that serde serializes this into `{}` rather than as
     /// `null`.
     #[serde(skip)]
     _nothing: (),

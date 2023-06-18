@@ -1,13 +1,18 @@
-use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use crate::objects::rich_text::RichText;
+use crate::objects::{
+    file_and_emoji::{ExternalFile, InternalFile},
+    rich_text::RichText,
+};
 
-/// no file builder.
-/// The Notion API does not yet support uploading files to Notion.
+/// # File block
+///
+/// *The Notion API does not support uploading files to Notion.
+///
+/// TODO: external file builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct File {
-    /// The caption of the file block.
+    /// The rich text in the caption of the block.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<Vec<RichText>>,
     /// A file object that details information about the file contained in
@@ -21,15 +26,4 @@ pub struct File {
 pub enum FileData {
     File { file: InternalFile },
     External { external: ExternalFile },
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct InternalFile {
-    pub url: String,
-    pub expiry_time: DateTime<Utc>,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-pub struct ExternalFile {
-    pub url: String,
 }

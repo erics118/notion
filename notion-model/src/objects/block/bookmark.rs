@@ -3,14 +3,15 @@ use serde::{Deserialize, Serialize};
 use super::{Block, BlockData};
 use crate::objects::rich_text::RichText;
 
+/// Bookmark block
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Bookmark {
-    /// The caption for the bookmark.
+    /// The rich text in the caption of the block.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<Vec<RichText>>,
     /// The link for the bookmark.
     ///
-    /// It is technically possible to make a bookmark without a caption, the
+    /// *It is technically possible to make a bookmark without a caption, the
     /// caption isn't shown until you have added a URL.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
