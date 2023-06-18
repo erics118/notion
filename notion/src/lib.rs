@@ -40,9 +40,13 @@
     clippy::unwrap_used
 )]
 
-pub mod client;
+pub use notion_model as model;
 
+pub mod client;
 pub mod errors;
+pub mod utils;
+
+pub(crate) mod result_types;
 
 mod authentication;
 mod blocks;
@@ -52,10 +56,6 @@ mod pages;
 mod search;
 mod users;
 
-pub mod utils;
-
-pub use notion_model as model;
-
-pub fn test_json() -> String {
+pub(crate) fn test_json() -> String {
     String::from_utf8_lossy(include_bytes!("../../test_data/block.json")).to_string()
 }

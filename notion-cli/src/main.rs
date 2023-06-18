@@ -63,6 +63,7 @@ mod ids {
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
     pub const USER: &str = "3e1fc0f5d02e48ae84c07ae06deece9f";
     pub const DATABASE: &str = "41ef19e3335a434281c95cbec7345198";
+    pub const DATABASE_PAGE: &str = "1866cccaa3f842c68cd8e5b0aabeebc8";
 }
 
 // TODO: test all block structs for children, from the API, and from the app
@@ -73,23 +74,7 @@ mod ids {
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
-
-    // let res = notion
-    //     .retrieve_block(BlockId::from_str_unchecked(ids::PARAGRAPH))
-    //     .await?;
-    let res = notion
-        .append_block_children(
-            BlockId::from_str(ids::PAGE)?,
-            vec![
-                Paragraph::new()
-                    .rich_text(vec![
-                        RichText::new_text("Hello, world!"),
-                        RichText::new_equation("x^2 + y^2 = z^2"),
-                    ])
-                    .build(),
-            ],
-        )
-        .await?;
+    let res = notion.retrieve_page(BlockId::from_str(ids::PAGE)?).await?;
 
     println!("{:#?}", res);
 

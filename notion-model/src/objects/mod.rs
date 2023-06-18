@@ -1,4 +1,7 @@
 pub mod block;
+
+pub mod properties;
+
 pub mod code_languages;
 pub mod color;
 pub mod comment;

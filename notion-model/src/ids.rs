@@ -165,4 +165,5 @@ uuid_id! {
 
 string_id! {
     WorkspaceId;
+    PropertyId;
 }

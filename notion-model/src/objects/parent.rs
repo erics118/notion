@@ -9,7 +9,7 @@ pub enum ParentData {
     #[serde(rename = "page_id")]
     Page(PageId),
     #[serde(rename = "workspace")]
-    Workspace,
+    Workspace(bool),
     #[serde(rename = "block_id")]
     Block(BlockId),
 }

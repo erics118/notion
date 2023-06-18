@@ -1,38 +1,9 @@
 use anyhow::{Context, Result};
-use notion_model::{
-    ids::{BlockId, NotionId},
-    objects::block::Block,
-};
+use notion_model::{ids::NotionId, objects::block::Block};
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError, model::paginated::List};
-
-/// Internal module to store the results of the API calls.
-///
-/// The API returns a JSON object with a `object` field that indicates the type
-/// of the result. This module defines the types of the result and the
-/// deserialization logic.
-///
-/// For the user-facing API, we return the deserialized result or an error,
-/// rather than a struct in this module.
-mod result_types {
-    use serde::{Deserialize, Serialize};
-
-    #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-    #[serde(tag = "object", rename_all = "snake_case")]
-    pub enum Block {
-        Block(notion_model::objects::block::Block),
-        Error(crate::errors::ErrorInfo),
-    }
-
-    #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-    #[serde(tag = "object", rename_all = "snake_case")]
-    pub enum List<T> {
-        List(super::List<T>),
-        Error(crate::errors::ErrorInfo),
-    }
-}
+use crate::{client::Notion, errors::NotionApiError, model::paginated::List, result_types};
 
 impl Notion {
     /// # Append block children
@@ -112,7 +83,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn retrieve_block(&self, block_id: BlockId) -> Result<Block> {
+    pub async fn retrieve_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_get(&format!("blocks/{block_id}"))
             .send()
@@ -160,7 +131,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn retrieve_block_children(&self, block_id: BlockId) -> Result<List<Block>> {
+    pub async fn retrieve_block_children(&self, block_id: impl NotionId) -> Result<List<Block>> {
         let text = self
             .api_get(&format!("blocks/{block_id}/children"))
             .send()
@@ -234,7 +205,7 @@ impl Notion {
     /// Returns a 400 or a 429 HTTP response if the request exceeds the request
     /// limits.
 
-    pub async fn update_block(&self, block_id: BlockId) -> Result<Block> {
+    pub async fn update_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_get(&format!("blocks/{block_id}"))
             .send()
@@ -274,7 +245,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn delete_block(&self, block_id: BlockId) -> Result<Block> {
+    pub async fn delete_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_delete(&format!("blocks/{block_id}"))
             .send()
