@@ -39,6 +39,7 @@
     clippy::expect_used,
     clippy::unwrap_used
 )]
+
 pub mod cli;
 pub mod config;
 pub mod error;

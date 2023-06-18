@@ -14,7 +14,7 @@ use serde::{Deserialize, Serialize};
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename = "list", rename_all = "snake_case")]
 pub struct List<T> {
-    ///     Whether the response includes the end of the list. false if there
+    /// Whether the response includes the end of the list. false if there
     /// are no more results. Otherwise, true.
     pub has_more: bool,
     /// A string that can be used to retrieve the next page of results by
