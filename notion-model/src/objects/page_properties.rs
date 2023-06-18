@@ -1,48 +1,8 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
+use super::{block::File, rich_text::RichText, user::PartialUser};
 use crate::ids::PropertyId;
-
-pub mod checkbox;
-pub mod created_by;
-pub mod created_time;
-pub mod date;
-pub mod email;
-pub mod files;
-pub mod formula;
-pub mod last_edited_by;
-pub mod last_edited_time;
-pub mod multi_select;
-pub mod number;
-pub mod people;
-pub mod phone_number;
-pub mod relation;
-pub mod rich_text;
-pub mod rollup;
-pub mod select;
-pub mod status;
-pub mod title;
-pub mod url;
-
-pub use checkbox::Checkbox;
-pub use created_by::CreatedBy;
-pub use created_time::CreatedTime;
-pub use date::Date;
-pub use email::Email;
-pub use files::Files;
-pub use formula::Formula;
-pub use last_edited_by::LastEditedBy;
-pub use last_edited_time::LastEditedTime;
-pub use multi_select::MultiSelect;
-pub use number::Number;
-pub use people::People;
-pub use phone_number::PhoneNumber;
-pub use relation::Relation;
-pub use rich_text::RichText;
-pub use rollup::Rollup;
-pub use select::Select;
-pub use status::Status;
-pub use title::Title;
-pub use url::Url;
 
 /// # Page properties
 ///
@@ -80,24 +40,77 @@ struct Property {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PropertyData {
-    Checkbox { checkbox: Checkbox },
-    // CreatedBy { created_by: CreatedBy },
-    // CreatedTime { created_time: CreatedTime },
+    Checkbox {
+        id: PropertyId,
+        checkbox: bool,
+    },
+    CreatedBy {
+        id: PropertyId,
+        created_by: PartialUser,
+    },
+    CreatedTime {
+        id: PropertyId,
+        created_time: DateTime<Utc>,
+    },
     // Date { date: Date },
-    // Email { email: Email },
-    // Files { files: Files },
-    // Formula { formula: Formula },
-    // LastEditedBy { last_edited_by: LastEditedBy },
-    // LastEditedTime { last_edited_time: LastEditedTime },
+    Email {
+        id: PropertyId,
+        email: Option<String>,
+    },
+    Files {
+        id: PropertyId,
+        files: Vec<File>,
+    },
+    Formula {
+        id: PropertyId,
+        // #[serde(flatten)]
+        formula: FormulaData,
+    },
+    LastEditedBy {
+        id: PropertyId,
+        last_edited_by: PartialUser,
+    },
+    LastEditedTime {
+        id: PropertyId,
+        last_edited_time: DateTime<Utc>,
+    },
     // MultiSelect { multi_select: MultiSelect },
-    // Number { number: Number },
-    // People { people: People },
-    // PhoneNumber { phone_number: PhoneNumber },
+    // TODO: see max
+    Number {
+        id: PropertyId,
+        number: Option<u32>,
+    },
+    People {
+        id: PropertyId,
+        people: Vec<PartialUser>,
+    },
+    PhoneNumber {
+        id: PropertyId,
+        phone_number: Option<String>,
+    },
     // Relation { relation: Relation },
     // Rollup { rollup: Rollup },
-    // RichText { rich_text: RichText },
+    RichText {
+        id: PropertyId,
+        rich_text: Vec<RichText>,
+    },
     // Select { select: Select },
     // Status { status: Status },
-    Title(Title),
-    // Url { url: Url },
+    Title {
+        id: PropertyId,
+        title: Vec<RichText>,
+    },
+    Url {
+        id: PropertyId,
+        url: Option<String>,
+    },
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum FormulaData {
+    Boolean { boolean: bool },
+    Date { date: DateTime<Utc> },
+    Number { number: u32 },
+    String { string: String },
 }

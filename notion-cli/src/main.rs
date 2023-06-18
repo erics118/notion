@@ -70,6 +70,9 @@ mod ids {
     pub const DATABASE_PAGE: &str = "1866cccaa3f842c68cd8e5b0aabeebc8";
 }
 
+// TODO: remove all tag = "type" and similar bc API does not use the "type"
+// field, but it is just for reference for apps to use
+
 // TODO: test all block structs for children, from the API, and from the app
 // TODO: make sure all block structs have builder function for everything
 // TODO: maybe somehow force ColumnList to have Column as children

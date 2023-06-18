@@ -41,8 +41,12 @@ current API version: 2022-06-28
     </details>
 
 - [x] pagination
-- [ ] page/database properties
-    - [ ] pagination of it
+- [ ] page properties
+    - [x] objects
+    - [ ] pagination
+- [ ] database properties
+    - [ ] objects
+    - [ ] pagination
 - [ ] capabilities
 - [ ] rate limiting
 - [ ] property size limits
@@ -59,7 +63,7 @@ current API version: 2022-06-28
   - [x] Delete a block DELETE
 - Pages
   - [ ] Create a page POST
-  - [ ] Retrieve a page GET
+  - [x] Retrieve a page GET
   - [ ] Retrieve a page property item GET
   - [ ] Update page properties PATCH
   - [ ] Archive a page DELETE

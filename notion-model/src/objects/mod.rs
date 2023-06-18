@@ -1,6 +1,6 @@
 pub mod block;
 
-pub mod properties;
+pub mod page_properties;
 
 pub mod code_languages;
 pub mod color;

@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use super::{
-    file_and_emoji::FileOrEmoji, parent::BlockParent, properties::PropertyData, user::PartialUser,
+    file_and_emoji::FileOrEmoji, parent::BlockParent, page_properties::PropertyData, user::PartialUser,
 };
 
 /// All pages have a Parent. If the parent is a database, the property values
