@@ -25,7 +25,7 @@
 //!
 //! # Conventions
 //!
-//! The base URL to send all API requests is https://api.notion.com. HTTPS is
+//! The base URL to send all API requests is <https://api.notion.com>. HTTPS is
 //! required for all API requests.
 //!
 //! The Notion API follows RESTful conventions when possible, with most
@@ -72,7 +72,7 @@
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
     unstable_features,
-    // unused_crate_dependencies,
+    unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
     unused_lifetimes,

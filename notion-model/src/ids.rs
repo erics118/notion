@@ -5,7 +5,7 @@ use std::fmt;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-pub trait NotionId: fmt::Display {}
+pub trait NotionId: fmt::Display + Send {}
 
 macro_rules! uuid_id {
     ($($name:ident;)*) => {

@@ -6,7 +6,7 @@ use notion_model::{
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError, model::paginated::List, test_json};
+use crate::{client::Notion, errors::NotionApiError, model::paginated::List};
 
 /// Internal module to store the results of the API calls.
 ///

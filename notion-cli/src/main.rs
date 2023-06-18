@@ -22,8 +22,8 @@
     trivial_casts,
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
-    // unstable_features,
-    // unused_crate_dependencies,
+    unstable_features,
+    unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
     unused_lifetimes,
@@ -39,9 +39,6 @@
     clippy::expect_used,
     clippy::unwrap_used
 )]
-#![feature(lazy_cell)]
-use anyhow::Context;
-use chrono::Utc;
 pub mod cli;
 pub mod config;
 pub mod error;
@@ -52,14 +49,8 @@ use anyhow::Result;
 use notion::{
     client::Notion,
     model::{
-        ids::{BlockId, DatabaseId, PageId, UserId},
-        objects::{
-            block::*,
-            color::Color,
-            rich_text::{
-                DatabaseMention, DateMention, Equation, Mention, PageMention, RichText, UserMention,
-            },
-        },
+        ids::BlockId,
+        objects::{block::*, rich_text::RichText},
     },
 };
 

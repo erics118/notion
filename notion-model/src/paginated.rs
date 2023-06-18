@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 /// Paginated list of blocks
 ///
-/// see https://developers.notion.com/reference/intro#parameters-for-paginated-requests
+/// see <https://developers.notion.com/reference/intro#parameters-for-paginated-requests>
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename = "list", rename_all = "snake_case")]
 pub struct List<T> {

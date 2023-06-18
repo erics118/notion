@@ -1,4 +1,4 @@
-use chrono::{DateTime, NaiveDateTime, Utc};
+use chrono::{DateTime, Utc};
 use chrono_tz::Tz;
 use serde::{Deserialize, Serialize};
 
@@ -177,7 +177,7 @@ pub struct Annotations {
 /// Notion supports inline LaTeX equations as rich text objects.
 ///
 /// For some reason, the Notion API documents this
-/// at https://developers.notion.com/reference/block#equation, but this is
+/// at <https://developers.notion.com/reference/block#equation>, but this is
 /// incorrect, as an Equation is not a block, but a type of rich text object.
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]

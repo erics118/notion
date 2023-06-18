@@ -23,7 +23,7 @@
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
     unstable_features,
-    // unused_crate_dependencies,
+    unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
     unused_lifetimes,

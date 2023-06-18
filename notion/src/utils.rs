@@ -23,10 +23,9 @@ pub fn get_page_id_from_url(url: &str) -> Option<PageId> {
             "www.notion.site",
         ]
         .contains(&split_url[i])
+            && i + 1 < split_url.len()
         {
-            if i + 1 < split_url.len() {
-                return split_url.get(i + 2).and_then(|s| PageId::from_str(s).ok());
-            }
+            return split_url.get(i + 2).and_then(|s| PageId::from_str(s).ok());
         }
     }
 
@@ -44,12 +43,11 @@ pub fn get_workspace_from_url(url: &str) -> Option<WorkspaceId> {
             "www.notion.site",
         ]
         .contains(&split_url[i])
+            && i + 2 < split_url.len()
         {
-            if i + 2 < split_url.len() {
-                return split_url
-                    .get(i + 1)
-                    .and_then(|s| WorkspaceId::from_str(s).ok());
-            }
+            return split_url
+                .get(i + 1)
+                .and_then(|s| WorkspaceId::from_str(s).ok());
         }
     }
 

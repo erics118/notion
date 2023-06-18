@@ -69,7 +69,6 @@ pub use video::Video;
 /// Fields common to all block types.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename = "block")]
-// the `type` field is disregarded
 pub struct Block {
     /// Identifier for the block.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -78,9 +77,6 @@ pub struct Block {
     /// Information about the block's parent. See [`BlockParent`] for details.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<BlockParent>,
-
-    /// Type of block. See [`BlockType`] for details.
-    // pub r#type: BlockType,
 
     /// Date and time when this block was created. Formatted as an ISO 8601 date
     /// time string.
