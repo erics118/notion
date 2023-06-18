@@ -56,6 +56,7 @@ mod pages;
 mod search;
 mod users;
 
+#[allow(unused)]
 pub(crate) fn test_json() -> String {
     String::from_utf8_lossy(include_bytes!("../../test_data/block.json")).to_string()
 }

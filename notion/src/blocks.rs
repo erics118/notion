@@ -3,7 +3,6 @@ use notion_model::{
     ids::NotionId,
     objects::block::{Block, BlockData},
 };
-use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
 use crate::{client::Notion, errors::NotionApiError, model::paginated::List, result_types};
@@ -51,7 +50,6 @@ impl Notion {
 
         let text = self
             .api_patch(&format!("blocks/{block_id}/children"))
-            .header(CONTENT_TYPE, "application/json")
             .json(&AppendBlockChildren { children })
             .send()
             .await?
@@ -93,9 +91,6 @@ impl Notion {
             .await?
             .text()
             .await?;
-
-        // let text = test_json();
-        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 
@@ -141,8 +136,6 @@ impl Notion {
             .await?
             .text()
             .await?;
-
-        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::List<Block>>(&text)
             .context("failed to turn into result_types::List<Block>")?;
@@ -244,27 +237,14 @@ impl Notion {
         };
         let body =
             serde_json::to_string(&partial_block).context("failed to serialize partial_block")?;
-        // let body = r#"{
-        //     "paragraph": {
-        //       "rich_text": [{
-        //         "text": { "content": "Lacifdsafdsfasnato kale" }
-        //         }]
-        //     }
-        //   }"#;
-
-        println!("{}", body);
 
         let text = self
-            .http
-            .patch(self.api_url(&format!("blocks/{block_id}")))
-            .header(CONTENT_TYPE, "application/json")
+            .api_patch(&format!("blocks/{block_id}"))
             .body(body)
             .send()
             .await?
             .text()
             .await?;
-
-        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 

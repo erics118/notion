@@ -91,9 +91,6 @@ impl Notion {
             .text()
             .await?;
 
-        // let text = test_json();
-        println!("{}", text);
-
         let res = serde_json::from_str::<result_types::Page>(&text)?;
 
         match res {

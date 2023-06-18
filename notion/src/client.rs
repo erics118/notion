@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use notion_model::constants::{API_BASE_URL, API_VERSION};
 use reqwest::{
-    header::{self, HeaderMap, HeaderValue},
+    header::{self, HeaderMap, HeaderValue, CONTENT_TYPE},
     Client, ClientBuilder, RequestBuilder,
 };
 
@@ -9,7 +9,7 @@ use crate::errors::Error;
 
 #[derive(Debug, Clone)]
 pub struct Notion {
-    pub http: Client,
+    http: Client,
 }
 
 macro_rules! api_method {
@@ -31,6 +31,7 @@ impl Notion {
         let mut headers = HeaderMap::new();
 
         headers.insert("Notion-Version", HeaderValue::from_static(API_VERSION));
+        headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
 
         let auth = HeaderValue::from_str(&format!("Bearer {}", api_token))
             .context(Error::InvalidApiToken)?;

@@ -44,17 +44,17 @@ pub mod cli;
 pub mod config;
 pub mod error;
 
+#[allow(unused)]
 use std::str::FromStr;
 
-use anyhow::{Result, Context};
+#[allow(unused)]
+use anyhow::{Context, Result};
+#[allow(unused)]
 use notion::{
     client::Notion,
     model::{
-        ids::BlockId,
-        objects::{
-            block::{Heading2, Paragraph},
-            rich_text::RichText,
-        },
+        ids::*,
+        objects::{block::*, rich_text::RichText},
     },
     utils,
 };
@@ -78,10 +78,16 @@ mod ids {
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
-    // let res = notion.retrieve_page(BlockId::from_str(ids::PAGE)?, None).await?;
 
     let res = notion
-        .delete_block(utils::get_block_id_from_url("https://www.notion.so/erics118/67ace61a7fd24ab78e892b1dc9b252e4?pvs=4#6f8fc16a2d444926adc4577176ec773f").context("f")?)
+        .append_block_children(
+            BlockId::from_str(ids::PAGE)?,
+            vec![
+                Heading1::new()
+                    .rich_text(vec![RichText::new_text("Hello, world!")])
+                    .build(),
+            ],
+        )
         .await?;
 
     println!("{:#?}", res);
