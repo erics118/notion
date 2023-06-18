@@ -3,14 +3,11 @@ use serde::{Deserialize, Serialize};
 use crate::ids::{BlockId, DatabaseId, PageId};
 
 #[derive(Copy, Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(rename_all = "snake_case")]
 pub enum ParentData {
-    #[serde(rename = "database")]
-    Database(DatabaseId),
-    #[serde(rename = "page_id")]
+    DatabaseId(DatabaseId),
     Page(PageId),
-    #[serde(rename = "workspace")]
     Workspace(bool),
-    #[serde(rename = "block_id")]
     Block(BlockId),
 }
 

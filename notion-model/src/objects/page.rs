@@ -3,7 +3,9 @@ use std::collections::HashMap;
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{file_and_emoji::FileOrEmoji, parent::BlockParent, user::PartialUser, properties::PropertyData};
+use super::{
+    file_and_emoji::FileOrEmoji, parent::BlockParent, properties::PropertyData, user::PartialUser,
+};
 
 /// All pages have a Parent. If the parent is a database, the property values
 /// conform to the schema laid out database's properties. Otherwise, the only

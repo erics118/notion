@@ -80,7 +80,7 @@ struct Property {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PropertyData {
-    // Checkbox { checkbox: Checkbox },
+    Checkbox { checkbox: Checkbox },
     // CreatedBy { created_by: CreatedBy },
     // CreatedTime { created_time: CreatedTime },
     // Date { date: Date },

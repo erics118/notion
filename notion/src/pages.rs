@@ -3,15 +3,6 @@ use notion_model::{ids::NotionId, objects::page::Page};
 
 use crate::{client::Notion, errors::NotionApiError, result_types};
 
-/// Internal module to store the results of the API calls.
-///
-/// The API returns a JSON object with a `object` field that indicates the type
-/// of the result. This module defines the types of the result and the
-/// deserialization logic.
-///
-/// For the user-facing API, we return the deserialized result or an error,
-/// rather than a struct in this module.
-
 impl Notion {
     /// # Retrieve a page
     ///
@@ -61,6 +52,11 @@ impl Notion {
     /// Retrieve a page property endpoint for the specific property to get its
     /// complete reference list.
     ///
+    /// # Implementation details
+    ///
+    /// We limit the number of references returned in the response object to 25
+    /// by truncating the list of references to 25.
+    ///
     /// # 📘 Integration capabilities
     ///
     /// This endpoint requires an integration to have read content capabilities.
@@ -78,18 +74,20 @@ impl Notion {
         page_id: impl NotionId,
         filter_properties: Option<Vec<&str>>,
     ) -> Result<Page> {
-        // let query = filter_properties.
-        //     .iter()
-        //     .map(|p| ("filter_properties", *p))
-        //     .collect::<Vec<_>>();
+        let query = filter_properties
+            .iter()
+            .map(|p| ("filter_properties", p))
+            .collect::<Vec<_>>();
 
         let text = self
             .api_get(&format!("pages/{page_id}"))
-            // .query(&query)
+            .query(&query)
             .send()
             .await?
             .text()
             .await?;
+
+        println!("{text}");
 
         let res = serde_json::from_str::<result_types::Page>(&text)?;
 
