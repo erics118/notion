@@ -10,21 +10,21 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
-pub(crate) enum Block {
+pub enum Block {
     Block(crate::model::objects::block::Block),
     Error(crate::errors::ErrorInfo),
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
-pub(crate) enum Page {
+pub enum Page {
     Page(crate::model::objects::page::Page),
     Error(crate::errors::ErrorInfo),
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
-pub(crate) enum List<T> {
+pub enum List<T> {
     List(crate::model::paginated::List<T>),
     Error(crate::errors::ErrorInfo),
 }

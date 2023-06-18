@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{file_and_emoji::FileOrEmoji, parent::BlockParent, user::PartialUser};
+use super::{file_and_emoji::FileOrEmoji, parent::BlockParent, user::PartialUser, properties::PropertyData};
 
 /// All pages have a Parent. If the parent is a database, the property values
 /// conform to the schema laid out database's properties. Otherwise, the only
@@ -22,7 +24,7 @@ pub struct Page {
     pub icon: Option<FileOrEmoji>,
     /// emoji or external, can't be internal
     pub cover: Option<FileOrEmoji>,
-    // pub properties: Option<serde_json::Value>,
+    pub properties: HashMap<String, PropertyData>,
     pub parent: BlockParent,
     pub url: String,
     pub public_url: String,

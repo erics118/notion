@@ -78,9 +78,9 @@ struct Property {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type")]
+#[serde(tag = "type", rename_all = "snake_case")]
 pub enum PropertyData {
-    Checkbox { checkbox: Checkbox },
+    // Checkbox { checkbox: Checkbox },
     // CreatedBy { created_by: CreatedBy },
     // CreatedTime { created_time: CreatedTime },
     // Date { date: Date },
@@ -98,6 +98,6 @@ pub enum PropertyData {
     // RichText { rich_text: RichText },
     // Select { select: Select },
     // Status { status: Status },
-    // Title { title: Title },
+    Title(Title),
     // Url { url: Url },
 }

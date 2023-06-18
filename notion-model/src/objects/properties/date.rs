@@ -1,3 +1,3 @@
-use serde::{Serialize, Deserialize};
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+use serde::{Deserialize, Serialize};
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 pub struct Date {}

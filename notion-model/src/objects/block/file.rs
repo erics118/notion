@@ -7,7 +7,7 @@ use crate::objects::{
 
 /// # File block
 ///
-/// *The Notion API does not support uploading files to Notion.
+/// The Notion API does not support uploading files to Notion.
 ///
 /// TODO: external file builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]

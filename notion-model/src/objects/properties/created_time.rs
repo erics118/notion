@@ -1,5 +1,3 @@
-use serde::{Serialize, Deserialize};
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-pub struct CreatedTime {
-    
-}
+use serde::{Deserialize, Serialize};
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+pub struct CreatedTime {}

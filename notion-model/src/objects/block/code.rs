@@ -11,12 +11,12 @@ pub struct Code {
     pub caption: Option<Vec<RichText>>,
     /// The rich text in the code block.
     ///
-    /// *This usually is just a single [`RichTextData::Text`] element, but the
+    /// This usually is just a single [`RichTextData::Text`] element, but the
     /// API does allow you to use the full set of rich text features here,
     /// including all annotations, and the UI does show these annotations
     /// correctly, allowing for some fun possibilities.
     ///
-    /// *Syntax highlighting from a language does not result in any annotations.
+    /// Syntax highlighting from a language does not result in any annotations.
     ///
     /// [`RichTextData::Text`]: crate::objects::rich_text::RichTextData::Text
     pub rich_text: Vec<RichText>,

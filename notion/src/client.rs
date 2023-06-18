@@ -9,7 +9,7 @@ use crate::errors::Error;
 
 #[derive(Debug, Clone)]
 pub struct Notion {
-    http: Client,
+    pub http: Client,
 }
 
 macro_rules! api_method {

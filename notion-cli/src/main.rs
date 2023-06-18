@@ -51,7 +51,10 @@ use notion::{
     client::Notion,
     model::{
         ids::BlockId,
-        objects::{block::*, rich_text::RichText},
+        objects::{
+            block::{Heading2, Paragraph},
+            rich_text::RichText,
+        },
     },
 };
 
@@ -74,7 +77,17 @@ mod ids {
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
-    let res = notion.retrieve_page(BlockId::from_str(ids::PAGE)?).await?;
+    // let res = notion.retrieve_page(BlockId::from_str(ids::PAGE)?, None).await?;
+
+    let res = notion
+        .update_block(
+            Paragraph::new()
+                .rich_text(vec![RichText::new_text("afwewfwfwefafe")])
+                .build()
+                .id(BlockId::from_str(ids::PARAGRAPH)?)
+                .archived(None),
+        )
+        .await?;
 
     println!("{:#?}", res);
 

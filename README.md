@@ -56,7 +56,7 @@ current API version: 2022-06-28
   - [x] Retrieve a block GET
   - [x] Retrieve block children GET
   - [x] Update a block PATCH
-  - [x] Delete a block DELETE
+  - [ ] Delete a block DELETE
 - Pages
   - [ ] Create a page POST
   - [ ] Retrieve a page GET

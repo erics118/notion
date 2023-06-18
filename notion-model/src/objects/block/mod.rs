@@ -122,6 +122,16 @@ impl Block {
             data,
         }
     }
+
+    pub fn id(mut self, id: BlockId) -> Self {
+        self.id = Some(id);
+        self
+    }
+
+    pub fn archived(mut self, archived: Option<bool>) -> Self {
+        self.archived = archived;
+        self
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]

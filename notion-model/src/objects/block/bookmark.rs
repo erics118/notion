@@ -11,7 +11,7 @@ pub struct Bookmark {
     pub caption: Option<Vec<RichText>>,
     /// The link for the bookmark.
     ///
-    /// *It is technically possible to make a bookmark without a caption, the
+    /// It is technically possible to make a bookmark without a caption, the
     /// caption isn't shown until you have added a URL.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,

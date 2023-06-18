@@ -1,5 +1,8 @@
 use anyhow::{Context, Result};
-use notion_model::{ids::NotionId, objects::block::Block};
+use notion_model::{
+    ids::NotionId,
+    objects::block::{Block, BlockData},
+};
 use reqwest::header::CONTENT_TYPE;
 use serde::{Deserialize, Serialize};
 
@@ -194,7 +197,9 @@ impl Notion {
     /// capabilities. Attempting to call this API without update content
     /// capabilities will return an HTTP response with a 403 status code. For
     /// more information on integration capabilities, see the capabilities
-    /// guide. Errors
+    /// guide.
+    ///
+    /// # Errors
     ///
     /// Returns a 404 HTTP response if the block doesn't exist, has been
     /// archived, or if the integration doesn't have access to the page.
@@ -204,14 +209,62 @@ impl Notion {
     ///
     /// Returns a 400 or a 429 HTTP response if the request exceeds the request
     /// limits.
+    ///
+    /// must have the block id and block data
+    ///
+    /// Optionally the block archived field can be set to archive/unarchive the
+    /// block.
+    /// TODO: finish this
+    pub async fn update_block(
+        &self,
+        // block_id: impl NotionId,
+        // block_data: BlockData,
+        // archived: Option<bool>,
+        block: Block,
+    ) -> Result<Block> {
+        #[derive(Serialize)]
+        struct PartialBlock {
+            #[serde(skip_serializing_if = "Option::is_none")]
+            archived: Option<bool>,
+            #[serde(flatten)]
+            data: BlockData,
+        }
 
-    pub async fn update_block(&self, block_id: impl NotionId) -> Result<Block> {
+        // let partial_block = PartialBlock {
+        //     id: block_id.to_string(),
+        //     block_data,
+        //     archived,
+        // };
+
+        let block_id = block.id.context("fd")?.to_string();
+
+        let partial_block = PartialBlock {
+            data: block.data,
+            archived: block.archived,
+        };
+        let body =
+            serde_json::to_string(&partial_block).context("failed to serialize partial_block")?;
+        // let body = r#"{
+        //     "paragraph": {
+        //       "rich_text": [{
+        //         "text": { "content": "Lacifdsafdsfasnato kale" }
+        //         }]
+        //     }
+        //   }"#;
+
+        println!("{}", body);
+
         let text = self
-            .api_get(&format!("blocks/{block_id}"))
+            .http
+            .patch(self.api_url(&format!("blocks/{block_id}")))
+            .header(CONTENT_TYPE, "application/json")
+            .body(body)
             .send()
             .await?
             .text()
             .await?;
+
+        println!("{}", text);
 
         let res = serde_json::from_str::<result_types::Block>(&text)?;
 
@@ -245,6 +298,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
+    /// /// TODO: test this
     pub async fn delete_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_delete(&format!("blocks/{block_id}"))
