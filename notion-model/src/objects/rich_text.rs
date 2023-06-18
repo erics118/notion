@@ -1,4 +1,4 @@
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, NaiveDateTime, Utc};
 use chrono_tz::Tz;
 use serde::{Deserialize, Serialize};
 
@@ -185,6 +185,23 @@ pub struct DatabaseMention {
     pub id: DatabaseId,
 }
 
+impl DatabaseMention {
+    pub fn new(id: DatabaseId) -> Self {
+        Self { id }
+    }
+
+    pub fn id(mut self, id: DatabaseId) -> Self {
+        self.id = id;
+        self
+    }
+
+    pub fn build(self) -> Mention {
+        Mention::Database { database: self }
+    }
+}
+
+// TODO: somehow allow for both `chrono::NaiveDate` and `chrono::NaiveDateTime`
+// TODO: for some reason using NaiveDateTime causes an error: trailing input
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct DateMention {
@@ -194,6 +211,7 @@ pub struct DateMention {
     /// date range.
     ///
     /// If `None`, this property's date value is not a range.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     end: Option<DateTime<Utc>>,
     /// Time zone information for start and end. Possible values are extracted
     /// from the IANA database and they are based on the time zones from
@@ -209,6 +227,35 @@ pub struct DateMention {
     timezone: Option<Tz>,
 }
 
+impl DateMention {
+    pub fn new(start: DateTime<Utc>) -> Self {
+        Self {
+            start,
+            end: None,
+            timezone: None,
+        }
+    }
+
+    pub fn start(mut self, start: DateTime<Utc>) -> Self {
+        self.start = start;
+        self
+    }
+
+    pub fn end(mut self, end: Option<DateTime<Utc>>) -> Self {
+        self.end = end;
+        self
+    }
+
+    pub fn timezone(mut self, timezone: Option<Tz>) -> Self {
+        self.timezone = timezone;
+        self
+    }
+
+    pub fn build(self) -> Mention {
+        Mention::Date { date: self }
+    }
+}
+/// No builder for LinkPreview bc API doesn't support it
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct LinkPreviewMention {
@@ -234,6 +281,22 @@ pub struct PageMention {
     pub id: PageId,
 }
 
+impl PageMention {
+    pub fn new(id: PageId) -> Self {
+        Self { id }
+    }
+
+    pub fn id(mut self, id: PageId) -> Self {
+        self.id = id;
+        self
+    }
+
+    pub fn build(self) -> Mention {
+        Mention::Page { page: self }
+    }
+}
+
+/// no template builder because template building is not supported by the API
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum TemplateMention {
@@ -244,8 +307,7 @@ pub enum TemplateMention {
     User(String),
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "snake_case")]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Deserialize, Serialize)]
 pub struct UserMention {
     /// If a rich text object’s type value is "user", then the corresponding
     /// user field contains a user object.
@@ -255,42 +317,25 @@ pub struct UserMention {
     /// "@Anonymous". To update the integration to get access to the user,
     /// update the integration capabilities on the integration settings page.
     pub id: UserId,
-    pub name: String,
-    pub avatar_url: String,
-    #[serde(flatten)]
-    pub data: UserMentionData,
+    // pub name: String,
+    // pub avatar_url: Option<String>,
+    // #[serde(flatten)]
+    // pub data: UserMentionData,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub struct UserMentionPerson {
-    pub email: String,
-}
+impl UserMention {
+    pub fn new(id: UserId) -> Self {
+        Self { id }
+    }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub struct UserMentionBot {
-    pub email: String,
-    pub owner: BotOwner,
-    pub workspace_name: Option<String>,
-}
+    pub fn id(mut self, id: UserId) -> Self {
+        self.id = id;
+        self
+    }
 
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub struct BotOwner {
-    #[serde(rename = "type")]
-    pub type_: BotOwnerType,
-}
-
-#[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-pub enum BotOwnerType {
-    Workspace,
-    User,
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
-#[serde(rename_all = "snake_case", tag = "type")]
-pub enum UserMentionData {
-    Person { person: UserMentionPerson },
-    // TODO: get a bot to test this
-    Bot { bot_id: UserMentionBot },
+    pub fn build(self) -> Mention {
+        Mention::User { user: self }
+    }
 }
 
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]

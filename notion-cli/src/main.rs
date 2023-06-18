@@ -40,7 +40,8 @@
     clippy::unwrap_used
 )]
 #![feature(lazy_cell)]
-
+use anyhow::Context;
+use chrono::Utc;
 pub mod cli;
 pub mod config;
 pub mod error;
@@ -51,11 +52,13 @@ use anyhow::Result;
 use notion::{
     client::Notion,
     model::{
-        ids::{BlockId, PageId},
+        ids::{BlockId, DatabaseId, PageId, UserId},
         objects::{
             block::*,
             color::Color,
-            rich_text::{Mention, PageMention, RichText},
+            rich_text::{
+                DatabaseMention, DateMention, Mention, PageMention, RichText, UserMention,
+            },
         },
     },
 };
@@ -64,29 +67,38 @@ use crate::config::{load_config, Config};
 
 #[allow(unused)]
 mod ids {
+    pub const PARAGRAPH: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
+    pub const USER: &str = "3e1fc0f5d02e48ae84c07ae06deece9f";
+    pub const DATABASE: &str = "41ef19e3335a434281c95cbec7345198";
 }
 
 #[tokio::main]
 pub async fn main() -> Result<()> {
-    // TODO: mentions
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token)?;
 
+    // let res = notion
+    //     .retrieve_block(BlockId::from_str_unchecked(ids::PARAGRAPH))
+    //     .await?;
     let res = notion
         .append_block_children(
             BlockId::from_str(ids::PAGE)?,
             vec![
                 Paragraph::new()
-                    .rich_text(vec![
-                        RichText::new_text("---"),
-                        RichText::new_mention(Mention::Page {
-                            page: PageMention {
-                                id: PageId::from_str(ids::PAGE)?,
-                            },
-                        }),
-                        RichText::new_text("---"),
-                    ])
+                    .rich_text(vec![RichText::new_mention(
+                        DateMention::new(
+                            "2017-04-07T11:11:23.348Z"
+                                .parse::<chrono::DateTime<Utc>>()
+                                .context("a")?,
+                            // chrono::NaiveDate::from_ymd_opt(2015, 9, 5)
+                            //     .unwrap()
+                            //     .and_hms_opt(23, 56, 4)
+                            //     .unwrap(),
+                        )
+                        .build(),
+                        // UserMention::new(UserId::from_str(ids::USER)?).build(),
+                    )])
                     .build(),
             ],
         )

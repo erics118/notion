@@ -25,3 +25,4 @@ config = { version = "0.13.3", features = ["toml"] }
 dirs = "5.0.1"
 serde_test = "1.0.164"
 url = "2.4.0"
+chrono = {version="0.4.26",features=["serde"]}
