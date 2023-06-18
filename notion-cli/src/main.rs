@@ -46,7 +46,7 @@ pub mod error;
 
 use std::str::FromStr;
 
-use anyhow::Result;
+use anyhow::{Result, Context};
 use notion::{
     client::Notion,
     model::{
@@ -56,6 +56,7 @@ use notion::{
             rich_text::RichText,
         },
     },
+    utils,
 };
 
 use crate::config::{load_config, Config};
@@ -80,13 +81,7 @@ pub async fn main() -> Result<()> {
     // let res = notion.retrieve_page(BlockId::from_str(ids::PAGE)?, None).await?;
 
     let res = notion
-        .update_block(
-            Paragraph::new()
-                .rich_text(vec![RichText::new_text("afwewfwfwefafe")])
-                .build()
-                .id(BlockId::from_str(ids::PARAGRAPH)?)
-                .archived(None),
-        )
+        .delete_block(utils::get_block_id_from_url("https://www.notion.so/erics118/67ace61a7fd24ab78e892b1dc9b252e4?pvs=4#6f8fc16a2d444926adc4577176ec773f").context("f")?)
         .await?;
 
     println!("{:#?}", res);
