@@ -41,15 +41,14 @@ pub struct RichText {
 }
 
 impl RichText {
-    pub fn new_text(text: impl Into<String>) -> Self {
-        let text = text.into();
+    pub fn new_text(text: &str) -> Self {
         Self {
             annotations: None,
             plain_text: None,
             href: None,
             data: RichTextData::Text {
                 text: Text {
-                    content: text,
+                    content: text.into(),
                     link: None,
                 },
             },
@@ -65,14 +64,15 @@ impl RichText {
         }
     }
 
-    pub fn new_equation(expression: impl Into<String>) -> Self {
-        let expression = expression.into();
+    pub fn new_equation(expression: &str) -> Self {
         Self {
             annotations: None,
             plain_text: None,
             href: None,
             data: RichTextData::Equation {
-                equation: Equation { expression },
+                equation: Equation {
+                    expression: expression.into(),
+                },
             },
         }
     }

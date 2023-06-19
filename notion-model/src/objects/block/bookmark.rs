@@ -31,7 +31,7 @@ impl Bookmark {
         self
     }
 
-    pub fn url(mut self, url: Option<impl Into<String>>) -> Self {
+    pub fn url(mut self, url: Option<&str>) -> Self {
         self.url = url.map(|a| a.into());
         self
     }
