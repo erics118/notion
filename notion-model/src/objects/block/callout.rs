@@ -27,6 +27,14 @@ impl Callout {
         }
     }
 
+    pub fn with_internal_file() {
+        todo!()
+    }
+
+    pub fn with_external_file() {
+        todo!()
+    }
+
     #[must_use]
     pub fn build(self) -> Block {
         Block::new(BlockData::Callout(self))

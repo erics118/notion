@@ -4,6 +4,8 @@ use super::file::FileData;
 use crate::objects::rich_text::RichText;
 
 /// # Video block
+///
+/// TODO: video builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct Video {
     /// The rich text in the caption of the block.

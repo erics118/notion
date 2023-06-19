@@ -1,7 +1,7 @@
 use anyhow::{Context, Result};
 use notion_model::constants::{API_BASE_URL, API_VERSION};
 use reqwest::{
-    header::{self, HeaderMap, HeaderValue, CONTENT_TYPE},
+    header::{self, HeaderMap, HeaderValue},
     Client, ClientBuilder, RequestBuilder,
 };
 
@@ -31,7 +31,6 @@ impl Notion {
         let mut headers = HeaderMap::new();
 
         headers.insert("Notion-Version", HeaderValue::from_static(API_VERSION));
-        headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
 
         let auth = HeaderValue::from_str(&format!("Bearer {}", api_token))
             .context(Error::InvalidApiToken)?;

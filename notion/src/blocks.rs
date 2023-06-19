@@ -3,11 +3,9 @@ use notion_model::{
     ids::NotionId,
     objects::block::{Block, BlockData},
 };
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-use crate::{
-    client::Notion, errors::NotionApiError, model::pagination::List, result_types, test_json,
-};
+use crate::{client::Notion, errors::NotionApiError, model::pagination::List, result_types};
 
 impl Notion {
     /// # Append block children
@@ -43,24 +41,20 @@ impl Notion {
     pub async fn append_block_children(
         &self,
         block_id: impl NotionId,
-        children: Vec<Block>,
+        children: &[Block],
     ) -> Result<List<Block>> {
-        #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-        struct AppendBlockChildren {
-            children: Vec<Block>,
+        #[derive(Serialize, Debug, Eq, PartialEq)]
+        struct AppendBlockChildren<'a> {
+            children: &'a [Block],
         }
 
-        // let text = self
-        //     .api_patch(&format!("blocks/{block_id}/children"))
-        //     .json(&AppendBlockChildren { children })
-        //     .send()
-        //     .await?
-        //     .text()
-        //     .await?;
-
-        let text = test_json();
-
-        println!("{text}");
+        let text = self
+            .api_patch(&format!("blocks/{block_id}/children"))
+            .json(&AppendBlockChildren { children })
+            .send()
+            .await?
+            .text()
+            .await?;
 
         let res = serde_json::from_str::<result_types::List<Block>>(&text)?;
 
@@ -209,18 +203,11 @@ impl Notion {
     /// Returns a 400 or a 429 HTTP response if the request exceeds the request
     /// limits.
     ///
-    /// must have the block id and block data
+    /// The block's id field must be set.
     ///
-    /// Optionally the block archived field can be set to archive/unarchive the
+    /// Optionally, the block archived field can be set to archive/unarchive the
     /// block.
-    /// TODO: finish this
-    pub async fn update_block(
-        &self,
-        // block_id: impl NotionId,
-        // block_data: BlockData,
-        // archived: Option<bool>,
-        block: Block,
-    ) -> Result<Block> {
+    pub async fn update_block(&self, block: Block) -> Result<Block> {
         #[derive(Serialize)]
         struct PartialBlock {
             #[serde(skip_serializing_if = "Option::is_none")]
@@ -229,24 +216,16 @@ impl Notion {
             data: BlockData,
         }
 
-        // let partial_block = PartialBlock {
-        //     id: block_id.to_string(),
-        //     block_data,
-        //     archived,
-        // };
-
-        let block_id = block.id.context("fd")?.to_string();
+        let block_id = block.id.context("missing block id")?.to_string();
 
         let partial_block = PartialBlock {
             data: block.data,
             archived: block.archived,
         };
-        let body =
-            serde_json::to_string(&partial_block).context("failed to serialize partial_block")?;
 
         let text = self
             .api_patch(&format!("blocks/{block_id}"))
-            .body(body)
+            .json(&partial_block)
             .send()
             .await?
             .text()

@@ -398,7 +398,7 @@ pub struct Text {
     /// included.
     ///
     /// If the text contains an inline link, then the object key is url and the
-    /// value is the URL’s string web address.
+    /// value is the URL's string web address.
     ///
     /// If the text doesn't have any inline links, then the value is null.
     #[serde(skip_serializing_if = "Option::is_none")]

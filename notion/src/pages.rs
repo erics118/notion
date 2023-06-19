@@ -1,7 +1,7 @@
 use anyhow::Result;
 use notion_model::{ids::NotionId, objects::page::Page};
 
-use crate::{client::Notion, errors::NotionApiError, result_types, test_json};
+use crate::{client::Notion, errors::NotionApiError, result_types};
 
 impl Notion {
     /// # Retrieve a page
@@ -13,12 +13,11 @@ impl Notion {
     ///
     /// Page properties are limited to up to 25 references per page property. To
     /// retrieve data related to properties that have more than 25 references,
-    /// use the Retrieve a page property endpoint. (See Limits below for
-    /// additional information.)
+    /// use the Retrieve a page property endpoint.
     ///
     /// # Parent objects: Pages vs. databases
     ///
-    /// If a page’s Parent object is a database, then the property values will
+    /// If a page's Parent object is a database, then the property values will
     /// conform to the database property schema.
     ///
     /// If a page object is not part of a database, then the only property value
@@ -33,7 +32,7 @@ impl Notion {
     ///
     /// This limit affects the following properties:
     ///
-    /// people: response object can’t be guaranteed to return more than 25
+    /// people: response object can/t be guaranteed to return more than 25
     /// people. relation: the has_more value of the relation in the response
     /// object is true if a relation contains more than 25 related pages.
     /// Otherwise, has_more is false. rollup: the has_more value of the
@@ -72,7 +71,7 @@ impl Notion {
     pub async fn retrieve_page(
         &self,
         page_id: impl NotionId,
-        filter_properties: Option<Vec<&str>>,
+        filter_properties: Option<&[&str]>,
     ) -> Result<Page> {
         let query = filter_properties
             .iter()
@@ -86,8 +85,6 @@ impl Notion {
             .await?
             .text()
             .await?;
-
-        println!("{text}");
 
         let res = serde_json::from_str::<result_types::Page>(&text)?;
 

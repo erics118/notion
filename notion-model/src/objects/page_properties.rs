@@ -12,7 +12,7 @@ use crate::ids::PropertyId;
 /// When you send a request to Create a page, you set the page properties in the
 /// properties object body param.
 ///
-/// Retrieve a page gets the identifier, type, and value of a page’s properties.
+/// Retrieve a page gets the identifier, type, and value of a page's properties.
 /// Retrieve a page property item returns information about a single property
 /// ID.
 ///
@@ -25,7 +25,7 @@ use crate::ids::PropertyId;
 /// refer to the limits for property values documentation.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 struct Property {
-    /// An underlying identifier for the property. id may be a UUID, but it’s
+    /// An underlying identifier for the property. id may be a UUID, but it's
     /// often a short random string.
     ///
     /// id may be used in place of name when creating or updating pages.

@@ -72,8 +72,7 @@ mod ids {
 
 // TODO: remove all tag = "type" and similar bc API does not use the "type"
 // field, but it is just for reference for apps to use
-
-// TODO: test all block structs for children, from the API, and from the app
+// TODO: re-test all block struct builders, from the API, and from the app
 // TODO: make sure all block structs have builder function for everything
 // TODO: maybe somehow force ColumnList to have Column as children
 // TODO: maybe somehow force Table to have TableRow as children
@@ -85,11 +84,9 @@ pub async fn main() -> Result<()> {
     let res = notion
         .append_block_children(
             BlockId::from_str_unchecked(ids::PAGE),
-            vec![
-                Paragraph::new()
-                    .rich_text(vec![RichText::new_text("Hello, world!")])
-                    .build(),
-            ],
+            &[Paragraph::new()
+                .rich_text(vec![RichText::new_text("Hello, world!")])
+                .build()],
         )
         .await?;
 
