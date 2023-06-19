@@ -5,7 +5,9 @@ use notion_model::{
 };
 use serde::{Deserialize, Serialize};
 
-use crate::{client::Notion, errors::NotionApiError, model::paginated::List, result_types};
+use crate::{
+    client::Notion, errors::NotionApiError, model::pagination::List, result_types, test_json,
+};
 
 impl Notion {
     /// # Append block children
@@ -48,13 +50,17 @@ impl Notion {
             children: Vec<Block>,
         }
 
-        let text = self
-            .api_patch(&format!("blocks/{block_id}/children"))
-            .json(&AppendBlockChildren { children })
-            .send()
-            .await?
-            .text()
-            .await?;
+        // let text = self
+        //     .api_patch(&format!("blocks/{block_id}/children"))
+        //     .json(&AppendBlockChildren { children })
+        //     .send()
+        //     .await?
+        //     .text()
+        //     .await?;
+
+        let text = test_json();
+
+        println!("{text}");
 
         let res = serde_json::from_str::<result_types::List<Block>>(&text)?;
 

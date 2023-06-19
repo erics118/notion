@@ -22,7 +22,7 @@ impl Quote {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Quote { quote: self })
+        Block::new(BlockData::Quote(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

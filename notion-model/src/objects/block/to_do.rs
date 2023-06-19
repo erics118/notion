@@ -24,7 +24,7 @@ impl ToDo {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::ToDo { to_do: self })
+        Block::new(BlockData::ToDo(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

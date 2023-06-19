@@ -83,7 +83,14 @@ pub async fn main() -> Result<()> {
     let notion = Notion::new(&api_token)?;
 
     let res = notion
-        .retrieve_page(BlockId::from_str(ids::DATABASE_PAGE)?, None)
+        .append_block_children(
+            BlockId::from_str_unchecked(ids::PAGE),
+            vec![
+                Paragraph::new()
+                    .rich_text(vec![RichText::new_text("Hello, world!")])
+                    .build(),
+            ],
+        )
         .await?;
 
     println!("{:#?}", res);

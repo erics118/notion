@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use super::{
-    file_and_emoji::FileOrEmoji, parent::BlockParent, page_properties::PropertyData, user::PartialUser,
+    file_and_emoji::FileOrEmoji, page_properties::PropertyData, user::PartialUser, parent::ParentData,
 };
 
 /// All pages have a Parent. If the parent is a database, the property values
@@ -27,7 +27,7 @@ pub struct Page {
     /// emoji or external, can't be internal
     pub cover: Option<FileOrEmoji>,
     pub properties: HashMap<String, PropertyData>,
-    pub parent: BlockParent,
+    pub parent: ParentData,
     pub url: String,
     pub public_url: String,
 }

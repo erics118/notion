@@ -22,7 +22,7 @@ impl Toggle {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Toggle { toggle: self })
+        Block::new(BlockData::Toggle(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

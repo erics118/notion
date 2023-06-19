@@ -18,8 +18,6 @@ impl TableOfContents {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::TableOfContents {
-            table_of_contents: self,
-        })
+        Block::new(BlockData::TableOfContents(self))
     }
 }

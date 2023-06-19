@@ -25,6 +25,6 @@ pub enum Page {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum List<T> {
-    List(crate::model::paginated::List<T>),
+    List(crate::model::pagination::List<T>),
     Error(crate::errors::ErrorInfo),
 }

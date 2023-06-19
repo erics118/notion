@@ -134,6 +134,7 @@ impl RichText {
     }
 }
 
+/// TODO: remove tag
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum RichTextData {
@@ -190,6 +191,8 @@ pub struct Equation {
 /// Mention objects represent an inline mention of a database, date, link
 /// preview mention, page, template mention, or user. A mention is created in
 /// the Notion UI when a user types `@` followed by the name of the reference.
+///
+/// TODO: remove tag
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum Mention {

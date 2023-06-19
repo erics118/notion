@@ -23,7 +23,7 @@ impl Bookmark {
     }
 
     pub fn build(self) -> Block {
-        Block::new(BlockData::Bookmark { bookmark: self })
+        Block::new(BlockData::Bookmark(self))
     }
 
     pub fn caption(mut self, caption: Option<Vec<RichText>>) -> Self {

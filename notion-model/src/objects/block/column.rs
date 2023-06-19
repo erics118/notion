@@ -21,7 +21,7 @@ impl Column {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Column { column: self })
+        Block::new(BlockData::Column(self))
     }
 
     pub fn children(mut self, children: Option<Vec<Block>>) -> Self {

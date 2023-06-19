@@ -22,8 +22,8 @@ pub struct File {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum FileData {
-    File { file: InternalFile },
-    External { external: ExternalFile },
+    File(InternalFile),
+    External(ExternalFile),
 }

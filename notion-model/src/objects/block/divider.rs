@@ -20,6 +20,6 @@ impl Divider {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Divider { divider: self })
+        Block::new(BlockData::Divider(self))
     }
 }

@@ -40,7 +40,7 @@ impl Table {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Table { table: self })
+        Block::new(BlockData::Table(self))
     }
 
     pub fn table_width(mut self, table_width: u32) -> Self {

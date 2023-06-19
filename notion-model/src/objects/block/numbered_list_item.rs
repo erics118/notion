@@ -22,9 +22,7 @@ impl NumberedListItem {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::NumberedListItem {
-            numbered_list_item: self,
-        })
+        Block::new(BlockData::NumberedListItem(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

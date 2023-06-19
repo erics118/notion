@@ -93,5 +93,4 @@
 pub mod constants;
 pub mod ids;
 pub mod objects;
-pub mod paginated;
-pub mod response;
+pub mod pagination;

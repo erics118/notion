@@ -23,7 +23,7 @@ impl Paragraph {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Paragraph { paragraph: self })
+        Block::new(BlockData::Paragraph (self) )
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

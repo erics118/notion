@@ -20,7 +20,7 @@ pub struct Callout {
 impl Callout {
     pub fn with_emoji(emoji: String) -> Self {
         Self {
-            icon: FileOrEmoji::Emoji { emoji },
+            icon: FileOrEmoji::Emoji(emoji),
             color: Default::default(),
             rich_text: Default::default(),
             children: Default::default(),
@@ -29,7 +29,7 @@ impl Callout {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Callout { callout: self })
+        Block::new(BlockData::Callout(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

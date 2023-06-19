@@ -31,7 +31,7 @@ impl Code {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Code { code: self })
+        Block::new(BlockData::Code(self))
     }
 
     pub fn caption(mut self, caption: Option<Vec<RichText>>) -> Self {

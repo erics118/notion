@@ -38,7 +38,7 @@ impl ColumnList {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::ColumnList { column_list: self })
+        Block::new(BlockData::ColumnList(self))
     }
 
     pub fn children(mut self, children: Option<Vec<Block>>) -> Self {

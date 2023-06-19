@@ -36,7 +36,7 @@ impl Embed {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Embed { embed: self })
+        Block::new(BlockData::Embed(self))
     }
 
     pub fn url(mut self, url: String) -> Self {

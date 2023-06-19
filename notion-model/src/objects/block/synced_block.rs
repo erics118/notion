@@ -36,11 +36,7 @@ pub struct SyncedBlock {
 ///
 /// See [`SyncedBlock`] for more information.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default, Copy)]
-#[serde(tag = "type", rename = "block_id")]
-pub struct SyncedFrom {
-    /// Id of the original synced block.
-    pub block_id: BlockId,
-}
+pub struct SyncedFrom(BlockId);
 
 impl SyncedBlock {
     pub fn new() -> Self {
@@ -49,7 +45,7 @@ impl SyncedBlock {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::SyncedBlock { synced_block: self })
+        Block::new(BlockData::SyncedBlock(self))
     }
 
     pub fn synced_from(mut self, synced_from: Option<SyncedFrom>) -> Self {

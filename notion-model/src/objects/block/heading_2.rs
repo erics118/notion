@@ -29,7 +29,7 @@ impl Heading2 {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Heading2 { heading_2: self })
+        Block::new(BlockData::Heading2(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {

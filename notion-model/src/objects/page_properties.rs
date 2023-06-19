@@ -37,6 +37,7 @@ struct Property {
     pub data: PropertyData,
 }
 
+/// TODO: remove tag
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum PropertyData {
@@ -106,6 +107,7 @@ pub enum PropertyData {
     },
 }
 
+/// TODO: remove tag
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum FormulaData {

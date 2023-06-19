@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{parent::BlockParent, rich_text::Mention, user::PartialUser};
+use super::{parent::ParentData, rich_text::Mention, user::PartialUser};
 use crate::ids::BlockId;
 
 pub mod bookmark;
@@ -76,7 +76,7 @@ pub struct Block {
 
     /// Information about the block's parent. See [`BlockParent`] for details.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub parent: Option<BlockParent>,
+    pub parent: Option<ParentData>,
 
     /// Date and time when this block was created. Formatted as an ISO 8601 date
     /// time string.
@@ -135,104 +135,41 @@ impl Block {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(rename_all = "snake_case", tag = "type")]
+#[serde(rename_all = "snake_case")]
 pub enum BlockData {
-    Bookmark {
-        bookmark: Bookmark,
-    },
-    Breadcrumb {
-        breadcrumb: Breadcrumb,
-    },
-    BulletedListItem {
-        bulleted_list_item: BulletedListItem,
-    },
-    Callout {
-        callout: Callout,
-    },
-    ChildDatabase {
-        child_database: ChildDatabase,
-    },
-    ChildPage {
-        child_page: ChildPage,
-    },
-    Column {
-        column: Column,
-    },
-    ColumnList {
-        column_list: ColumnList,
-    },
-    Code {
-        code: Code,
-    },
-    Divider {
-        divider: Divider,
-    },
-    Embed {
-        embed: Embed,
-    },
-    // Equation {
-    //     equation: Equation,
-    // },
-    File {
-        file: File,
-    },
+    Bookmark(Bookmark),
+    Breadcrumb(Breadcrumb),
+    BulletedListItem(BulletedListItem),
+    Callout(Callout),
+    ChildDatabase(ChildDatabase),
+    ChildPage(ChildPage),
+    Column(Column),
+    ColumnList(ColumnList),
+    Code(Code),
+    Divider(Divider),
+    Embed(Embed),
+    File(File),
     #[serde(rename = "heading_1")]
-    Heading1 {
-        heading_1: Heading1,
-    },
+    Heading1(Heading1),
     #[serde(rename = "heading_2")]
-    Heading2 {
-        heading_2: Heading2,
-    },
+    Heading2(Heading2),
     #[serde(rename = "heading_3")]
-    Heading3 {
-        heading_3: Heading3,
-    },
-    Image {
-        image: Image,
-    },
-    LinkPreview {
-        link_preview: LinkPreview,
-    },
-    Mention {
-        mention: Mention,
-    },
-    NumberedListItem {
-        numbered_list_item: NumberedListItem,
-    },
-    Paragraph {
-        paragraph: Paragraph,
-    },
-    Pdf {
-        pdf: Pdf,
-    },
-    Quote {
-        quote: Quote,
-    },
-    SyncedBlock {
-        synced_block: SyncedBlock,
-    },
-    Table {
-        table: Table,
-    },
-    TableOfContents {
-        table_of_contents: TableOfContents,
-    },
-    TableRow {
-        table_row: TableRow,
-    },
-    Template {
-        template: Template,
-    },
-    ToDo {
-        to_do: ToDo,
-    },
-    Toggle {
-        toggle: Toggle,
-    },
-    Video {
-        video: Video,
-    },
+    Heading3(Heading3),
+    Image(Image),
+    LinkPreview(LinkPreview),
+    Mention(Mention),
+    NumberedListItem(NumberedListItem),
+    Paragraph(Paragraph),
+    Pdf(Pdf),
+    Quote(Quote),
+    SyncedBlock(SyncedBlock),
+    Table(Table),
+    TableOfContents(TableOfContents),
+    TableRow(TableRow),
+    Template(Template),
+    ToDo(ToDo),
+    Toggle(Toggle),
+    Video(Video),
     Unsupported,
 }
 

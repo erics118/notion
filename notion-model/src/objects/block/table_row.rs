@@ -28,7 +28,7 @@ impl TableRow {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::TableRow { table_row: self })
+        Block::new(BlockData::TableRow(self))
     }
 
     pub fn cells(mut self, cells: Vec<Vec<RichText>>) -> Self {

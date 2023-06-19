@@ -20,6 +20,6 @@ impl Breadcrumb {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::Breadcrumb { breadcrumb: self })
+        Block::new(BlockData::Breadcrumb(self))
     }
 }

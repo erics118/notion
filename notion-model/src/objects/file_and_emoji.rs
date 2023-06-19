@@ -8,11 +8,11 @@ pub struct Emoji {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(rename_all = "snake_case", tag = "type")]
+#[serde(rename_all = "snake_case")]
 pub enum FileOrEmoji {
-    Emoji { emoji: String },
-    File { file: InternalFile },
-    External { external: ExternalFile },
+    Emoji(String),
+    File(InternalFile),
+    External(ExternalFile),
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]

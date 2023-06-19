@@ -33,6 +33,7 @@ pub struct List<T> {
     pub data: ListData,
 }
 
+/// TODO: remove tag
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum ListData {

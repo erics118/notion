@@ -22,9 +22,7 @@ impl BulletedListItem {
 
     #[must_use]
     pub fn build(self) -> Block {
-        Block::new(BlockData::BulletedListItem {
-            bulleted_list_item: self,
-        })
+        Block::new(BlockData::BulletedListItem(self))
     }
 
     pub fn rich_text(mut self, rich_text: Vec<RichText>) -> Self {
