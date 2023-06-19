@@ -24,7 +24,7 @@ use crate::{
 ///
 /// Refer to the request limits documentation page for information about [limits
 /// on the size of rich text objects](https://developers.notion.com/reference/request-limits#limits-for-property-values).
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct RichText {
     /// The information used to style the rich text object.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -135,7 +135,7 @@ impl RichText {
 }
 
 /// TODO: remove tag
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum RichTextData {
     Text {
@@ -389,7 +389,7 @@ impl UserMention {
     }
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 #[serde(rename_all = "snake_case")]
 pub struct Text {
     /// The plain text without annotations.
@@ -405,7 +405,7 @@ pub struct Text {
     pub link: Option<Link>,
 }
 
-#[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
 pub struct Link {
     /// The URL of the link.
     pub url: String,

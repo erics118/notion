@@ -18,11 +18,11 @@
     rust_2021_incompatible_or_patterns,
     rust_2021_prefixes_incompatible_syntax,
     rust_2021_prelude_collisions,
-    single_use_lifetimes,
+    // single_use_lifetimes,
     trivial_casts,
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
-    unstable_features,
+    // unstable_features,
     unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
@@ -39,6 +39,7 @@
     clippy::expect_used,
     clippy::unwrap_used
 )]
+#![feature(async_fn_in_trait)]
 
 pub use notion_model as model;
 

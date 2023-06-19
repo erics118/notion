@@ -15,10 +15,10 @@ publish = false
 [dependencies]
 notion = { path = "../notion" }
 
-anyhow = {version="1.0.71", features=["backtrace"]}
+anyhow = { version = "1.0.71", features = ["backtrace"] }
+clap = { version = "4.3.4", features = ["cargo", "derive", "env"] }
+config = { version = "0.13.3", features = ["toml"] }
+dirs = "5.0.1"
 serde = "1.0.164"
 thiserror = "1.0.40"
 tokio = { version = "1.28.2", features = ["full"] }
-clap = {version="4.3.4", features=["cargo", "derive", "env"]}
-config = { version = "0.13.3", features = ["toml"] }
-dirs = "5.0.1"

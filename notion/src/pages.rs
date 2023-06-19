@@ -1,7 +1,11 @@
-use anyhow::Result;
+use anyhow::{Context, Result};
 use notion_model::{ids::NotionId, objects::page::Page};
 
-use crate::{client::Notion, errors::NotionApiError, result_types};
+use crate::{
+    client::{Notion, SendAndGetText},
+    errors::{Error, NotionApiError},
+    result_types,
+};
 
 impl Notion {
     /// # Retrieve a page
@@ -81,12 +85,11 @@ impl Notion {
         let text = self
             .api_get(&format!("pages/{page_id}"))
             .query(&query)
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::Page>(&text)?;
+        let res = serde_json::from_str::<result_types::Page>(&text)
+            .context(Error::SerializeResponse("Page", "retrieve_page"))?;
 
         match res {
             result_types::Page::Page(mut page) => {

@@ -15,7 +15,7 @@ publish = false
 [dependencies]
 notion-model = { path = "../notion-model" }
 
-anyhow = {version="1.0.71", features=["backtrace"]}
+anyhow = { version = "1.0.71", features = ["backtrace"] }
 paste = "1.0.12"
 reqwest = { version = "0.11.18", features = ["json"] }
 serde = "1.0.164"

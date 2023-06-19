@@ -5,7 +5,12 @@ use notion_model::{
 };
 use serde::Serialize;
 
-use crate::{client::Notion, errors::NotionApiError, model::pagination::List, result_types};
+use crate::{
+    client::{Notion, SendAndGetText},
+    errors::{Error, NotionApiError},
+    model::pagination::List,
+    result_types,
+};
 
 impl Notion {
     /// # Append block children
@@ -51,12 +56,12 @@ impl Notion {
         let text = self
             .api_patch(&format!("blocks/{block_id}/children"))
             .json(&AppendBlockChildren { children })
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::List<Block>>(&text)?;
+        let res = serde_json::from_str::<result_types::List<Block>>(&text).context(
+            Error::SerializeResponse("List<Block>", "append_block_children"),
+        )?;
 
         match res {
             result_types::List::List(block_list) => Ok(block_list),
@@ -87,12 +92,11 @@ impl Notion {
     pub async fn retrieve_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_get(&format!("blocks/{block_id}"))
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::Block>(&text)?;
+        let res = serde_json::from_str::<result_types::Block>(&text)
+            .context(Error::SerializeResponse("Block response", "retrieve_block"))?;
 
         match res {
             result_types::Block::Block(block) => Ok(block),
@@ -132,13 +136,12 @@ impl Notion {
     pub async fn retrieve_block_children(&self, block_id: impl NotionId) -> Result<List<Block>> {
         let text = self
             .api_get(&format!("blocks/{block_id}/children"))
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::List<Block>>(&text)
-            .context("failed to turn into result_types::List<Block>")?;
+        let res = serde_json::from_str::<result_types::List<Block>>(&text).context(
+            Error::SerializeResponse("List<Block>", "retrieve_block_children"),
+        )?;
 
         match res {
             result_types::List::List(block_list) => Ok(block_list),
@@ -216,22 +219,21 @@ impl Notion {
             data: BlockData,
         }
 
-        let block_id = block.id.context("missing block id")?.to_string();
-
         let partial_block = PartialBlock {
             data: block.data,
             archived: block.archived,
         };
 
+        let block_id = block.id.context(Error::MissingBlockId)?;
+
         let text = self
             .api_patch(&format!("blocks/{block_id}"))
             .json(&partial_block)
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::Block>(&text)?;
+        let res = serde_json::from_str::<result_types::Block>(&text)
+            .context(Error::SerializeResponse("Block", "update_block"))?;
 
         match res {
             result_types::Block::Block(block) => Ok(block),
@@ -267,12 +269,11 @@ impl Notion {
     pub async fn delete_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_delete(&format!("blocks/{block_id}"))
-            .send()
-            .await?
-            .text()
+            .send_and_get_text()
             .await?;
 
-        let res = serde_json::from_str::<result_types::Block>(&text)?;
+        let res = serde_json::from_str::<result_types::Block>(&text)
+            .context(Error::SerializeResponse("Block", "delete_block"))?;
 
         match res {
             result_types::Block::Block(block) => Ok(block),

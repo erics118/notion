@@ -18,11 +18,11 @@
     rust_2021_incompatible_or_patterns,
     rust_2021_prefixes_incompatible_syntax,
     rust_2021_prelude_collisions,
-    single_use_lifetimes,
+    // single_use_lifetimes,
     trivial_casts,
     trivial_numeric_casts,
     unsafe_op_in_unsafe_fn,
-    unstable_features,
+    // unstable_features,
     unused_crate_dependencies,
     unused_extern_crates,
     unused_import_braces,
@@ -79,7 +79,7 @@ mod ids {
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
-    let notion = Notion::new(&api_token)?;
+    let notion = Notion::new(&api_token).context("Failed to create api client")?;
 
     let res = notion
         .append_block_children(

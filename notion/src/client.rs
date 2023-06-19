@@ -12,6 +12,21 @@ pub struct Notion {
     http: Client,
 }
 
+pub trait SendAndGetText {
+    async fn send_and_get_text(self) -> Result<String>;
+}
+
+impl SendAndGetText for RequestBuilder {
+    async fn send_and_get_text(self) -> Result<String> {
+        self.send()
+            .await
+            .context(Error::RequestSend)?
+            .text()
+            .await
+            .context(Error::ParseResponse)
+    }
+}
+
 macro_rules! api_method {
     ($($method:ident;)*) => {
         paste::item! {

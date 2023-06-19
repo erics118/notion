@@ -6,23 +6,24 @@
 //!
 //! For the user-facing API, we return the deserialized result or an error,
 //! rather than a struct in this module.
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Deserialize)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum Block {
     Block(crate::model::objects::block::Block),
     Error(crate::errors::ErrorInfo),
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[allow(clippy::large_enum_variant)]
+#[derive(Deserialize)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum Page {
     Page(crate::model::objects::page::Page),
     Error(crate::errors::ErrorInfo),
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Deserialize)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum List<T> {
     List(crate::model::pagination::List<T>),

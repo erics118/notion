@@ -1,12 +1,20 @@
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-#[derive(Error, Debug, Copy, Clone)]
-pub enum Error {
+#[derive(Error, Debug, Clone, Copy)]
+pub enum Error<'a> {
     #[error("Invalid Notion API Token")]
     InvalidApiToken,
-    #[error("Client Build Error")]
+    #[error("Could not create API client")]
     ClientBuild,
+    #[error("Could not send API request")]
+    RequestSend,
+    #[error("Could not parse API response")]
+    ParseResponse,
+    #[error("Could not serialize a {0} in {1}")]
+    SerializeResponse(&'a str, &'a str),
+    #[error("Missing id in block")]
+    MissingBlockId,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
