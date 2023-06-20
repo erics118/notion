@@ -80,28 +80,7 @@ pub async fn main() -> Result<()> {
     let notion = Notion::new(&api_token).context("Failed to create api client")?;
 
     let res = notion
-        .append_block_children(
-            BlockId::from_str_unchecked(ids::PAGE),
-            vec![
-                Table::new()
-                    .table_width(2)
-                    .children(vec![
-                        TableRow::new()
-                            .cells(vec![
-                                vec![RichText::new_text("a1 world!")],
-                                vec![RichText::new_text("a2 world!")],
-                            ])
-                            .build(),
-                        TableRow::new()
-                            .cells(vec![
-                                vec![RichText::new_text("b1 world!")],
-                                vec![RichText::new_text("b2 world!")],
-                            ])
-                            .build(),
-                    ])
-                    .build(),
-            ],
-        )
+        .retrieve_page(PageId::from_str_unchecked(ids::DATABASE_PAGE), None)
         .await?;
 
     println!("{:#?}", res);

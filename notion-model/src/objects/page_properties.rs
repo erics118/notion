@@ -62,6 +62,7 @@ pub enum PropertyData {
     // Status(Status),
     Title(Vec<RichText>),
     Url(Option<String>),
+    UniqueId(UniqueId),
 }
 
 /// TODO: remove tag, use a struct if possible
@@ -72,4 +73,11 @@ pub enum FormulaData {
     Date { date: DateTime<Utc> },
     Number { number: u32 },
     String { string: String },
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub struct UniqueId {
+    pub prefix: String,
+    pub number: u32,
 }
