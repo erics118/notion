@@ -86,11 +86,11 @@ pub async fn main() -> Result<()> {
                 Table::new()
                     .table_width(2)
                     .children(vec![
-                        Breadcrumb::new()
-                            // .cells(vec![
-                            //     vec![RichText::new_text("a1 world!")],
-                            //     vec![RichText::new_text("a2 world!")],
-                            // ])
+                        TableRow::new()
+                            .cells(vec![
+                                vec![RichText::new_text("a1 world!")],
+                                vec![RichText::new_text("a2 world!")],
+                            ])
                             .build(),
                         TableRow::new()
                             .cells(vec![

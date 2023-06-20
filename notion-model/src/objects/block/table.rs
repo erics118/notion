@@ -40,10 +40,14 @@ impl Table {
 
     #[must_use]
     pub fn build(self) -> Block {
+        // make sure table_width is at least 1
+        if self.table_width < 1 {
+            panic!("Table must have at least 1 column");
+        }
         // make sure that children is not None
         if let Some(children) = &self.children {
             // make sure there is at least 1 child
-            if children.is_empty()  {
+            if children.is_empty() {
                 panic!("Table children must have at least 1 child");
             }
 
