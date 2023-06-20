@@ -40,6 +40,28 @@ impl Table {
 
     #[must_use]
     pub fn build(self) -> Block {
+        // make sure that children is not None
+        if let Some(children) = &self.children {
+            // make sure there is at least 1 child
+            if children.is_empty()  {
+                panic!("Table children must have at least 1 child");
+            }
+
+            // make sure each child is of type TableRow
+            for child in children {
+                if let BlockData::TableRow(row) = &child.data {
+                    // make sure each TableRow has length table_width
+                    if row.cells.len() != self.table_width as usize {
+                        panic!("Table child must have length table_width");
+                    }
+                } else {
+                    panic!("Table children must be of type TableRow");
+                }
+            }
+        } else {
+            panic!("Table children cannot be None.");
+        }
+
         Block::new(BlockData::Table(self))
     }
 
@@ -60,14 +82,6 @@ impl Table {
 
     /// Not Option<Vec<Block> here because it must be set when calling the API
     pub fn children(mut self, children: Vec<Block>) -> Self {
-        // make sure that each block is a TableRow
-        for child in &children {
-            if let BlockData::TableRow(_) = child.data {
-                continue;
-            } else {
-                panic!("Table children must be of type TableRow");
-            }
-        }
         self.children = Some(children);
         self
     }

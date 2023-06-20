@@ -38,11 +38,31 @@ impl ColumnList {
 
     #[must_use]
     pub fn build(self) -> Block {
+        // make sure that children is not None
+        if let Some(children) = &self.children {
+            // make sure there is at least 2 children
+            if children.len() < 2 {
+                panic!("Column must have at least 2 children");
+            }
+
+            // make sure each child is of type Column
+            for child in children {
+                if let BlockData::Column(_) = &child.data {
+                    continue;
+                } else {
+                    panic!("ColumnList children must be of type Column");
+                }
+            }
+        } else {
+            panic!("Column cannot be empty.");
+        }
+
         Block::new(BlockData::ColumnList(self))
     }
 
-    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
-        self.children = children;
+    /// Not Option<Vec<Block> here because it must be set when calling the API
+    pub fn children(mut self, children: Vec<Block>) -> Self {
+        self.children = Some(children);
         self
     }
 }

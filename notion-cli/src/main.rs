@@ -73,8 +73,6 @@ mod ids {
 /// TODO: write tests for all block struct builders
 /// TODO: test all builders and make sure they work, from the app and API
 /// TODO: make sure all block structs have builder function for everything
-/// TODO: maybe somehow force ColumnList to have Column as children
-/// TODO: maybe somehow force Table to have TableRow as children
 /// TODO: use &[] instead of vec![] everywhere
 #[tokio::main]
 pub async fn main() -> Result<()> {
@@ -88,11 +86,11 @@ pub async fn main() -> Result<()> {
                 Table::new()
                     .table_width(2)
                     .children(vec![
-                        TableRow::new()
-                            .cells(vec![
-                                vec![RichText::new_text("a1 world!")],
-                                vec![RichText::new_text("a2 world!")],
-                            ])
+                        Breadcrumb::new()
+                            // .cells(vec![
+                            //     vec![RichText::new_text("a1 world!")],
+                            //     vec![RichText::new_text("a2 world!")],
+                            // ])
                             .build(),
                         TableRow::new()
                             .cells(vec![
