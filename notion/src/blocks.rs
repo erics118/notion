@@ -46,11 +46,11 @@ impl Notion {
     pub async fn append_block_children(
         &self,
         block_id: impl NotionId,
-        children: &[Block],
+        children: Vec<Block>,
     ) -> Result<List<Block>> {
         #[derive(Serialize, Debug, Eq, PartialEq)]
-        struct AppendBlockChildren<'a> {
-            children: &'a [Block],
+        struct AppendBlockChildren {
+            children: Vec<Block>,
         }
 
         let text = self
@@ -265,7 +265,6 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    /// /// TODO: test this
     pub async fn delete_block(&self, block_id: impl NotionId) -> Result<Block> {
         let text = self
             .api_delete(&format!("blocks/{block_id}"))

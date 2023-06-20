@@ -68,9 +68,7 @@ mod test {
 
     #[test]
     fn complete() {
-        let value = Bookmark::new()
-            .url(Some("https://google.com/".to_string()))
-            .build();
+        let value = Bookmark::new().url(Some("https://google.com/")).build();
 
         assert_tokens(
             &value,

@@ -24,7 +24,7 @@ use crate::ids::PropertyId;
 /// For information about size limitations for specific page property objects,
 /// refer to the limits for property values documentation.
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-struct Property {
+pub struct Property {
     /// An underlying identifier for the property. id may be a UUID, but it's
     /// often a short random string.
     ///
@@ -34,80 +34,37 @@ struct Property {
     pub id: PropertyId,
     /// A type object that contains data specific to the page property type,
     /// including the page property value.
+    #[serde(flatten)]
     pub data: PropertyData,
 }
 
-/// TODO: remove tag
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
+#[serde(rename_all = "snake_case")]
 pub enum PropertyData {
-    Checkbox {
-        id: PropertyId,
-        checkbox: bool,
-    },
-    CreatedBy {
-        id: PropertyId,
-        created_by: PartialUser,
-    },
-    CreatedTime {
-        id: PropertyId,
-        created_time: DateTime<Utc>,
-    },
-    // Date { date: Date },
-    Email {
-        id: PropertyId,
-        email: Option<String>,
-    },
-    Files {
-        id: PropertyId,
-        files: Vec<File>,
-    },
-    Formula {
-        id: PropertyId,
-        // #[serde(flatten)]
-        formula: FormulaData,
-    },
-    LastEditedBy {
-        id: PropertyId,
-        last_edited_by: PartialUser,
-    },
-    LastEditedTime {
-        id: PropertyId,
-        last_edited_time: DateTime<Utc>,
-    },
-    // MultiSelect { multi_select: MultiSelect },
-    // TODO: see max
-    Number {
-        id: PropertyId,
-        number: Option<u32>,
-    },
-    People {
-        id: PropertyId,
-        people: Vec<PartialUser>,
-    },
-    PhoneNumber {
-        id: PropertyId,
-        phone_number: Option<String>,
-    },
-    // Relation { relation: Relation },
-    // Rollup { rollup: Rollup },
-    RichText {
-        id: PropertyId,
-        rich_text: Vec<RichText>,
-    },
-    // Select { select: Select },
-    // Status { status: Status },
-    Title {
-        id: PropertyId,
-        title: Vec<RichText>,
-    },
-    Url {
-        id: PropertyId,
-        url: Option<String>,
-    },
+    Checkbox(bool),
+    CreatedBy(PartialUser),
+    CreatedTime(DateTime<Utc>),
+    // Date(Date),
+    Email(Option<String>),
+    Files(Vec<File>),
+    Formula(FormulaData),
+    LastEditedBy(PartialUser),
+    LastEditedTime(DateTime<Utc>),
+    // MultiSelect(MultiSelect),
+    // TODO: find max value of number
+    Number(Option<u32>),
+    People(Vec<PartialUser>),
+    PhoneNumber(Option<String>),
+    // Relation(Relation),
+    // Rollup(Rollup),
+    RichText(Vec<RichText>),
+    // Select(Select),
+    // Status(Status),
+    Title(Vec<RichText>),
+    Url(Option<String>),
 }
 
-/// TODO: remove tag
+/// TODO: remove tag, use a struct if possible
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum FormulaData {

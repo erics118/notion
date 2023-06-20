@@ -1,6 +1,6 @@
 //! Notion IDs
 
-use std::fmt;
+use std::{fmt, str::FromStr};
 
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -31,7 +31,7 @@ macro_rules! uuid_id {
                 }
             }
 
-            impl std::str::FromStr for $name {
+            impl FromStr for $name {
                 type Err = uuid::Error;
 
                 fn from_str(uuid_str: &str) -> Result<Self, Self::Err> {
@@ -104,7 +104,7 @@ macro_rules! string_id {
                 }
             }
 
-            impl std::str::FromStr for $name {
+            impl FromStr for $name {
                 type Err = uuid::Error;
 
                 fn from_str(str: &str) -> Result<Self, Self::Err> {

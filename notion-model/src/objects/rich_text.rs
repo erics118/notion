@@ -46,12 +46,10 @@ impl RichText {
             annotations: None,
             plain_text: None,
             href: None,
-            data: RichTextData::Text {
-                text: Text {
-                    content: text.into(),
-                    link: None,
-                },
-            },
+            data: RichTextData::Text(Text {
+                content: text.into(),
+                link: None,
+            }),
         }
     }
 
@@ -60,7 +58,7 @@ impl RichText {
             annotations: None,
             plain_text: None,
             href: None,
-            data: RichTextData::Mention { mention },
+            data: RichTextData::Mention(mention),
         }
     }
 
@@ -69,16 +67,14 @@ impl RichText {
             annotations: None,
             plain_text: None,
             href: None,
-            data: RichTextData::Equation {
-                equation: Equation {
-                    expression: expression.into(),
-                },
-            },
+            data: RichTextData::Equation(Equation {
+                expression: expression.into(),
+            }),
         }
     }
 
     pub fn text(mut self, text: Text) -> Self {
-        self.data = RichTextData::Text { text };
+        self.data = RichTextData::Text(text);
         self
     }
 
@@ -134,19 +130,12 @@ impl RichText {
     }
 }
 
-/// TODO: remove tag
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
-#[serde(rename_all = "snake_case", tag = "type")]
+#[serde(rename_all = "snake_case")]
 pub enum RichTextData {
-    Text {
-        text: Text,
-    },
-    Mention {
-        mention: Mention,
-    },
-    Equation {
-        equation: Equation,
-    },
+    Text(Text),
+    Mention(Mention),
+    Equation(Equation),
     #[default]
     Idk,
 }
@@ -191,8 +180,6 @@ pub struct Equation {
 /// Mention objects represent an inline mention of a database, date, link
 /// preview mention, page, template mention, or user. A mention is created in
 /// the Notion UI when a user types `@` followed by the name of the reference.
-///
-/// TODO: remove tag
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum Mention {

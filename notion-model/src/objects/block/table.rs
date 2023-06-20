@@ -58,8 +58,17 @@ impl Table {
         self
     }
 
-    pub fn children(mut self, children: Option<Vec<Block>>) -> Self {
-        self.children = children;
+    /// Not Option<Vec<Block> here because it must be set when calling the API
+    pub fn children(mut self, children: Vec<Block>) -> Self {
+        // make sure that each block is a TableRow
+        for child in &children {
+            if let BlockData::TableRow(_) = child.data {
+                continue;
+            } else {
+                panic!("Table children must be of type TableRow");
+            }
+        }
+        self.children = Some(children);
         self
     }
 }

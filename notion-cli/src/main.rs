@@ -70,12 +70,12 @@ mod ids {
     pub const DATABASE_PAGE: &str = "1866cccaa3f842c68cd8e5b0aabeebc8";
 }
 
-// TODO: remove all tag = "type" and similar bc API does not use the "type"
-// field, but it is just for reference for apps to use
-// TODO: re-test all block struct builders, from the API, and from the app
-// TODO: make sure all block structs have builder function for everything
-// TODO: maybe somehow force ColumnList to have Column as children
-// TODO: maybe somehow force Table to have TableRow as children
+/// TODO: write tests for all block struct builders
+/// TODO: test all builders and make sure they work, from the app and API
+/// TODO: make sure all block structs have builder function for everything
+/// TODO: maybe somehow force ColumnList to have Column as children
+/// TODO: maybe somehow force Table to have TableRow as children
+/// TODO: use &[] instead of vec![] everywhere
 #[tokio::main]
 pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
@@ -84,9 +84,25 @@ pub async fn main() -> Result<()> {
     let res = notion
         .append_block_children(
             BlockId::from_str_unchecked(ids::PAGE),
-            &[Paragraph::new()
-                .rich_text(vec![RichText::new_text("Hello, world!")])
-                .build()],
+            vec![
+                Table::new()
+                    .table_width(2)
+                    .children(vec![
+                        TableRow::new()
+                            .cells(vec![
+                                vec![RichText::new_text("a1 world!")],
+                                vec![RichText::new_text("a2 world!")],
+                            ])
+                            .build(),
+                        TableRow::new()
+                            .cells(vec![
+                                vec![RichText::new_text("b1 world!")],
+                                vec![RichText::new_text("b2 world!")],
+                            ])
+                            .build(),
+                    ])
+                    .build(),
+            ],
         )
         .await?;
 

@@ -75,7 +75,7 @@ impl Notion {
     pub async fn retrieve_page(
         &self,
         page_id: impl NotionId,
-        filter_properties: Option<&[&str]>,
+        filter_properties: Option<Vec<&str>>,
     ) -> Result<Page> {
         let query = filter_properties
             .iter()
@@ -87,6 +87,10 @@ impl Notion {
             .query(&query)
             .send_and_get_text()
             .await?;
+
+        // let text = crate::test_json();
+
+        // println!("{text}");
 
         let res = serde_json::from_str::<result_types::Page>(&text)
             .context(Error::SerializeResponse("Page", "retrieve_page"))?;

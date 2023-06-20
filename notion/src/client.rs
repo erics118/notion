@@ -18,12 +18,11 @@ pub trait SendAndGetText {
 
 impl SendAndGetText for RequestBuilder {
     async fn send_and_get_text(self) -> Result<String> {
-        self.send()
-            .await
-            .context(Error::RequestSend)?
-            .text()
-            .await
-            .context(Error::ParseResponse)
+        let res = self.send().await.context(Error::RequestSend)?;
+
+        // println!("{:#?}", res.headers());
+
+        res.text().await.context(Error::ParseResponse)
     }
 }
 
@@ -65,7 +64,8 @@ impl Notion {
         API_BASE_URL.to_owned() + path
     }
 
-    // TODO: ratelimits
+    // TODO: ratelimits, maybe. notion doesn't respond with a rate limit header
+    // TODO: size limits. see https://developers.notion.com/reference/request-limits
     api_method! {
         delete;
         get;
