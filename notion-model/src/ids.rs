@@ -165,5 +165,6 @@ uuid_id! {
 
 string_id! {
     WorkspaceId;
+    SelectOptionId;
     PropertyId;
 }

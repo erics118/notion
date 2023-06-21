@@ -1,8 +1,13 @@
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{block::File, rich_text::RichText, user::PartialUser};
-use crate::ids::PropertyId;
+use super::{
+    block::File,
+    color::Color,
+    rich_text::{PageMention, RichText},
+    user::PartialUser,
+};
+use crate::ids::{PropertyId, SelectOptionId};
 
 /// # Page properties
 ///
@@ -44,22 +49,28 @@ pub enum PropertyData {
     Checkbox(bool),
     CreatedBy(PartialUser),
     CreatedTime(DateTime<Utc>),
-    // Date(Date),
+    Date(DateTime<Utc>),
     Email(Option<String>),
     Files(Vec<File>),
     Formula(FormulaData),
     LastEditedBy(PartialUser),
     LastEditedTime(DateTime<Utc>),
-    // MultiSelect(MultiSelect),
+    MultiSelect(Vec<SelectOption>),
     // TODO: find max value of number
     Number(Option<u32>),
     People(Vec<PartialUser>),
     PhoneNumber(Option<String>),
-    // Relation(Relation),
+    // TODO: relation is broken
+    // Relation {
+    //     relation: Vec<PageMention>,
+    //     /// if there is more than 25, this is true. no way to see the
+    //     /// result_types
+    //     has_more: bool,
+    // },
     // Rollup(Rollup),
     RichText(Vec<RichText>),
-    // Select(Select),
-    // Status(Status),
+    Select(Option<SelectOption>),
+    Status(Status),
     Title(Vec<RichText>),
     Url(Option<String>),
     UniqueId(UniqueId),
@@ -74,6 +85,72 @@ pub enum FormulaData {
     Number { number: u32 },
     String { string: String },
 }
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub struct SelectOption {
+    pub name: String,
+    pub id: SelectOptionId,
+    pub color: Color,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub struct Status {
+    pub name: String,
+    pub id: String,
+    pub color: Color,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub struct Rollup {
+    pub function: RollupType,
+    #[serde(flatten)]
+    pub data: RollupData,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+pub enum RollupData {
+    Array,
+    Date,
+    Incomplete,
+    Number(u32),
+    Unsupported,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
+#[serde(rename_all = "snake_case")]
+pub enum RollupType {
+    Average,
+    Checked,
+    Count,
+    CountPerGroup,
+    CountValues,
+    DateRange,
+    EarliestDate,
+    Empty,
+    LatestDate,
+    Max,
+    Median,
+    Min,
+    NotEmpty,
+    PercentChecked,
+    PercentEmpty,
+    PercentNotEmpty,
+    PercentPerGroup,
+    PercentUnchecked,
+    Range,
+    ShowOriginal,
+    ShowUnique,
+    Sum,
+    Unchecked,
+    Unique,
+}
+
+// #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+// #[serde(rename_all = "snake_case")]
+// pub struct Relation
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type", rename_all = "snake_case")]

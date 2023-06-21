@@ -24,7 +24,7 @@ use crate::{
 ///
 /// Refer to the request limits documentation page for information about [limits
 /// on the size of rich text objects](https://developers.notion.com/reference/request-limits#limits-for-property-values).
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct RichText {
     /// The information used to style the rich text object.
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -130,14 +130,12 @@ impl RichText {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Default)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum RichTextData {
     Text(Text),
     Mention(Mention),
     Equation(Equation),
-    #[default]
-    Idk,
 }
 
 /// All rich text objects contain an annotations object that sets the styling

@@ -20,8 +20,6 @@ impl SendAndGetText for RequestBuilder {
     async fn send_and_get_text(self) -> Result<String> {
         let res = self.send().await.context(Error::RequestSend)?;
 
-        // println!("{:#?}", res.headers());
-
         res.text().await.context(Error::ParseResponse)
     }
 }
