@@ -13,6 +13,7 @@ categories = ["api-bindings"]
 publish = false
 
 [dependencies]
+anyhow = "1.0.71"
 chrono = { version = "0.4.26", features = ["serde"] }
 chrono-tz = { version = "0.8.2", features = ["serde", "case-insensitive"] }
 serde = { version = "1.0.164", features = ["derive"] }

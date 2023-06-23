@@ -1,10 +1,10 @@
-use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use super::{
     block::File,
     color::Color,
-    rich_text::{PageMention, RichText},
+    date::DateOrDateTime,
+    rich_text::{DateMention, RichText},
     user::PartialUser,
 };
 use crate::ids::{PropertyId, SelectOptionId};
@@ -28,7 +28,7 @@ use crate::ids::{PropertyId, SelectOptionId};
 ///
 /// For information about size limitations for specific page property objects,
 /// refer to the limits for property values documentation.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Property {
     /// An underlying identifier for the property. id may be a UUID, but it's
     /// often a short random string.
@@ -43,21 +43,21 @@ pub struct Property {
     pub data: PropertyData,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum PropertyData {
     Checkbox(bool),
     CreatedBy(PartialUser),
-    CreatedTime(DateTime<Utc>),
-    Date(DateTime<Utc>),
+    CreatedTime(DateOrDateTime),
+    Date(Option<DateMention>),
     Email(Option<String>),
     Files(Vec<File>),
     Formula(FormulaData),
     LastEditedBy(PartialUser),
-    LastEditedTime(DateTime<Utc>),
+    LastEditedTime(DateOrDateTime),
     MultiSelect(Vec<SelectOption>),
     // TODO: find max value of number
-    Number(Option<u32>),
+    Number(Option<f64>),
     People(Vec<PartialUser>),
     PhoneNumber(Option<String>),
     // TODO: relation is broken
@@ -81,7 +81,7 @@ pub enum PropertyData {
 #[serde(tag = "type", rename_all = "snake_case")]
 pub enum FormulaData {
     Boolean { boolean: bool },
-    Date { date: DateTime<Utc> },
+    Date { date: DateOrDateTime },
     Number { number: u32 },
     String { string: String },
 }
@@ -102,7 +102,7 @@ pub struct Status {
     pub color: Color,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
 #[serde(tag = "type", rename_all = "snake_case")]
 pub struct Rollup {
     pub function: RollupType,

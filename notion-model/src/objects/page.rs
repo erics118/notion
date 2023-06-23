@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 use super::{
-    file_and_emoji::FileOrEmoji, page_properties::Property, parent::ParentData, user::PartialUser,
+    date::DateOrDateTime, file_and_emoji::FileOrEmoji, page_properties::Property,
+    parent::ParentData, user::PartialUser,
 };
 
 /// All pages have a Parent. If the parent is a database, the property values
@@ -13,13 +13,13 @@ use super::{
 ///
 /// Page content is available as blocks. The content can be read using retrieve
 /// block children and appended using append block children.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(tag = "object")]
 pub struct Page {
     pub id: String,
-    pub created_time: DateTime<Utc>,
+    pub created_time: DateOrDateTime,
     pub created_by: PartialUser,
-    pub last_edited_time: DateTime<Utc>,
+    pub last_edited_time: DateOrDateTime,
     pub last_edited_by: PartialUser,
     pub archived: bool,
     /// emoji or external, can't be internal

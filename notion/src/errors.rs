@@ -17,7 +17,7 @@ pub enum Error<'a> {
     MissingBlockId,
 }
 
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct ErrorInfo {
     pub status: u16,
     pub code: String,

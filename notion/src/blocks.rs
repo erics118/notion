@@ -48,7 +48,7 @@ impl Notion {
         block_id: impl NotionId,
         children: Vec<Block>,
     ) -> Result<List<Block>> {
-        #[derive(Serialize, Debug, Eq, PartialEq)]
+        #[derive(Serialize, Debug)]
         struct AppendBlockChildren {
             children: Vec<Block>,
         }

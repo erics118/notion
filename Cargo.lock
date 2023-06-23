@@ -864,6 +864,7 @@ dependencies = [
 name = "notion-model"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
  "chrono",
  "chrono-tz",
  "serde",

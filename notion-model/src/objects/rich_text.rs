@@ -1,7 +1,7 @@
-use chrono::{DateTime, Utc};
 use chrono_tz::Tz;
 use serde::{Deserialize, Serialize};
 
+use super::date::DateOrDateTime;
 use crate::{
     ids::{DatabaseId, PageId, UserId},
     objects::color::Color,
@@ -229,13 +229,13 @@ impl DatabaseMention {
 #[serde(rename_all = "snake_case")]
 pub struct DateMention {
     /// An ISO 8601 format date, with optional time.
-    start: DateTime<Utc>,
+    start: DateOrDateTime,
     /// An ISO 8601 formatted date, with optional time. Represents the end of a
     /// date range.
     ///
     /// If `None`, this property's date value is not a range.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    end: Option<DateTime<Utc>>,
+    end: Option<DateOrDateTime>,
     /// Time zone information for start and end. Possible values are extracted
     /// from the IANA database and they are based on the time zones from
     /// Moment.js.
@@ -251,7 +251,7 @@ pub struct DateMention {
 }
 
 impl DateMention {
-    pub fn new(start: DateTime<Utc>) -> Self {
+    pub fn new(start: DateOrDateTime) -> Self {
         Self {
             start,
             end: None,
@@ -259,12 +259,12 @@ impl DateMention {
         }
     }
 
-    pub fn start(mut self, start: DateTime<Utc>) -> Self {
+    pub fn start(mut self, start: DateOrDateTime) -> Self {
         self.start = start;
         self
     }
 
-    pub fn end(mut self, end: Option<DateTime<Utc>>) -> Self {
+    pub fn end(mut self, end: Option<DateOrDateTime>) -> Self {
         self.end = end;
         self
     }

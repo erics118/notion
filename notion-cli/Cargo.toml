@@ -16,7 +16,7 @@ publish = false
 notion = { path = "../notion" }
 
 anyhow = { version = "1.0.71", features = ["backtrace"] }
-clap = { version = "4.3.4", features = ["cargo", "derive", "env"] }
+clap = { version = "4.3.5", features = ["cargo", "derive", "env"] }
 config = { version = "0.13.3", features = ["toml"] }
 dirs = "5.0.1"
 serde = "1.0.164"

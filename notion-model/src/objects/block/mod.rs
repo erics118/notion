@@ -1,7 +1,6 @@
-use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
-use super::{parent::ParentData, rich_text::Mention, user::PartialUser};
+use super::{date::DateOrDateTime, parent::ParentData, rich_text::Mention, user::PartialUser};
 use crate::ids::BlockId;
 
 mod bookmark;
@@ -96,12 +95,12 @@ pub struct Block {
     /// Date and time when this block was created. Formatted as an ISO 8601 date
     /// time string.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub created_time: Option<DateTime<Utc>>,
+    pub created_time: Option<DateOrDateTime>,
 
     /// Date and time when this block was last updated. Formatted as an ISO 8601
     /// date time string.
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub last_edited_time: Option<DateTime<Utc>>,
+    pub last_edited_time: Option<DateOrDateTime>,
 
     /// User who created the block.
     #[serde(skip_serializing_if = "Option::is_none")]
