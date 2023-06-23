@@ -44,11 +44,17 @@ pub mod cli;
 pub mod config;
 pub mod error;
 
+use std::collections::HashMap;
 #[allow(unused)]
 use std::str::FromStr;
 
 #[allow(unused)]
 use anyhow::{Context, Result};
+use notion::model::objects::{
+    page::Page,
+    page_properties,
+    parent::ParentData,
+};
 #[allow(unused)]
 use notion::{
     client::Notion,
@@ -66,7 +72,7 @@ mod ids {
     pub const PARAGRAPH: &str = "d3d710f97c874e6c8e4d9b2576a6fb29";
     pub const PAGE: &str = "67ace61a7fd24ab78e892b1dc9b252e4";
     pub const USER: &str = "3e1fc0f5d02e48ae84c07ae06deece9f";
-    pub const DATABASE: &str = "41ef19e3335a434281c95cbec7345198";
+    pub const DATABASE: &str = "f4f1218eb40543dea252259de6c30280";
     pub const DATABASE_PAGE: &str = "1866cccaa3f842c68cd8e5b0aabeebc8";
 }
 
@@ -80,7 +86,14 @@ pub async fn main() -> Result<()> {
     let notion = Notion::new(&api_token).context("Failed to create api client")?;
 
     let res = notion
-        .retrieve_page(PageId::from_str_unchecked(ids::DATABASE_PAGE), None)
+        .create_page(
+            Page::new()
+                .parent(Some(ParentData::from(DatabaseId::from_str(ids::DATABASE)?)))
+                .properties(HashMap::from([
+                    page_properties::Title::new("hello hello hello hello").build_with_name("Name"),
+                    page_properties::Number::new(9999.).build_with_name("Number"),
+                ])),
+        )
         .await?;
 
     println!("{:#?}", res);

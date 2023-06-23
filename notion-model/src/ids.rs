@@ -5,6 +5,8 @@ use std::{fmt, str::FromStr};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
+
+
 pub trait NotionId: fmt::Display + Send {}
 
 macro_rules! uuid_id {
@@ -29,6 +31,10 @@ macro_rules! uuid_id {
                 pub fn from_str_unchecked(uuid_str: &str) -> Self {
                     Self(Uuid::parse_str(uuid_str).unwrap())
                 }
+
+                pub fn to_hyphenated(&self) -> String {
+                    self.0.hyphenated().to_string()
+                }
             }
 
             impl FromStr for $name {
@@ -36,29 +42,6 @@ macro_rules! uuid_id {
 
                 fn from_str(uuid_str: &str) -> Result<Self, Self::Err> {
                     Ok(Self(Uuid::parse_str(uuid_str)?))
-                }
-            }
-
-            impl TryFrom<&'_ str> for $name {
-                type Error = uuid::Error;
-
-                fn try_from(uuid_str: &'_ str) -> Result<Self, Self::Error> {
-                    Ok(Self(Uuid::parse_str(uuid_str)?))
-                }
-            }
-
-            impl<T: ?Sized> AsMut<T> for $name
-            where
-                Uuid: AsMut<T>,
-            {
-                fn as_mut(&mut self) -> &mut T {
-                    self.0.as_mut()
-                }
-            }
-
-            impl AsRef<Self> for $name {
-                fn as_ref(&self) -> &Self {
-                    self
                 }
             }
 
@@ -109,29 +92,6 @@ macro_rules! string_id {
 
                 fn from_str(str: &str) -> Result<Self, Self::Err> {
                     Ok(Self(str.to_string()))
-                }
-            }
-
-            impl TryFrom<&'_ str> for $name {
-                type Error = uuid::Error;
-
-                fn try_from(str: &'_ str) -> Result<Self, Self::Error> {
-                    Ok(Self(str.to_string()))
-                }
-            }
-
-            impl<T: ?Sized> AsMut<T> for $name
-            where
-                String: AsMut<T>,
-            {
-                fn as_mut(&mut self) -> &mut T {
-                    self.0.as_mut()
-                }
-            }
-
-            impl AsRef<Self> for $name {
-                fn as_ref(&self) -> &Self {
-                    self
                 }
             }
 

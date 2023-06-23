@@ -1,13 +1,49 @@
 use serde::{Deserialize, Serialize};
 
-use super::{
-    block::File,
-    color::OptionColor,
-    date::DateOrDateTime,
-    rich_text::{DateMention, PageMention, RichText},
-    user::PartialUser,
-};
-use crate::ids::{PropertyId, SelectOptionId};
+use super::{block::File, date::DateOrDateTime, rich_text::PageMention, user::PartialUser};
+use crate::ids::PropertyId;
+
+mod checkbox;
+// mod created_by;
+// mod created_time;
+mod date;
+mod email;
+// mod files;
+mod formula;
+// mod last_edited_time;
+mod multi_select;
+mod number;
+mod people;
+mod phone_number;
+mod relation;
+mod rich_text;
+mod rollup;
+mod select;
+mod status;
+mod title;
+mod unique_id;
+mod url;
+
+pub use checkbox::Checkbox;
+// pub use created_by::CreatedBy;
+// pub use created_time::CreatedTime;
+pub use date::Date;
+pub use email::Email;
+// pub use files::Files;
+//* pub use formula::Formula;
+// pub use last_edited_time::LastEditedTime;
+//* pub use multi_select::MultiSelect;
+pub use number::Number;
+//* pub use people::People;
+pub use phone_number::PhoneNumber;
+//* pub use relation::Relation;
+pub use rich_text::RichText;
+pub use rollup::Rollup;
+pub use select::Select;
+pub use status::Status;
+pub use title::Title;
+pub use unique_id::UniqueId;
+pub use url::Url;
 
 /// # Page properties
 ///
@@ -36,7 +72,10 @@ pub struct Property {
     /// id may be used in place of name when creating or updating pages.
     ///
     /// id remains constant when the property name changes.
-    pub id: PropertyId,
+    ///
+    /// Does not need to be set when creating or editing a page.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<PropertyId>,
     /// A type object that contains data specific to the page property type,
     /// including the page property value.
     #[serde(flatten)]
@@ -50,12 +89,22 @@ pub struct Property {
     pub has_more: Option<bool>,
 }
 
+impl Property {
+    pub fn new(data: PropertyData) -> Self {
+        Self {
+            id: None,
+            data,
+            has_more: None,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum PropertyData {
     /// Simple checkboxes that indicate whether something is done or
     /// not.
-    Checkbox(bool),
+    Checkbox(Checkbox),
     /// Automatically records the user who created the item.
     ///
     /// A user object containing information about the user who created the
@@ -69,11 +118,11 @@ pub enum PropertyData {
     CreatedTime(DateOrDateTime),
     /// Accepts a date or a date range, allowing you to timestamp and set
     /// reminders.
-    Date(Option<DateMention>),
+    Date(Date),
     /// Accepts email addresses and launches your mail client when clicked.
     ///
     /// A string describing an email address.
-    Email(Option<String>),
+    Email(Email),
     /// Allows you to upload files relevant to your database
     /// item.
     ///
@@ -107,7 +156,7 @@ pub enum PropertyData {
     /// more than 25 references, then you can use the Retrieve a page property
     /// item endpoint for the specific formula property to get its complete list
     /// of references.
-    Formula(FormulaData),
+    Formula(formula::FormulaData),
     /// Records the user who edited the item last.
     ///
     /// A user object containing information about the user who last updated the
@@ -129,13 +178,13 @@ pub enum PropertyData {
     ///  If you want to add a new option to a multi-select property via the
     /// Update page or Update database endpoint, then your integration needs
     /// write access to the parent database.
-    MultiSelect(Vec<SelectOption>),
+    MultiSelect(Vec<select::SelectOption>),
     /// Numerical formats like currencies and percentages. Useful for price,
     /// etc.
     ///
     /// A number representing some value.
     // TODO: figure out how to use int/float
-    Number(Option<f64>),
+    Number(Number),
     /// Lets you mention other users in your workspace (or assign them
     /// to things).
     ///
@@ -153,7 +202,7 @@ pub enum PropertyData {
     ///
     /// A string representing a phone number. No phone number format is
     /// enforced.
-    PhoneNumber(Option<String>),
+    PhoneNumber(PhoneNumber),
     /// Lets you add items from another database as a property.
     ///
     /// An array of related page references.
@@ -192,9 +241,9 @@ pub enum PropertyData {
     // TODO: rollup is broken
     Rollup(Rollup),
     /// Basic text for notes, descriptions and comments about database items.
-    RichText(Vec<RichText>),
+    RichText(RichText),
     /// Select: Dropdown menu of tags that can be selected one at a time.
-    Select(Option<SelectOption>),
+    Select(Select),
     /// Status: Dropdown menu of tags that are grouped by status (i.e. To-do, In
     /// Progress, Complete).
     ///
@@ -204,126 +253,14 @@ pub enum PropertyData {
     /// Whatever you're calling your item, i.e. the title of the page in your
     /// database.
     ///
-    /// An array of rich text objects.
-    Title(Vec<RichText>),
+    /// An array of rich text objects, but no rich text actually is visible from
+    /// the UI.
+    Title(Title),
     /// Accepts a link to a website relevant to your database item.
     ///
     /// A string that describes a web address.
-    Url(Option<String>),
+    Url(Url),
     /// A short, unique id for each item in a database. This is not the same
     /// as the `id` property of the page object.
     UniqueId(UniqueId),
-}
-
-/// Value of a formula property.
-/// TODO: remove tag, use a struct if possible
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub enum FormulaData {
-    Boolean { boolean: bool },
-    Date { date: DateOrDateTime },
-    Number { number: u32 },
-    String { string: String },
-}
-
-/// A select option.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub struct SelectOption {
-    /// The color of the option.
-    pub color: OptionColor,
-    /// The ID of the option.
-    ///
-    /// You can use id or name to update a select property.
-    pub id: SelectOptionId,
-    /// The name of the option as it appears in Notion.
-    ///
-    /// If the select database property doesn't have an option by that name yet,
-    /// then the name is added to the database schema if the integration also
-    /// has write access to the parent database.
-    ///
-    /// Note: Commas (",") are not valid for select values.
-    pub name: String,
-}
-
-/// A select option, but for a status object. Looks and functions the exact
-/// same.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub struct Status {
-    /// The color of the option.
-    pub color: OptionColor,
-    /// The ID of the option.
-    ///
-    /// You can use id or name to update a select property.
-    pub id: SelectOptionId,
-    /// The name of the option as it appears in Notion.
-    ///
-    /// If the select database property doesn't have an option by that name yet,
-    /// then the name is added to the database schema if the integration also
-    /// has write access to the parent database.
-    ///
-    /// Note: Commas (",") are not valid for select values.
-    pub name: String,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub struct Rollup {
-    /// The function that is evaluated for every page in the relation of the
-    /// rollup.
-    pub function: RollupFunction,
-    /// The value of the calculated rollup.
-    #[serde(flatten)]
-    pub data: RollupData,
-}
-
-/// The value of the calculated rollup.
-/// TODO: complete all types
-/// TODO: u32 is supposed to be a f64 as well
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-#[serde(rename_all = "snake_case")]
-pub enum RollupData {
-    Array,
-    Date,
-    Incomplete,
-    Number(u32),
-    Unsupported,
-}
-
-/// Functions that can be used in a rollup property.
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone, Copy)]
-#[serde(rename_all = "snake_case")]
-pub enum RollupFunction {
-    Average,
-    Checked,
-    Count,
-    CountPerGroup,
-    CountValues,
-    DateRange,
-    EarliestDate,
-    Empty,
-    LatestDate,
-    Max,
-    Median,
-    Min,
-    NotEmpty,
-    PercentChecked,
-    PercentEmpty,
-    PercentNotEmpty,
-    PercentPerGroup,
-    PercentUnchecked,
-    Range,
-    ShowOriginal,
-    ShowUnique,
-    Sum,
-    Unchecked,
-    Unique,
-}
-
-#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
-#[serde(tag = "type", rename_all = "snake_case")]
-pub struct UniqueId {
-    pub prefix: String,
-    pub number: u32,
 }

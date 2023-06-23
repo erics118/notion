@@ -8,6 +8,58 @@ use crate::{
 };
 
 impl Notion {
+    /// # Create a page
+    ///
+    /// Creates a new page that is a child of an existing page or database.
+    ///
+    /// If the new page is a child of an existing page,title is the only valid
+    /// property in the properties body param.
+    ///
+    /// If the new page is a child of an existing database, the keys of the
+    /// properties object body param must match the parent database's
+    /// properties.
+    ///
+    /// This endpoint can be used to create a new page with or without content
+    /// using the children option. To add content to a page after creating it,
+    /// use the Append block children endpoint.
+    ///
+    /// Returns a new page object.
+    ///
+    /// # 🚧
+    /// Some page properties are not supported via the API.
+    ///
+    /// A request body that includes rollup, created_by, created_time,
+    /// last_edited_by, or last_edited_time values in the properties object
+    /// returns an error. These Notion-generated values cannot be created or
+    /// updated via the API. If the parent contains any of these properties,
+    /// then the new page's corresponding values are automatically created.
+    /// # 📘
+    /// Requirements
+    ///
+    /// Your integration must have update content capabilities on the target
+    /// parent page or database in order to call this endpoint. To update your
+    /// integrations capabilities, navigation to the My integrations dashboard,
+    /// select your integration, go to the Capabilities tab, and update your
+    /// settings as needed.
+    ///
+    /// Attempting a query without update content capabilities returns an HTTP
+    /// response with a 403 status code.
+    pub async fn create_page(&self, page: Page) -> Result<Page> {
+        let text = self
+            .api_post("pages")
+            .json(&page)
+            .send_and_get_text()
+            .await?;
+
+        let res = serde_json::from_str::<result_types::Page>(&text)
+            .context(Error::SerializeResponse("Page", "create_page"))?;
+
+        match res {
+            result_types::Page::Page(page) => Ok(page),
+            result_types::Page::Error(e) => anyhow::bail!(NotionApiError::from(e)),
+        }
+    }
+
     /// # Retrieve a page
     ///
     /// Retrieves a Page object using the ID specified.

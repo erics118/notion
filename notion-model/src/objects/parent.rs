@@ -10,3 +10,21 @@ pub enum ParentData {
     Workspace { workspace: bool },
     BlockId { block_id: BlockId },
 }
+
+impl From<DatabaseId> for ParentData {
+    fn from(database_id: DatabaseId) -> Self {
+        Self::DatabaseId { database_id }
+    }
+}
+
+impl From<PageId> for ParentData {
+    fn from(page_id: PageId) -> Self {
+        Self::PageId { page_id }
+    }
+}
+
+impl From<BlockId> for ParentData {
+    fn from(block_id: BlockId) -> Self {
+        Self::BlockId { block_id }
+    }
+}

@@ -131,10 +131,6 @@ impl Block {
         }
     }
 
-    pub fn new_() -> Self {
-        Self::default()
-    }
-
     pub fn id(mut self, id: BlockId) -> Self {
         self.id = Some(id);
         self
