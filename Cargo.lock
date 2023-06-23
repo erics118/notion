@@ -856,6 +856,7 @@ dependencies = [
  "dirs",
  "notion",
  "serde",
+ "serde_json",
  "thiserror",
  "tokio",
 ]
@@ -868,6 +869,7 @@ dependencies = [
  "chrono",
  "chrono-tz",
  "serde",
+ "serde_json",
  "serde_test",
  "uuid",
 ]

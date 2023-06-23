@@ -62,3 +62,50 @@ impl Callout {
         self
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_test::{assert_tokens, Token};
+
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let value = Callout::with_emoji("👋".to_string()).build();
+
+        assert_tokens(
+            &value,
+            &[
+                Token::Map { len: None },
+                Token::Str("object"),
+                Token::Str("block"),
+                Token::Str("callout"),
+                Token::Struct {
+                    name: "Callout",
+                    len: 3,
+                },
+                Token::Str("rich_text"),
+                Token::Seq { len: Some(0) },
+                Token::SeqEnd,
+                Token::Str("icon"),
+                Token::NewtypeVariant {
+                    name: "FileOrEmoji",
+                    variant: "emoji",
+                },
+                Token::Str("👋"),
+                Token::Str("color"),
+                Token::Struct {
+                    name: "Color",
+                    len: 1,
+                },
+                Token::Str("type"),
+                Token::Str("default"),
+                Token::StructEnd,
+                Token::Str("children"),
+                Token::None,
+                Token::StructEnd,
+                Token::MapEnd,
+            ],
+        );
+    }
+}

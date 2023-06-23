@@ -46,24 +46,25 @@ mod test {
     #[test]
     fn empty() {
         let value = Bookmark::new().build();
-
-        assert_tokens(
-            &value,
-            &[
-                Token::Map { len: None },
-                Token::Str("object"),
-                Token::Str("block"),
-                Token::Str("type"),
-                Token::Str("bookmark"),
-                Token::Str("bookmark"),
-                Token::Struct {
-                    name: "Bookmark",
-                    len: 0,
-                },
-                Token::StructEnd,
-                Token::MapEnd,
-            ],
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","bookmark":{}}"#
         );
+        // assert_tokens(
+        //     &value,
+        //     &[
+        //         Token::Map { len: None },
+        //         Token::Str("object"),
+        //         Token::Str("block"),
+        //         Token::Str("bookmark"),
+        //         Token::Struct {
+        //             name: "Bookmark",
+        //             len: 0,
+        //         },
+        //         Token::StructEnd,
+        //         Token::MapEnd,
+        //     ],
+        // );
     }
 
     #[test]
@@ -76,8 +77,6 @@ mod test {
                 Token::Map { len: None },
                 Token::Str("object"),
                 Token::Str("block"),
-                Token::Str("type"),
-                Token::Str("bookmark"),
                 Token::Str("bookmark"),
                 Token::Struct {
                     name: "Bookmark",

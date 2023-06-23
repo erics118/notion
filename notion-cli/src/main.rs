@@ -50,11 +50,7 @@ use std::str::FromStr;
 
 #[allow(unused)]
 use anyhow::{Context, Result};
-use notion::model::objects::{
-    page::Page,
-    page_properties,
-    parent::ParentData,
-};
+use notion::model::objects::{page::Page, page_properties, parent::ParentData};
 #[allow(unused)]
 use notion::{
     client::Notion,
@@ -85,18 +81,23 @@ pub async fn main() -> Result<()> {
     let Config { api_token } = load_config()?;
     let notion = Notion::new(&api_token).context("Failed to create api client")?;
 
-    let res = notion
-        .create_page(
-            Page::new()
-                .parent(Some(ParentData::from(DatabaseId::from_str(ids::DATABASE)?)))
-                .properties(HashMap::from([
-                    page_properties::Title::new("hello hello hello hello").build_with_name("Name"),
-                    page_properties::Number::new(9999.).build_with_name("Number"),
-                ])),
-        )
-        .await?;
+    // let res = notion
+    //     .create_page(
+    //         Page::new()
+    //
+    // .parent(Some(ParentData::from(DatabaseId::from_str(ids::DATABASE)?)))
+    //             .properties(HashMap::from([
+    //                 page_properties::Title::new("hello hello hello
+    // hello").build_with_name("Name"),
+    // page_properties::Number::new(9999.).build_with_name("Number"),
+    //             ])),
+    //     )
+    //     .await?;
 
-    println!("{:#?}", res);
+    // println!("{:#?}", res);
+
+    let value = Bookmark::new().build();
+    println!("{}", serde_json::to_string(&value).unwrap());
 
     Ok(())
 }

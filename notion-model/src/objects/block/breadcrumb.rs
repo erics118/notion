@@ -23,3 +23,33 @@ impl Breadcrumb {
         Block::new(BlockData::Breadcrumb(self))
     }
 }
+
+
+
+#[cfg(test)]
+mod test {
+    use serde_test::{assert_tokens, Token};
+
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let value = Breadcrumb::new().build();
+
+        assert_tokens(
+            &value,
+            &[
+                Token::Map { len: None },
+                Token::Str("object"),
+                Token::Str("block"),
+                Token::Str("breadcrumb"),
+                Token::Struct {
+                    name: "Breadcrumb",
+                    len: 0,
+                },
+                Token::StructEnd,
+                Token::MapEnd,
+            ],
+        );
+    }
+}
