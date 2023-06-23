@@ -3,17 +3,17 @@ use thiserror::Error;
 
 #[derive(Error, Debug, Clone, Copy)]
 pub enum Error<'a> {
-    #[error("Invalid Notion API Token")]
+    #[error("invalid Notion API Token")]
     InvalidApiToken,
-    #[error("Could not create API client")]
+    #[error("could not create API client")]
     ClientBuild,
-    #[error("Could not send API request")]
+    #[error("could not send API request")]
     RequestSend,
-    #[error("Could not parse API response")]
+    #[error("could not parse API response")]
     ParseResponse,
-    #[error("Could not serialize a {0} in {1}")]
+    #[error("could not serialize a {0} in {1}")]
     SerializeResponse(&'a str, &'a str),
-    #[error("Missing id in block")]
+    #[error("missing id in block")]
     MissingBlockId,
 }
 

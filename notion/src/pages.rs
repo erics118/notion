@@ -88,9 +88,6 @@ impl Notion {
             .send_and_get_text()
             .await?;
 
-        // let text = crate::test_json();
-        // println!("{text}");
-
         let res = serde_json::from_str::<result_types::Page>(&text)
             .context(Error::SerializeResponse("Page", "retrieve_page"))?;
 

@@ -3,6 +3,9 @@ use std::str::FromStr;
 use chrono::{DateTime, FixedOffset, NaiveDate};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 
+/// Dates in notion have an optional time component.
+/// Since chrono does not support optional time components, we use this enum to
+/// represent it.
 #[derive(Debug, Eq, PartialEq, Clone, Copy)]
 pub enum DateOrDateTime {
     Date(NaiveDate),
@@ -63,10 +66,10 @@ impl FromStr for DateOrDateTime {
     }
 }
 
+// TODO: more tests
 #[cfg(test)]
 mod test {
-    use anyhow::Result;
-    use chrono::{DateTime, FixedOffset, NaiveDate, Utc};
+    use chrono::{DateTime, NaiveDate, Utc};
 
     use super::DateOrDateTime;
 

@@ -173,11 +173,14 @@ pub struct Equation {
     /// The LaTeX string representing the inline equation.
     pub expression: String,
 }
+
 /// # Mention object
 ///
 /// Mention objects represent an inline mention of a database, date, link
 /// preview mention, page, template mention, or user. A mention is created in
 /// the Notion UI when a user types `@` followed by the name of the reference.
+///
+/// TODO: remove tag = "type"
 #[derive(Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case", tag = "type")]
 pub enum Mention {
@@ -222,9 +225,6 @@ impl DatabaseMention {
 
 /// Date mentions contain a [date property value](https://developers.notion.com/reference/property-value-object#date-property-values) object within the corresponding
 /// date field.
-///
-/// TODO: somehow allow for both `chrono::NaiveDate` and `chrono::NaiveDateTime`
-/// TODO: for some reason using NaiveDateTime causes an error: trailing input
 #[derive(Copy, Clone, Debug, Eq, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub struct DateMention {
