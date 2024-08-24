@@ -13,7 +13,7 @@ pub struct Notion {
 }
 
 pub trait SendAndGetText {
-    async fn send_and_get_text(self) -> Result<String>;
+    fn send_and_get_text(self) -> impl std::future::Future<Output = Result<String>> + Send;
 }
 
 impl SendAndGetText for RequestBuilder {

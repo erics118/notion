@@ -2,7 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use super::{Property, PropertyData};
 
-
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone, Copy)]
 pub struct Number(Option<f64>);
 

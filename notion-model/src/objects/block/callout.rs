@@ -20,7 +20,7 @@ pub struct Callout {
 impl Callout {
     pub fn with_emoji(emoji: String) -> Self {
         Self {
-            icon: FileOrEmoji::Emoji(emoji),
+            icon: FileOrEmoji::Emoji { emoji },
             color: Default::default(),
             rich_text: Default::default(),
             children: Default::default(),
@@ -65,47 +65,45 @@ impl Callout {
 
 #[cfg(test)]
 mod tests {
-    use serde_test::{assert_tokens, Token};
-
     use super::*;
+    use crate::objects::block::Paragraph;
 
     #[test]
     fn empty() {
         let value = Callout::with_emoji("👋".to_string()).build();
 
-        assert_tokens(
-            &value,
-            &[
-                Token::Map { len: None },
-                Token::Str("object"),
-                Token::Str("block"),
-                Token::Str("callout"),
-                Token::Struct {
-                    name: "Callout",
-                    len: 3,
-                },
-                Token::Str("rich_text"),
-                Token::Seq { len: Some(0) },
-                Token::SeqEnd,
-                Token::Str("icon"),
-                Token::NewtypeVariant {
-                    name: "FileOrEmoji",
-                    variant: "emoji",
-                },
-                Token::Str("👋"),
-                Token::Str("color"),
-                Token::Struct {
-                    name: "Color",
-                    len: 1,
-                },
-                Token::Str("type"),
-                Token::Str("default"),
-                Token::StructEnd,
-                Token::Str("children"),
-                Token::None,
-                Token::StructEnd,
-                Token::MapEnd,
-            ],
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","callout":{"rich_text":[],"icon":{"emoji":"👋"},"color":"default"}}"#
+        );
+    }
+
+    #[test]
+    fn simple() {
+        let value = Callout::with_emoji("👋".to_string())
+            .color(Color::BlueBackground)
+            .build();
+
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","callout":{"rich_text":[],"icon":{"emoji":"👋"},"color":"blue_background"}}"#
+        );
+    }
+
+    #[test]
+    fn children() {
+        let value = Callout::with_emoji("👋".to_string())
+            .color(Color::BlueBackground)
+            .children(Some(vec![
+                Paragraph::new()
+                    .rich_text(vec![RichText::new_text("hi")])
+                    .build(),
+            ]))
+            .build();
+
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","callout":{"rich_text":[],"icon":{"emoji":"👋"},"color":"blue_background","children":[{"object":"block","paragraph":{"rich_text":[{"text":{"content":"hi"}}],"color":"default"}}]}}"#
         );
     }
 }

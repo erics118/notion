@@ -49,3 +49,32 @@ impl Code {
         self
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn empty() {
+        let value = Code::new().build();
+
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","code":{"rich_text":[],"language":"plain text"}}"#
+        );
+    }
+
+    #[test]
+    fn complete() {
+        let value = Code::new()
+            .caption(Some(vec![RichText::new_text("caption")]))
+            .rich_text(vec![RichText::new_text("code here")])
+            .language(CodeLanguage::PlainText)
+            .build();
+
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","code":{"caption":[{"text":{"content":"caption"}}],"rich_text":[{"text":{"content":"code here"}}],"language":"plain text"}}"#
+        );
+    }
+}

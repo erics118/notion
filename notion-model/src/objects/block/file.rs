@@ -8,8 +8,6 @@ use crate::objects::{
 /// # File block
 ///
 /// The Notion API does not support uploading files to Notion.
-///
-/// TODO: external file builder
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct File {
     /// The rich text in the caption of the block.

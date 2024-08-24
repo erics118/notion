@@ -11,6 +11,9 @@ impl PhoneNumber {
     }
 
     pub fn build_with_name(self, name: &str) -> (String, Property) {
-        (name.to_string(), Property::new(PropertyData::PhoneNumber(self)))
+        (
+            name.to_string(),
+            Property::new(PropertyData::PhoneNumber(self)),
+        )
     }
 }

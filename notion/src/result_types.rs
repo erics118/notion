@@ -23,6 +23,14 @@ pub enum Page {
     Error(crate::errors::ErrorInfo),
 }
 
+#[allow(clippy::large_enum_variant)]
+#[derive(Deserialize)]
+#[serde(tag = "object", rename_all = "snake_case")]
+pub enum Database {
+    Database(crate::model::objects::database::Database),
+    Error(crate::errors::ErrorInfo),
+}
+
 #[derive(Deserialize)]
 #[serde(tag = "object", rename_all = "snake_case")]
 pub enum List<T> {

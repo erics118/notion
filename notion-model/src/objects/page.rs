@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 
 use super::{
-    block::File, date::DateOrDateTime, file_and_emoji::FileOrEmoji, page_properties::Property,
-    parent::ParentData, user::PartialUser,
+    block::File, date::DateOrDateTime, file_and_emoji::FileOrEmoji, parent::ParentData,
+    properties::Property, user::PartialUser,
 };
 use crate::ids::PageId;
 
@@ -33,8 +33,8 @@ pub struct Page {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub icon: Option<FileOrEmoji>,
     /// file
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub cover: Option<File>,
+    // #[serde(skip_serializing_if = "Option::is_none")]
+    // pub cover: Option<File>,
     pub properties: HashMap<String, Property>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parent: Option<ParentData>,
@@ -59,15 +59,15 @@ impl Page {
         self
     }
 
-    pub fn icon(mut self, icon: Option<FileOrEmoji>) -> Self {
-        self.icon = icon;
-        self
-    }
+    // pub fn icon(mut self, icon: Option<FileOrEmoji>) -> Self {
+    //     self.icon = icon;
+    //     self
+    // }
 
-    pub fn cover(mut self, cover: Option<File>) -> Self {
-        self.cover = cover;
-        self
-    }
+    // pub fn cover(mut self, cover: Option<File>) -> Self {
+    //     self.cover = cover;
+    //     self
+    // }
 
     pub fn properties(mut self, properties: HashMap<String, Property>) -> Self {
         self.properties = properties;

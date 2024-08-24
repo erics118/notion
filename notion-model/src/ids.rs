@@ -5,8 +5,6 @@ use std::{fmt, str::FromStr};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-
-
 pub trait NotionId: fmt::Display + Send {}
 
 macro_rules! uuid_id {
@@ -125,6 +123,6 @@ uuid_id! {
 
 string_id! {
     WorkspaceId;
-    SelectOptionId;
+    OptionId;
     PropertyId;
 }

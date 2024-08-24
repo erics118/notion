@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
 use notion_model::{
-    ids::NotionId,
+    ids::BlockId,
     objects::block::{Block, BlockData},
 };
 use serde::Serialize;
@@ -45,7 +45,7 @@ impl Notion {
     /// limits.
     pub async fn append_block_children(
         &self,
-        block_id: impl NotionId,
+        block_id: BlockId,
         children: Vec<Block>,
     ) -> Result<List<Block>> {
         #[derive(Serialize, Debug)]
@@ -89,7 +89,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn retrieve_block(&self, block_id: impl NotionId) -> Result<Block> {
+    pub async fn retrieve_block(&self, block_id: BlockId) -> Result<Block> {
         let text = self
             .api_get(&format!("blocks/{block_id}"))
             .send_and_get_text()
@@ -133,7 +133,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn retrieve_block_children(&self, block_id: impl NotionId) -> Result<List<Block>> {
+    pub async fn retrieve_block_children(&self, block_id: BlockId) -> Result<List<Block>> {
         let text = self
             .api_get(&format!("blocks/{block_id}/children"))
             .send_and_get_text()
@@ -265,7 +265,7 @@ impl Notion {
     ///
     /// Returns a 400 or 429 HTTP response if the request exceeds the request
     /// limits.
-    pub async fn delete_block(&self, block_id: impl NotionId) -> Result<Block> {
+    pub async fn delete_block(&self, block_id: BlockId) -> Result<Block> {
         let text = self
             .api_delete(&format!("blocks/{block_id}"))
             .send_and_get_text()

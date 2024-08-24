@@ -39,8 +39,6 @@ impl Bookmark {
 
 #[cfg(test)]
 mod test {
-    use serde_test::{assert_tokens, Token};
-
     use super::*;
 
     #[test]
@@ -50,44 +48,15 @@ mod test {
             serde_json::to_string(&value).unwrap(),
             r#"{"object":"block","bookmark":{}}"#
         );
-        // assert_tokens(
-        //     &value,
-        //     &[
-        //         Token::Map { len: None },
-        //         Token::Str("object"),
-        //         Token::Str("block"),
-        //         Token::Str("bookmark"),
-        //         Token::Struct {
-        //             name: "Bookmark",
-        //             len: 0,
-        //         },
-        //         Token::StructEnd,
-        //         Token::MapEnd,
-        //     ],
-        // );
     }
 
     #[test]
     fn complete() {
         let value = Bookmark::new().url(Some("https://google.com/")).build();
 
-        assert_tokens(
-            &value,
-            &[
-                Token::Map { len: None },
-                Token::Str("object"),
-                Token::Str("block"),
-                Token::Str("bookmark"),
-                Token::Struct {
-                    name: "Bookmark",
-                    len: 1,
-                },
-                Token::Str("url"),
-                Token::Some,
-                Token::Str("https://google.com/"),
-                Token::StructEnd,
-                Token::MapEnd,
-            ],
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","bookmark":{"url":"https://google.com/"}}"#
         );
     }
 }

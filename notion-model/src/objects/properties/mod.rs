@@ -1,3 +1,4 @@
+use formula::FormulaData;
 use serde::{Deserialize, Serialize};
 
 use super::{block::File, date::DateOrDateTime, rich_text::PageMention, user::PartialUser};
@@ -32,6 +33,7 @@ pub use email::Email;
 // pub use files::Files;
 //* pub use formula::Formula;
 // pub use last_edited_time::LastEditedTime;
+// pub use last_edited_by::LastEditedBy;
 //* pub use multi_select::MultiSelect;
 pub use number::Number;
 //* pub use people::People;
@@ -39,8 +41,8 @@ pub use phone_number::PhoneNumber;
 //* pub use relation::Relation;
 pub use rich_text::RichText;
 pub use rollup::Rollup;
-pub use select::Select;
-pub use status::Status;
+pub use select::{Select, SelectOption};
+pub use status::{Status, StatusOption};
 pub use title::Title;
 pub use unique_id::UniqueId;
 pub use url::Url;
@@ -156,7 +158,7 @@ pub enum PropertyData {
     /// more than 25 references, then you can use the Retrieve a page property
     /// item endpoint for the specific formula property to get its complete list
     /// of references.
-    Formula(formula::FormulaData),
+    Formula(FormulaData),
     /// Records the user who edited the item last.
     ///
     /// A user object containing information about the user who last updated the
@@ -178,7 +180,7 @@ pub enum PropertyData {
     ///  If you want to add a new option to a multi-select property via the
     /// Update page or Update database endpoint, then your integration needs
     /// write access to the parent database.
-    MultiSelect(Vec<select::SelectOption>),
+    MultiSelect(Vec<SelectOption>),
     /// Numerical formats like currencies and percentages. Useful for price,
     /// etc.
     ///

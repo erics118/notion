@@ -43,36 +43,15 @@ impl BulletedListItem {
 
 #[cfg(test)]
 mod test {
-    use serde_test::{assert_tokens, Token};
-
     use super::*;
 
     #[test]
     fn empty() {
         let value = BulletedListItem::new().build();
 
-        assert_tokens(
-            &value,
-            &[
-                Token::Map { len: None },
-                Token::Str("object"),
-                Token::Str("block"),
-                Token::Str("bulleted_list_item"),
-                Token::Struct {
-                    name: "BulletedListItem",
-                    len: 2,
-                },
-                Token::Str("rich_text"),
-                Token::Seq { len: Some(0) },
-                Token::SeqEnd,
-                Token::Str("color"),
-                Token::UnitVariant {
-                    name: "Color",
-                    variant: "default",
-                },
-                Token::StructEnd,
-                Token::MapEnd,
-            ],
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","bulleted_list_item":{"rich_text":[],"color":"default"}}"#
         );
     }
 
@@ -83,38 +62,9 @@ mod test {
             .color(Color::BlueBackground)
             .build();
 
-        assert_tokens(
-            &value,
-            &[
-                Token::Map { len: None },
-                Token::Str("object"),
-                Token::Str("block"),
-                Token::Str("bulleted_list_item"),
-                Token::Struct {
-                    name: "BulletedListItem",
-                    len: 2,
-                },
-                Token::Str("rich_text"),
-                Token::Seq { len: Some(1) },
-                Token::Map { len: None },
-                Token::Str("text"),
-                Token::Struct {
-                    name: "Text",
-                    len: 1,
-                },
-                Token::Str("content"),
-                Token::Str("hi"),
-                Token::StructEnd,
-                Token::MapEnd,
-                Token::SeqEnd,
-                Token::Str("color"),
-                Token::UnitVariant {
-                    name: "Color",
-                    variant: "blue_background",
-                },
-                Token::StructEnd,
-                Token::MapEnd,
-            ],
+        assert_eq!(
+            serde_json::to_string(&value).unwrap(),
+            r#"{"object":"block","bulleted_list_item":{"rich_text":[{"text":{"content":"hi"}}],"color":"blue_background"}}"#
         );
     }
 }

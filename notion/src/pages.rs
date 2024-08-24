@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use notion_model::{ids::NotionId, objects::page::Page};
+use notion_model::{ids::PageId, objects::page::Page};
 
 use crate::{
     client::{Notion, SendAndGetText},
@@ -126,7 +126,7 @@ impl Notion {
     /// limits.
     pub async fn retrieve_page(
         &self,
-        page_id: impl NotionId,
+        page_id: PageId,
         filter_properties: Option<Vec<&str>>,
     ) -> Result<Page> {
         let query = filter_properties
@@ -139,6 +139,10 @@ impl Notion {
             .query(&query)
             .send_and_get_text()
             .await?;
+
+        println!("{}", text);
+
+        // let text = include_str!("../../test_data/page.json");
 
         let res = serde_json::from_str::<result_types::Page>(&text)
             .context(Error::SerializeResponse("Page", "retrieve_page"))?;
