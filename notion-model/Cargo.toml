@@ -13,12 +13,12 @@ categories = ["api-bindings"]
 publish = false
 
 [dependencies]
-anyhow = "1.0.75"
-chrono = { version = "0.4.31", features = ["serde"] }
-chrono-tz = { version = "0.8.3", features = ["serde", "case-insensitive"] }
-serde = { version = "1.0.189", features = ["derive"] }
-serde_json = "1.0.107"
-uuid = { version = "1.5.0", features = ["v4", "serde"] }
+anyhow = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = { version = "0.9", features = ["serde", "case-insensitive"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1.10", features = ["v4", "serde"] }
 
 [dev-dependencies]
-serde_test = { version = "1.0.176" }
+serde_test = { version = "1.0" }
